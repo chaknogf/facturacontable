@@ -1,0 +1,594 @@
+---
+import Layout from "../layouts/Layout.astro";
+import AdBanner from "../components/AdBanner.astro";
+
+const title = "Conciliador CSV → Excel — Cruza estados de cuenta y libros contables";
+const description =
+  "Concilia tu estado de cuenta bancario o SAT con tu libro contable 100% en el navegador. Detecta conciliados, diferencias de monto y pendientes y descarga reporte Excel con 3 pestañas. Sin subir datos.";
+---
+
+<Layout
+  title={title}
+  description={description}
+  keywords="conciliar excel csv, estado de cuenta, libro contable, SAT Guatemala, conciliación bancaria, xlsx, pymes Guatemala"
+>
+  <div class="container" style="padding-top:1rem;">
+    <!-- Breadcrumb -->
+    <nav class="mono" style="font-size:0.8rem;color:var(--text-muted);margin-top:0.6rem;display:flex;gap:0.4rem;flex-wrap:wrap;">
+      <a href="/" style="text-decoration:underline;">Inicio</a><span>›</span><span style="font-weight:700;color:var(--text);">Conciliador CSV → Excel</span>
+    </nav>
+
+    <div style="margin-top:0.75rem;display:grid;gap:0.6rem;">
+      <h1 style="font-size:clamp(1.6rem,4.5vw,2.35rem);font-weight:800;line-height:1.08;letter-spacing:-0.03em;">
+        Conciliador <span style="background:var(--primary);border:2px solid var(--border);border-radius:10px;padding:0 0.3em;box-shadow:2px 2px 0 var(--border);">CSV → Excel</span>
+      </h1>
+      <p style="color:var(--text-muted);font-size:clamp(0.95rem,2.5vw,1.05rem);max-width:70ch;line-height:1.5;">
+        Cruza tu <strong style="color:var(--text);">Estado de Cuenta / SAT / Banco</strong> con tu <strong style="color:var(--text);">Libro Contable / Sistema / POS</strong> por clave (No. Documento / Transferencia / NIT) y monto con tolerancia de centavos. Todo <strong style="color:var(--text);">100% privado en tu navegador</strong> con <code class="mono" style="background:var(--bg-soft);border:1px solid var(--border);border-radius:6px;padding:1px 6px;">xlsx</code> + <code class="mono" style="background:var(--bg-soft);border:1px solid var(--border);border-radius:6px;padding:1px 6px;">papaparse</code>.
+      </p>
+      <div style="display:flex;flex-wrap:wrap;gap:0.5rem;font-size:0.8rem;">
+        <span class="mono" style="background:#7DE2D1;border:1.5px solid var(--border);border-radius:999px;padding:3px 10px;box-shadow:2px 2px 0 var(--border);font-weight:700;">🔒 0 servidor</span>
+        <span class="mono" style="background:var(--surface);border:1.5px solid var(--border);border-radius:999px;padding:3px 10px;box-shadow:2px 2px 0 var(--border);">CSV + XLSX</span>
+        <span class="mono" style="background:var(--surface);border:1.5px solid var(--border);border-radius:999px;padding:3px 10px;box-shadow:2px 2px 0 var(--border);">Tolerancia Q0.01</span>
+        <span class="mono" style="background:var(--surface);border:1.5px solid var(--border);border-radius:999px;padding:3px 10px;box-shadow:2px 2px 0 var(--border);">3 pestañas Excel</span>
+      </div>
+    </div>
+
+    <!-- Banner Superior: debajo del título -->
+    <AdBanner slot="7777777777" format="horizontal" label="PUBLICIDAD" />
+
+    <!-- APP -->
+    <section id="app" style="margin-top:1.25rem;display:grid;gap:1rem;">
+
+      <!-- PASO 1: Carga -->
+      <div class="brutal-card" style="padding:1rem;display:grid;gap:1rem;">
+        <div style="display:flex;align-items:center;gap:0.6rem;">
+          <span style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;background:var(--primary);border:2px solid var(--border);border-radius:10px;box-shadow:2px 2px 0 var(--border);font-weight:800;">1</span>
+          <h2 style="font-size:1.05rem;font-weight:800;">Carga tus archivos</h2>
+          <span class="mono" style="margin-left:auto;font-size:0.7rem;color:var(--text-muted);">CSV o XLSX · máx 5MB c/u</span>
+        </div>
+
+        <div style="display:grid;gap:0.9rem;">
+          <style>
+            @media(min-width:720px){#drop-grid{grid-template-columns:1fr 1fr!important;}}
+          </style>
+          <div id="drop-grid" style="display:grid;grid-template-columns:1fr;gap:0.9rem;">
+            <!-- Drop A -->
+            <div style="display:grid;gap:0.5rem;">
+              <label class="mono" style="font-size:0.78rem;font-weight:800;letter-spacing:0.05em;display:flex;align-items:center;gap:0.4rem;">
+                <span style="background:var(--accent-2);border:1.5px solid var(--border);border-radius:999px;padding:2px 8px;">A</span> Estado de Cuenta / SAT / Banco
+              </label>
+              <div id="drop-a" class="dropzone" role="button" tabindex="0" aria-label="Cargar Archivo A">
+                <input id="drop-a-input" type="file" accept=".csv,.xlsx,.xls,.txt" hidden />
+                <div style="font-size:2rem;" aria-hidden="true">🏦</div>
+                <p style="font-weight:800;font-size:0.98rem;">Archivo A</p>
+                <p class="mono" style="font-size:0.78rem;color:var(--text-muted);text-align:center;max-width:28ch;">Arrastra CSV/XLSX o toca para seleccionar</p>
+                <span class="brutal-btn brutal-btn--primary" style="min-height:40px;padding:0 1rem;font-size:0.85rem;pointer-events:none;">Seleccionar A</span>
+              </div>
+              <div id="file-a-info" class="mono" style="display:none;font-size:0.75rem;background:var(--bg-soft);border:2px solid var(--border);border-radius:12px;padding:0.6rem 0.75rem;box-shadow:2px 2px 0 var(--border);"></div>
+            </div>
+
+            <!-- Drop B -->
+            <div style="display:grid;gap:0.5rem;">
+              <label class="mono" style="font-size:0.78rem;font-weight:800;letter-spacing:0.05em;display:flex;align-items:center;gap:0.4rem;">
+                <span style="background:var(--accent-3);color:white;border:1.5px solid var(--border);border-radius:999px;padding:2px 8px;">B</span> Libro Contable / Sistema / POS
+              </label>
+              <div id="drop-b" class="dropzone" role="button" tabindex="0" aria-label="Cargar Archivo B">
+                <input id="drop-b-input" type="file" accept=".csv,.xlsx,.xls,.txt" hidden />
+                <div style="font-size:2rem;" aria-hidden="true">📒</div>
+                <p style="font-weight:800;font-size:0.98rem;">Archivo B</p>
+                <p class="mono" style="font-size:0.78rem;color:var(--text-muted);text-align:center;max-width:28ch;">Arrastra CSV/XLSX o toca para seleccionar</p>
+                <span class="brutal-btn brutal-btn--ghost" style="min-height:40px;padding:0 1rem;font-size:0.85rem;pointer-events:none;">Seleccionar B</span>
+              </div>
+              <div id="file-b-info" class="mono" style="display:none;font-size:0.75rem;background:var(--bg-soft);border:2px solid var(--border);border-radius:12px;padding:0.6rem 0.75rem;box-shadow:2px 2px 0 var(--border);"></div>
+            </div>
+          </div>
+
+          <div style="display:flex;flex-wrap:wrap;gap:0.5rem;">
+            <button id="btn-clear-files" type="button" class="brutal-btn brutal-btn--ghost" style="min-height:40px;">Limpiar archivos</button>
+            <span class="mono" style="font-size:0.72rem;color:var(--text-muted);align-self:center;">🔒 Todo se procesa en tu navegador · No se sube nada</span>
+          </div>
+
+          <div id="errores" style="display:none;gap:0.5rem;"></div>
+        </div>
+      </div>
+
+      <!-- PASO 2: Mapeo -->
+      <div id="mapeo" class="brutal-card" style="display:none;padding:1rem;gap:1rem;background:var(--surface);">
+        <div style="display:flex;align-items:center;gap:0.6rem;">
+          <span style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;background:var(--primary);border:2px solid var(--border);border-radius:10px;box-shadow:2px 2px 0 var(--border);font-weight:800;">2</span>
+          <h2 style="font-size:1.05rem;font-weight:800;">Mapeo de columnas</h2>
+          <span class="mono" style="font-size:0.7rem;color:var(--text-muted);">Elige clave y monto</span>
+        </div>
+        <p class="mono" style="font-size:0.78rem;color:var(--text-muted);">Selecciona la columna que identifica cada registro (ej. No. Documento / NIT / Transferencia) y la columna de monto (Q / $).</p>
+
+        <div style="display:grid;gap:0.9rem;">
+          <style>
+            @media(min-width:720px){.map-grid{grid-template-columns:1fr 1fr!important;}}
+            .pill-select{border-radius:999px!important;padding-left:1rem!important;}
+          </style>
+          <div class="map-grid" style="display:grid;grid-template-columns:1fr;gap:0.9rem;">
+            <div style="display:grid;gap:0.4rem;padding:0.9rem;background:var(--bg-soft);border:2px solid var(--border);border-radius:var(--radius-sm);box-shadow:var(--shadow-sm);">
+              <span class="mono" style="font-size:0.72rem;font-weight:800;letter-spacing:0.06em;">ARCHIVO A — CLAVE</span>
+              <select id="key-a" class="brutal-input pill-select" style="font-weight:700;"></select>
+              <span class="mono" style="font-size:0.72rem;font-weight:800;letter-spacing:0.06em;margin-top:0.3rem;">ARCHIVO A — MONTO</span>
+              <select id="amount-a" class="brutal-input pill-select" style="font-weight:700;"></select>
+            </div>
+            <div style="display:grid;gap:0.4rem;padding:0.9rem;background:var(--surface);border:2px solid var(--border);border-radius:var(--radius-sm);box-shadow:var(--shadow-sm);">
+              <span class="mono" style="font-size:0.72rem;font-weight:800;letter-spacing:0.06em;">ARCHIVO B — CLAVE</span>
+              <select id="key-b" class="brutal-input pill-select" style="font-weight:700;"></select>
+              <span class="mono" style="font-size:0.72rem;font-weight:800;letter-spacing:0.06em;margin-top:0.3rem;">ARCHIVO B — MONTO</span>
+              <select id="amount-b" class="brutal-input pill-select" style="font-weight:700;"></select>
+            </div>
+          </div>
+          <p class="mono" style="font-size:0.7rem;color:var(--text-muted);">Tip: si tus archivos tienen encabezados distintos (ej. “No. Doc” vs “Documento”), elige cada uno por separado. La comparación ignora espacios extra.</p>
+        </div>
+      </div>
+
+      <!-- PASO 3: Procesar -->
+      <div id="paso-conciliar" style="display:none;gap:0.9rem;">
+        <div style="display:flex;align-items:center;gap:0.6rem;">
+          <span style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;background:var(--primary);border:2px solid var(--border);border-radius:10px;box-shadow:2px 2px 0 var(--border);font-weight:800;">3</span>
+          <h2 style="font-size:1.05rem;font-weight:800;">Procesamiento y resumen</h2>
+        </div>
+        <button id="btn-conciliar" type="button" class="brutal-btn brutal-btn--primary" style="width:100%;min-height:56px;font-size:1.05rem;box-shadow:var(--shadow);">
+          ⚡ Conciliar Archivos Ahora
+        </button>
+        <p class="mono" style="font-size:0.72rem;color:var(--text-muted);text-align:center;">Compara por clave + tolerancia Q0.01 · Instantáneo en tu navegador</p>
+      </div>
+
+      <!-- Resumen estadístico (aparece tras conciliar) -->
+      <div id="resumen" style="display:none;gap:0.9rem;">
+        <div style="display:grid;gap:0.75rem;">
+          <style>
+            @media(min-width:640px){#stats-grid{grid-template-columns:repeat(3,1fr)!important;}}
+          </style>
+          <div id="stats-grid" style="display:grid;grid-template-columns:1fr;gap:0.75rem;">
+            <div class="brutal-card" style="padding:1rem;display:grid;gap:0.35rem;background:#dcfce7;border-color:#111;">
+              <span style="font-size:1.3rem;">🟩</span>
+              <span class="mono" style="font-size:0.72rem;font-weight:800;letter-spacing:0.06em;">MONTO CONCILIADO</span>
+              <span id="stat-monto" style="font-size:1.35rem;font-weight:800;letter-spacing:-0.02em;">Q —</span>
+              <span id="stat-conciliados" class="mono" style="font-size:0.78rem;color:var(--text-muted);">— conciliados</span>
+            </div>
+            <div class="brutal-card" style="padding:1rem;display:grid;gap:0.35rem;background:#fee2e2;">
+              <span style="font-size:1.3rem;">🟥</span>
+              <span class="mono" style="font-size:0.72rem;font-weight:800;letter-spacing:0.06em;">DIFERENCIAS DE MONTO</span>
+              <span id="stat-diferencias" style="font-size:1.35rem;font-weight:800;">—</span>
+              <span class="mono" style="font-size:0.78rem;color:var(--text-muted);">clave coincide, monto varía</span>
+            </div>
+            <div class="brutal-card" style="padding:1rem;display:grid;gap:0.35rem;background:#fef9c3;">
+              <span style="font-size:1.3rem;">🟨</span>
+              <span class="mono" style="font-size:0.72rem;font-weight:800;letter-spacing:0.06em;">PENDIENTES</span>
+              <span id="stat-pendientes" style="font-size:1.35rem;font-weight:800;">—</span>
+              <span id="stat-pendientes-det" class="mono" style="font-size:0.78rem;color:var(--text-muted);">—</span>
+            </div>
+          </div>
+
+          <!-- Tablas preview mini (opcional) -->
+          <div id="preview-tables" style="display:grid;gap:0.75rem;"></div>
+        </div>
+      </div>
+
+      <!-- Banner Conversión CRÍTICO: entre resumen y botón descarga -->
+      <AdBanner slot="8888888888" format="horizontal" label="PUBLICIDAD" />
+
+      <!-- PASO 4: Descarga -->
+      <div id="descarga" style="display:none;gap:0.75rem;">
+        <button id="btn-descargar" type="button" class="brutal-btn brutal-btn--primary" style="width:100%;min-height:56px;font-size:1.05rem;background:#111;color:white;box-shadow:var(--shadow);">
+          ⬇️ Descargar Reporte Conciliado en Excel (.xlsx)
+        </button>
+        <p class="mono" style="font-size:0.72rem;color:var(--text-muted);text-align:center;">3 pestañas: Conciliados · Diferencias_Monto · Pendientes (+ Resumen)</p>
+        <div style="display:flex;gap:0.5rem;flex-wrap:wrap;justify-content:center;">
+          <button id="btn-ver-detalle" type="button" class="brutal-btn brutal-btn--ghost" style="min-height:40px;font-size:0.85rem;">Ver detalle en tabla</button>
+          <button id="btn-limpiar-todo" type="button" class="brutal-btn brutal-btn--ghost" style="min-height:40px;font-size:0.85rem;">Nueva conciliación</button>
+        </div>
+      </div>
+
+      <!-- Detalle tablas expandible -->
+      <div id="detalle" style="display:none;gap:0.9rem;"></div>
+    </section>
+
+    <!-- Banner Inferior: en sección SEO -->
+    <AdBanner slot="9999999999" format="rectangle" label="PUBLICIDAD" />
+
+    <!-- SEO + FAQ -->
+    <article
+      style="margin-top:1.5rem;display:grid;gap:1.5rem;padding:1.5rem;background:var(--surface);border:2px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);"
+    >
+      <header style="display:grid;gap:0.5rem;">
+        <h2 style="font-size:1.45rem;font-weight:800;letter-spacing:-0.02em;line-height:1.2;">
+          Cómo conciliar un estado de cuenta bancario con tu libro contable sin subir tus datos a internet
+        </h2>
+        <p class="mono" style="font-size:0.78rem;color:var(--text-muted);">Actualizado 2026 · Guía para contadores y pymes en Guatemala · 100% privado</p>
+      </header>
+
+      <div style="display:grid;gap:1rem;line-height:1.65;color:var(--text-muted);font-size:0.98rem;">
+        <p>
+          Conciliar es comparar dos fuentes del mismo dinero: lo que dice tu <strong style="color:var(--text);">banco / SAT</strong> que entró o salió, contra lo que tu <strong style="color:var(--text);">sistema contable, POS o Excel interno</strong> registró. Cada quetzal debe tener una pareja: un número de documento, transferencia, cheque o NIT que lo identifique y un monto que cuadre al centavo. Cuando no cuadran, aparecen descuadres, duplicados o pagos pendientes que pueden costar multas o cierres mal hechos.
+        </p>
+        <p>
+          Con esta herramienta no subes nada. Los dos archivos (CSV o XLSX) se leen en tu navegador con <code class="mono" style="background:var(--bg-soft);border:1px solid var(--border);border-radius:6px;padding:1px 6px;">papaparse</code> y <code class="mono" style="background:var(--bg-soft);border:1px solid var(--border);border-radius:6px;padding:1px 6px;">xlsx (SheetJS)</code>. La clave se normaliza con <code class="mono" style="background:var(--bg-soft);border:1px solid var(--border);border-radius:6px;padding:1px 6px;">trim()</code> y los montos se limpian de <code class="mono" style="background:var(--bg-soft);border:1px solid var(--border);border-radius:6px;padding:1px 6px;">Q $ ,</code> antes de convertir a número. La comparación exige coincidencia exacta de clave y <strong style="color:var(--text);">tolerancia &lt; Q0.01</strong> para declarar “conciliado”. Todo lo demás se clasifica automáticamente.
+        </p>
+
+        <h3 style="font-size:1.15rem;font-weight:800;color:var(--text);">Pasos para exportar tus archivos</h3>
+        <ol style="padding-left:1.25rem;display:grid;gap:0.6rem;">
+          <li><strong style="color:var(--text);">Banca en línea (BI, G&T, Banrural, BAC):</strong> Ingresa → Movimientos / Estado de cuenta → filtra el mes → “Exportar” → elige <em>Excel (.xlsx)</em> o <em>CSV</em>. Verifica que incluya columnas de <em>Fecha, Descripción / No. Documento y Monto</em>. Si solo te da PDF, usa “Copiar a Excel” o pide el CSV a tu ejecutivo.</li>
+          <li><strong style="color:var(--text);">Libro contable / ERP / POS:</strong> En tu sistema (Alegra, QuickBooks, sistema propio) → Reportes → Libro de bancos / Ventas → Exportar a Excel. Asegúrate de que la columna de documento sea la misma que usa el banco (ej. No. de transferencia).</li>
+          <li><strong style="color:var(--text);">SAT / FEL:</strong> Si concilias ventas, descarga el reporte de DTE en <em>Agencia Virtual → FEL → Reportes</em> → Exportar CSV. Úsalo como Archivo B y el estado bancario como Archivo A.</li>
+          <li><strong style="color:var(--text);">Prepara los archivos:</strong> Abre cada CSV/XLSX, deja la primera fila como encabezados (“Documento”, “Monto”, etc.), elimina filas vacías y guarda. No necesitas unir nada: la herramienta cruza por la columna que tú elijas.</li>
+        </ol>
+
+        <h3 style="font-size:1.15rem;font-weight:800;color:var(--text);">Qué entrega el reporte Excel</h3>
+        <ul style="padding-left:1.25rem;display:grid;gap:0.4rem;">
+          <li><strong style="color:var(--text);">Conciliados:</strong> Clave existe en ambos y montos cuadran (&lt; Q0.01). Listo para dar por cerrado.</li>
+          <li><strong style="color:var(--text);">Diferencias_Monto:</strong> Misma clave, montos distintos. Revisa comisiones, IVA, retenciones o errores de digitación.</li>
+          <li><strong style="color:var(--text);">Pendientes:</strong> Solo está en un archivo. Puede ser cheque en tránsito, depósito no registrado o duplicado.</li>
+          <li><em>Bonus:</em> Pestaña <strong>Resumen</strong> con conteos y monto conciliado para tu cierre mensual.</li>
+        </ul>
+
+        <div style="background:var(--primary);border:2px solid var(--border);border-radius:12px;box-shadow:3px 3px 0 var(--border);padding:1rem;display:grid;gap:0.4rem;">
+          <p style="font-weight:800;color:#111;">🔒 Privacidad real, no marketing</p>
+          <p style="color:#333;font-size:0.92rem;">Abre las DevTools → Network y verás cero envíos. Puedes desconectar el Wi-Fi tras cargar la página y la conciliación seguirá funcionando. Ninguna fila con NIT, montos o clientes sale de tu dispositivo. El Excel se genera localmente con SheetJS.</p>
+        </div>
+
+        <h3 style="font-size:1.15rem;font-weight:800;color:var(--text);">Cómo resolver descuadres típicos</h3>
+        <ul style="padding-left:1.25rem;display:grid;gap:0.4rem;">
+          <li><strong>Comisión bancaria no registrada:</strong> aparece como diferencia de Q5–Q15. Registra la comisión en tu libro y vuelve a conciliar.</li>
+          <li><strong>Documento con espacios:</strong> “ 12345 ” vs “12345” → la herramienta hace <code class="mono" style="background:var(--bg-soft);border:1px solid var(--border);border-radius:6px;padding:1px 6px;">trim()</code> automático.</li>
+          <li><strong>Monto con Q y comas:</strong> “Q1,250.00” se limpia a 1250.00 antes de comparar.</li>
+          <li><strong>Transferencias duplicadas:</strong> si el mismo ID aparece dos veces, la segunda queda como pendiente — revisa duplicados en tu POS.</li>
+        </ul>
+      </div>
+
+      <!-- Banner dentro del artículo -->
+      <AdBanner slot="1010101010" format="horizontal" label="PUBLICIDAD" />
+
+      <section style="display:grid;gap:0.75rem;">
+        <h3 style="font-size:1.2rem;font-weight:800;">Preguntas frecuentes</h3>
+        <div style="display:grid;gap:0.6rem;">
+          <details style="background:var(--bg-soft);border:2px solid var(--border);border-radius:12px;padding:0.9rem 1rem;box-shadow:var(--shadow-sm);">
+            <summary style="font-weight:800;cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:0.5rem;">¿Mis datos financieros se suben a algún servidor? <span>＋</span></summary>
+            <p style="margin-top:0.6rem;color:var(--text-muted);line-height:1.6;font-size:0.95rem;">No. Todo ocurre en tu navegador con <code class="mono" style="background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:1px 6px;">xlsx</code> y <code class="mono" style="background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:1px 6px;">papaparse</code>. Ni siquiera hay analytics sobre el contenido de tus archivos. Puedes probar offline.</p>
+          </details>
+          <details style="background:var(--bg-soft);border:2px solid var(--border);border-radius:12px;padding:0.9rem 1rem;box-shadow:var(--shadow-sm);">
+            <summary style="font-weight:800;cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:0.5rem;">¿Qué formato debe tener la columna clave y monto? <span>＋</span></summary>
+            <p style="margin-top:0.6rem;color:var(--text-muted);line-height:1.6;font-size:0.95rem;">La clave puede ser texto (ej. “TR-12345”, NIT, No. Cheque). El monto puede traer “Q”, “$”, comas y espacios: se normaliza automáticamente. Vacía o no numérica se marca como pendiente/diferencia.</p>
+          </details>
+          <details style="background:var(--bg-soft);border:2px solid var(--border);border-radius:12px;padding:0.9rem 1rem;box-shadow:var(--shadow-sm);">
+            <summary style="font-weight:800;cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:0.5rem;">¿Qué hago con los pendientes? <span>＋</span></summary>
+            <p style="margin-top:0.6rem;color:var(--text-muted);line-height:1.6;font-size:0.95rem;">Revísalos uno a uno: si está en el banco pero no en tu libro, probablemente falta registrarlo; si está en tu libro pero no en el banco, puede ser cheque en tránsito o depósito en proceso.</p>
+          </details>
+          <details style="background:var(--bg-soft);border:2px solid var(--border);border-radius:12px;padding:0.9rem 1rem;box-shadow:var(--shadow-sm);">
+            <summary style="font-weight:800;cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:0.5rem;">¿Puedo conciliar más de 2 archivos? <span>＋</span></summary>
+            <p style="margin-top:0.6rem;color:var(--text-muted);line-height:1.6;font-size:0.95rem;">Esta herramienta cruza 2 a la vez. Para 3+, concilia A vs B, descarga, luego cruza el resultado contra C. Cada corrida es instantánea y privada.</p>
+          </details>
+          <details style="background:var(--bg-soft);border:2px solid var(--border);border-radius:12px;padding:0.9rem 1rem;box-shadow:var(--shadow-sm);">
+            <summary style="font-weight:800;cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:0.5rem;">¿Tolerancia de Q0.01 es configurable? <span>＋</span></summary>
+            <p style="margin-top:0.6rem;color:var(--text-muted);line-height:1.6;font-size:0.95rem;">Por ahora fija en &lt; 0.01 para declarar conciliado. Si necesitas otra tolerancia, redondea tus montos en Excel antes de cargar o contáctanos para una versión configurable.</p>
+          </details>
+        </div>
+      </section>
+
+      <p class="mono" style="font-size:0.75rem;color:var(--text-muted);border-top:2px dashed var(--border);padding-top:0.75rem;">
+        Nota: FacturaContable.gt no está afiliado a bancos ni a la SAT. Marcas citadas pertenecen a sus dueños.
+      </p>
+    </article>
+
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: [
+        { "@type": "Question", name: "¿Mis datos financieros se suben a algún servidor?", acceptedAnswer: { "@type": "Answer", text: "No. Todo se procesa en tu navegador con xlsx y papaparse, sin envíos a servidor." } },
+        { "@type": "Question", name: "¿Qué formato debe tener la columna clave y monto?", acceptedAnswer: { "@type": "Answer", text: "Clave es texto libre, monto puede traer Q $, comas y espacios; se normaliza automáticamente." } },
+        { "@type": "Question", name: "¿Qué hago con los pendientes?", acceptedAnswer: { "@type": "Answer", text: "Revisa si falta registrar en libro o si es cheque en tránsito." } },
+      ]
+    })} />
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      name: "Conciliador CSV → Excel — FacturaContable.gt",
+      applicationCategory: "BusinessApplication",
+      operatingSystem: "Any",
+      offers: { "@type": "Offer", price: "0", priceCurrency: "GTQ" },
+      description,
+      inLanguage: "es-GT",
+      isAccessibleForFree: true,
+    })} />
+  </div>
+
+  <!-- Lógica client-side -->
+  <script>
+    import { parseFile, reconcile, buildWorkbook, downloadWorkbook, formatGTQ } from "../lib/excelReconciler";
+
+    const $ = (s: string) => document.querySelector(s) as HTMLElement | null;
+
+    // Elements
+    const dropA = $("#drop-a") as HTMLElement;
+    const dropB = $("#drop-b") as HTMLElement;
+    const inputA = document.getElementById("drop-a-input") as HTMLInputElement;
+    const inputB = document.getElementById("drop-b-input") as HTMLInputElement;
+    const infoA = $("#file-a-info") as HTMLElement;
+    const infoB = $("#file-b-info") as HTMLElement;
+    const erroresEl = $("#errores") as HTMLElement;
+    const mapeoEl = $("#mapeo") as HTMLElement;
+    const pasoConciliarEl = $("#paso-conciliar") as HTMLElement;
+    const resumenEl = $("#resumen") as HTMLElement;
+    const descargaEl = $("#descarga") as HTMLElement;
+    const detalleEl = $("#detalle") as HTMLElement;
+    const keyASel = $("#key-a") as HTMLSelectElement;
+    const keyBSel = $("#key-b") as HTMLSelectElement;
+    const amountASel = $("#amount-a") as HTMLSelectElement;
+    const amountBSel = $("#amount-b") as HTMLSelectElement;
+    const btnConciliar = $("#btn-conciliar") as HTMLButtonElement;
+    const btnDescargar = $("#btn-descargar") as HTMLButtonElement;
+    const btnVerDetalle = $("#btn-ver-detalle") as HTMLButtonElement;
+    const btnLimpiar = $("#btn-limpiar-todo") as HTMLButtonElement;
+    const btnClearFiles = $("#btn-clear-files") as HTMLButtonElement;
+
+    let parsedA: import("../lib/excelReconciler").ParsedFile | null = null;
+    let parsedB: import("../lib/excelReconciler").ParsedFile | null = null;
+    let lastResult: import("../lib/excelReconciler").ConciliacionResult | null = null;
+    let lastWorkbook: import("xlsx").WorkBook | null = null;
+
+    function pushError(msg: string) {
+      if (!erroresEl) return;
+      erroresEl.style.display = "grid";
+      const div = document.createElement("div");
+      div.setAttribute("style", "padding:0.7rem 1rem;background:#FFE5E5;border:2px solid #111;border-radius:12px;box-shadow:3px 3px 0 #111;font-size:0.88rem;display:flex;gap:0.5rem;align-items:flex-start;");
+      div.innerHTML = `<span>⚠️</span><span style="flex:1;">${msg}</span><button class="mono" style="background:white;border:1.5px solid #111;border-radius:999px;padding:2px 10px;cursor:pointer;font-weight:700;font-size:0.72rem;" onclick="this.parentElement.remove()">Cerrar</button>`;
+      erroresEl.appendChild(div);
+    }
+
+    function clearErrors() {
+      if (erroresEl) { erroresEl.innerHTML = ""; erroresEl.style.display = "none"; }
+    }
+
+    function formatInfo(parsed: import("../lib/excelReconciler").ParsedFile): string {
+      return `<strong>${parsed.filename}</strong> · ${parsed.rows.length} filas · ${parsed.headers.length} columnas<br><span style="opacity:0.85;">${parsed.headers.slice(0, 6).join(" · ")}${parsed.headers.length > 6 ? " · …" : ""}</span>`;
+    }
+
+    function fillSelect(sel: HTMLSelectElement, headers: string[], preferred?: string) {
+      sel.innerHTML = "";
+      headers.forEach((h) => {
+        const opt = document.createElement("option");
+        opt.value = h;
+        opt.textContent = h;
+        sel.appendChild(opt);
+      });
+      if (preferred && headers.includes(preferred)) sel.value = preferred;
+      else {
+        // heurística: busca columna con keywords
+        const montoKeywords = ["monto", "total", "importe", "valor", "saldo", "monto_q", "q"];
+        const claveKeywords = ["documento", "doc", "transferencia", "trans", "nit", "cheque", "referencia", "id", "numero", "número", "no."];
+        const lower = headers.map((h) => h.toLowerCase());
+        let guess = -1;
+        const isMontoSel = sel.id.includes("amount");
+        const keywords = isMontoSel ? montoKeywords : claveKeywords;
+        for (let i = 0; i < lower.length; i++) {
+          if (keywords.some((k) => lower[i].includes(k))) { guess = i; break; }
+        }
+        if (guess >= 0) sel.selectedIndex = guess;
+      }
+    }
+
+    function syncMapeo() {
+      if (parsedA && parsedB) {
+        mapeoEl.style.display = "grid";
+        pasoConciliarEl.style.display = "grid";
+        fillSelect(keyASel, parsedA.headers);
+        fillSelect(amountASel, parsedA.headers);
+        fillSelect(keyBSel, parsedB.headers);
+        fillSelect(amountBSel, parsedB.headers);
+      } else {
+        mapeoEl.style.display = "none";
+        pasoConciliarEl.style.display = "none";
+      }
+      // reset resumen si cambian archivos pero no se ha conciliado de nuevo
+      if (resumenEl) resumenEl.style.display = "none";
+      if (descargaEl) descargaEl.style.display = "none";
+      if (detalleEl) detalleEl.style.display = "none";
+      lastResult = null;
+      lastWorkbook = null;
+    }
+
+    async function handleFile(file: File, which: "A" | "B") {
+      clearErrors();
+      try {
+        if (file.size > 5 * 1024 * 1024) {
+          pushError(`Archivo ${file.name} excede 5MB. Divide el archivo e intenta de nuevo.`);
+          return;
+        }
+        const parsed = await parseFile(file);
+        if (parsed.headers.length === 0) throw new Error("No se detectaron encabezados en la primera fila.");
+        if (parsed.rows.length === 0) throw new Error("El archivo no contiene filas de datos.");
+        if (which === "A") {
+          parsedA = parsed;
+          infoA.innerHTML = formatInfo(parsed);
+          infoA.style.display = "block";
+          dropA.style.borderColor = "var(--border)";
+          dropA.style.background = "var(--bg-soft)";
+        } else {
+          parsedB = parsed;
+          infoB.innerHTML = formatInfo(parsed);
+          infoB.style.display = "block";
+          dropB.style.borderColor = "var(--border)";
+          dropB.style.background = "var(--bg-soft)";
+        }
+        syncMapeo();
+      } catch (e) {
+        pushError(`<strong>${file.name}</strong>: ${(e as Error).message}`);
+      }
+    }
+
+    // Dropzone wiring
+    function wireDrop(zone: HTMLElement, input: HTMLInputElement, which: "A" | "B") {
+      zone.addEventListener("click", () => input.click());
+      zone.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); input.click(); }
+      });
+      ["dragenter", "dragover"].forEach((ev) => {
+        zone.addEventListener(ev, (e) => { e.preventDefault(); zone.classList.add("dropzone--dragging"); });
+      });
+      ["dragleave", "drop"].forEach((ev) => {
+        zone.addEventListener(ev, (e) => { e.preventDefault(); zone.classList.remove("dropzone--dragging"); });
+      });
+      zone.addEventListener("drop", (e) => {
+        const dt = (e as DragEvent).dataTransfer;
+        if (!dt?.files?.length) return;
+        const file = dt.files[0];
+        // Sintético vía DataTransfer si se quiere reflejar en input
+        try {
+          const d = new DataTransfer();
+          d.items.add(file);
+          input.files = d.files;
+        } catch {}
+        handleFile(file, which);
+      });
+      input.addEventListener("change", () => {
+        if (input.files?.[0]) handleFile(input.files[0], which);
+        input.value = "";
+      });
+    }
+
+    if (dropA && inputA) wireDrop(dropA, inputA, "A");
+    if (dropB && inputB) wireDrop(dropB, inputB, "B");
+
+    // Evita apertura accidental fuera
+    document.addEventListener("dragover", (e) => e.preventDefault());
+    document.addEventListener("drop", (e) => e.preventDefault());
+
+    btnClearFiles?.addEventListener("click", () => {
+      parsedA = null; parsedB = null;
+      lastResult = null; lastWorkbook = null;
+      infoA.style.display = "none"; infoB.style.display = "none";
+      infoA.innerHTML = ""; infoB.innerHTML = "";
+      if (mapeoEl) mapeoEl.style.display = "none";
+      if (pasoConciliarEl) pasoConciliarEl.style.display = "none";
+      if (resumenEl) resumenEl.style.display = "none";
+      if (descargaEl) descargaEl.style.display = "none";
+      if (detalleEl) detalleEl.style.display = "none";
+      clearErrors();
+    });
+
+    // Conciliar
+    btnConciliar?.addEventListener("click", () => {
+      clearErrors();
+      if (!parsedA || !parsedB) { pushError("Carga ambos archivos (A y B) antes de conciliar."); return; }
+      const keyA = keyASel.value;
+      const keyB = keyBSel.value;
+      const amtA = amountASel.value;
+      const amtB = amountBSel.value;
+      if (!keyA || !keyB || !amtA || !amtB) { pushError("Selecciona las 4 columnas (clave y monto de cada archivo)."); return; }
+      try {
+        const result = reconcile(parsedA, parsedB, keyA, keyB, amtA, amtB, 0.01);
+        lastResult = result;
+        lastWorkbook = buildWorkbook(result);
+
+        // Stats
+        const statMonto = $("#stat-monto") as HTMLElement;
+        const statConc = $("#stat-conciliados") as HTMLElement;
+        const statDif = $("#stat-diferencias") as HTMLElement;
+        const statPend = $("#stat-pendientes") as HTMLElement;
+        const statPendDet = $("#stat-pendientes-det") as HTMLElement;
+        if (statMonto) statMonto.textContent = formatGTQ(result.stats.montoConciliado);
+        if (statConc) statConc.textContent = `${result.stats.conciliadosCount} conciliados de ${result.stats.totalA + result.stats.totalB} registros`;
+        if (statDif) statDif.textContent = `${result.stats.diferenciasCount} registros`;
+        if (statPend) statPend.textContent = `${result.stats.pendientesCount} registros`;
+        if (statPendDet) statPendDet.textContent = `— ${result.stats.totalA} en A · ${result.stats.totalB} en B`;
+
+        // Preview mini tables (primeras 3 filas)
+        const preview = $("#preview-tables") as HTMLElement;
+        if (preview) {
+          const esc = (s: string) => String(s ?? "").replace(/</g, "&lt;");
+          const mini = (title: string, rows: any[], cols: string[]) => {
+            if (rows.length === 0) return `<div class="mono" style="font-size:0.78rem;color:var(--text-muted);padding:0.6rem;border:1.5px dashed var(--border);border-radius:12px;">${title}: sin registros</div>`;
+            const head = cols.map((c) => `<th style="padding:6px 8px;text-align:left;white-space:nowrap;">${esc(c)}</th>`).join("");
+            const body = rows.slice(0, 3).map((r) => `<tr>${cols.map((c) => `<td style="padding:6px 8px;border-top:1px solid #eee;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${esc(String(r[c] ?? ""))}</td>`).join("")}</tr>`).join("");
+            return `<div style="border:2px solid var(--border);border-radius:12px;overflow:hidden;box-shadow:2px 2px 0 var(--border);"><div class="mono" style="font-size:0.72rem;font-weight:800;padding:6px 10px;background:var(--bg-soft);border-bottom:2px solid var(--border);">${title} · mostrando 3 de ${rows.length}</div><div style="overflow:auto;"><table class="mono" style="width:100%;border-collapse:collapse;font-size:0.72rem;min-width:420px;"><thead><tr style="background:var(--surface);">${head}</tr></thead><tbody>${body}</tbody></table></div></div>`;
+          };
+          preview.innerHTML =
+            mini("Conciliados", result.conciliados, ["Clave", "Monto_A", "Monto_B", "Diferencia"]) +
+            mini("Diferencias", result.diferencias, ["Clave", "Monto_A", "Monto_B", "Diferencia"]) +
+            mini("Pendientes", result.pendientes, ["Origen", "Clave", "Monto_A", "Monto_B"]);
+          preview.style.display = "grid";
+        }
+
+        resumenEl.style.display = "grid";
+        descargaEl.style.display = "grid";
+        // scroll a resumen en móvil
+        resumenEl.scrollIntoView({ behavior: "smooth", block: "start" });
+      } catch (e) {
+        pushError(`Error al conciliar: ${(e as Error).message}`);
+      }
+    });
+
+    btnDescargar?.addEventListener("click", () => {
+      if (!lastWorkbook) { pushError("Primero concilia los archivos."); return; }
+      const stamp = new Date().toISOString().slice(0, 10);
+      downloadWorkbook(lastWorkbook, `conciliacion_${stamp}.xlsx`);
+    });
+
+    btnVerDetalle?.addEventListener("click", () => {
+      if (!lastResult) return;
+      const isVisible = detalleEl.style.display !== "none" && detalleEl.style.display !== "";
+      if (isVisible) { detalleEl.style.display = "none"; btnVerDetalle.textContent = "Ver detalle en tabla"; return; }
+      btnVerDetalle.textContent = "Ocultar detalle";
+      const esc = (s: string) => String(s ?? "").replace(/</g, "&lt;");
+      const table = (title: string, rows: any[], cols: string[]) => {
+        if (rows.length === 0) return `<div class="brutal-card" style="padding:1rem;"><h4 style="font-weight:800;">${title}</h4><p class="mono" style="font-size:0.8rem;color:var(--text-muted);">Sin registros</p></div>`;
+        const head = cols.map((c) => `<th style="padding:8px 10px;text-align:left;white-space:nowrap;background:var(--bg-soft);border-bottom:2px solid var(--border);">${esc(c)}</th>`).join("");
+        const body = rows.map((r) => `<tr>${cols.map((c) => `<td style="padding:7px 10px;border-bottom:1px solid #eee;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${esc(String(r[c] ?? ""))}</td>`).join("")}</tr>`).join("");
+        return `<div class="brutal-card" style="padding:0;overflow:hidden;"><div style="padding:0.9rem 1rem;background:var(--primary);border-bottom:2px solid var(--border);"><h4 style="font-weight:800;">${title} · ${rows.length}</h4></div><div style="overflow:auto;max-height:380px;"><table class="mono" style="width:100%;border-collapse:collapse;font-size:0.74rem;min-width:560px;"><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table></div></div>`;
+      };
+      detalleEl.innerHTML =
+        table("Conciliados", lastResult.conciliados, ["Clave", "Monto_A", "Monto_B", "Diferencia", "Archivo_A", "Fila_A"]) +
+        table("Diferencias_Monto", lastResult.diferencias, ["Clave", "Monto_A", "Monto_B", "Diferencia", "Archivo_A", "Fila_A"]) +
+        table("Pendientes", lastResult.pendientes, ["Origen", "Clave", "Monto_A", "Monto_B", "Archivo", "Fila"]);
+      detalleEl.style.display = "grid";
+      detalleEl.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+
+    btnLimpiar?.addEventListener("click", () => {
+      parsedA = null; parsedB = null;
+      lastResult = null; lastWorkbook = null;
+      infoA.style.display = "none"; infoB.style.display = "none";
+      mapeoEl.style.display = "none";
+      pasoConciliarEl.style.display = "none";
+      resumenEl.style.display = "none";
+      descargaEl.style.display = "none";
+      detalleEl.style.display = "none";
+      detalleEl.innerHTML = "";
+      const preview = $("#preview-tables") as HTMLElement | null;
+      if (preview) preview.innerHTML = "";
+      clearErrors();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  </script>
+
+  <style>
+    .dropzone {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 1.5rem 1rem;
+      min-height: 190px;
+      background: var(--surface);
+      border: 2.5px dashed var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      text-align: center;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.08s, box-shadow 0.08s;
+      user-select: none;
+    }
+    .dropzone:hover { background: var(--bg-soft); }
+    .dropzone:focus-visible { outline: 3px solid var(--accent-3); outline-offset: 2px; }
+    .dropzone--dragging {
+      background: var(--primary) !important;
+      border-style: solid !important;
+      transform: translate(-1px, -1px);
+      box-shadow: var(--shadow-lg) !important;
+    }
+  </style>
+</Layout>
