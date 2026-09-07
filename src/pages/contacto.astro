@@ -1,0 +1,23 @@
+---
+import Layout from "../layouts/Layout.astro";
+import AdBanner from "../components/AdBanner.astro";
+const title = "Contacto — FacturaContable.gt";
+const description = "Contacto de FacturaContable.gt para soporte, reporte de errores y sugerencias. Respuesta en 24-48h.";
+---
+
+<Layout title={title} description={description}>
+  <div class="container" style="padding-top:1rem;">
+    <AdBanner slot="cont001" format="horizontal" location="Contacto — Hero" label="PUBLICIDAD" />
+    <article class="brutal-card" style="margin-top:1rem;padding:1.5rem;display:grid;gap:1rem;">
+      <h1 style="font-size:1.6rem;font-weight:800;">Contacto</h1>
+      <p style="color:var(--text-muted);line-height:1.6;">¿Error en un XML, idea para una herramienta o duda de privacidad? Escríbenos. Respondemos en 24–48h. Este es un proyecto hecho en Guatemala 🇬🇹 para contadores y pymes.</p>
+      <div class="brutal-card" style="padding:1rem;background:var(--bg-soft);display:grid;gap:0.5rem;">
+        <p style="font-weight:800;">Correo</p>
+        <a href="mailto:hola@facturacontable.gt" class="mono" style="font-weight:700;text-decoration:underline;">hola@facturacontable.gt</a>
+        <p class="mono" style="font-size:0.8rem;color:var(--text-muted);">No envíes XML con datos sensibles por correo. Describe el error y adjunta captura si es posible.</p>
+      </div>
+      <p class="mono" style="font-size:0.8rem;color:var(--text-muted);">Al contactarnos aceptas nuestra <a href="/privacidad" style="text-decoration:underline;">Política de Privacidad</a> y <a href="/terminos" style="text-decoration:underline;">Términos</a>.</p>
+      <AdBanner slot="cont002" format="horizontal" location="Contacto — Cierre" label="PUBLICIDAD" />
+    </article>
+  </div>
+</Layout>

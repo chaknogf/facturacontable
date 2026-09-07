@@ -1,0 +1,10 @@
+# Netlify / Cloudflare Pages — .net y .com → .gt canónico 301
+https://facturacontable.net/* https://facturacontable.gt/:splat 301!
+https://www.facturacontable.net/* https://facturacontable.gt/:splat 301!
+https://facturacontable.com/* https://facturacontable.gt/:splat 301!
+https://www.facturacontable.com/* https://facturacontable.gt/:splat 301!
+https://www.facturacontable.gt/* https://facturacontable.gt/:splat 301!
+
+# Para Vercel: ver vercel.json (si usas Vercel)
+/xml-sat-a-pdf/ /xml-sat-a-pdf 301
+/conciliador-excel-csv/ /conciliador-excel-csv 301

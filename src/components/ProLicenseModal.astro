@@ -1,0 +1,219 @@
+---
+/**
+ * ProLicenseModal — PayPal $10 USD (pago único de por vida)
+ * Guarda `user_pro_unlocked=true` y `license_key` en localStorage
+ * para ocultar AdSense (`AdBanner`) y habilitar PWA offline ilimitado.
+ * Uso: <ProLicenseModal /> en Layout y abrir con window.openProModal()
+ */
+interface Props {
+  paypalMeUrl?: string;
+  paypalClientId?: string;
+}
+const {
+  paypalMeUrl = "https://www.paypal.com/paypalme/facturacontable/10",
+  paypalClientId = "sb", // sb = sandbox demo; reemplaza con tu client-id live de PayPal Developer
+} = Astro.props;
+---
+
+<div id="pro-modal" class="pro-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="pro-modal-title">
+  <div class="pro-modal__overlay" data-close></div>
+  <div class="pro-modal__card brutal-card" role="document">
+    <button class="pro-modal__close brutal-btn brutal-btn--ghost" aria-label="Cerrar" data-close style="position:absolute;top:10px;right:10px;width:44px;height:44px;padding:0;border-radius:10px;">✕</button>
+
+    <div style="display:grid;gap:1rem;padding:1.25rem 1.25rem 1.1rem;">
+      <div style="display:flex;align-items:center;gap:0.7rem;">
+        <span style="display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;background:var(--primary);border:2px solid var(--border);border-radius:12px;box-shadow:3px 3px 0 var(--border);font-size:1.3rem;">⭐</span>
+        <div>
+          <h2 id="pro-modal-title" style="font-size:1.25rem;font-weight:800;letter-spacing:-0.02em;line-height:1;">Desbloquea Pro / Offline</h2>
+          <p class="mono" style="font-size:0.72rem;color:var(--text-muted);">Pago único <strong style="color:var(--text);"> $10 USD — de por vida</strong> · Sin suscripción</p>
+        </div>
+      </div>
+
+      <div style="display:grid;gap:0.6rem;font-size:0.95rem;line-height:1.5;">
+        <ul style="list-style:none;display:grid;gap:0.5rem;padding:0;">
+          <li style="display:flex;gap:0.6rem;align-items:flex-start;background:var(--bg-soft);border:2px solid var(--border);border-radius:12px;padding:0.7rem 0.85rem;box-shadow:2px 2px 0 var(--border);">
+            <span aria-hidden="true">🚫</span><span><strong>Sin anuncios de AdSense jamás.</strong> Experiencia limpia y rápida en todas las herramientas.</span>
+          </li>
+          <li style="display:flex;gap:0.6rem;align-items:flex-start;background:var(--bg-soft);border:2px solid var(--border);border-radius:12px;padding:0.7rem 0.85rem;box-shadow:2px 2px 0 var(--border);">
+            <span aria-hidden="true">⚡</span><span><strong>Acceso e instalación PWA</strong> para escritorio y móvil. Trabaja 100% offline, sin límites.</span>
+          </li>
+          <li style="display:flex;gap:0.6rem;align-items:flex-start;background:var(--bg-soft);border:2px solid var(--border);border-radius:12px;padding:0.7rem 0.85rem;box-shadow:2px 2px 0 var(--border);">
+            <span aria-hidden="true">🇬🇹</span><span><strong>Apoya software local en Guatemala.</strong> Financiamiento directo al desarrollo, no a trackers.</span>
+          </li>
+        </ul>
+        <div class="mono" style="font-size:0.75rem;color:var(--text-muted);background:var(--surface);border:1.5px dashed var(--border);border-radius:10px;padding:0.6rem 0.75rem;">
+          💳 Pago único <strong style="color:var(--text);">$10 USD</strong> · Licencia de por vida para este navegador/dispositivo. Re-instalable con tu clave.
+        </div>
+      </div>
+
+      <!-- PayPal Smart Buttons container -->
+      <div style="display:grid;gap:0.7rem;">
+        <div id="paypal-button-container" style="min-height:48px;"></div>
+        <a
+          id="paypal-direct-link"
+          href={paypalMeUrl}
+          target="_blank"
+          rel="noopener"
+          class="brutal-btn brutal-btn--primary"
+          style="width:100%;background:#0070BA;color:white;border-color:#111;min-height:52px;"
+        >
+          <span style="font-size:1.1rem;">☕</span> Un cafecito
+        </a>
+        <p class="mono" style="font-size:0.7rem;color:var(--text-muted);text-align:center;">
+          Serás redirigido a PayPal de forma segura. Vuelve y haz clic en “Ya pagué”.
+        </p>
+        <div style="display:flex;gap:0.5rem;">
+          <button id="pro-confirm-paid" type="button" class="brutal-btn brutal-btn--ghost" style="flex:1;">Ya pagué — Activar Pro</button>
+          <button id="pro-simulate" type="button" class="mono" style="flex:1;min-height:48px;background:var(--bg-soft);border:2px solid var(--border);border-radius:12px;box-shadow:3px 3px 0 var(--border);font-weight:700;cursor:pointer;">Simular pago (dev)</button>
+        </div>
+        <div id="pro-status" class="mono" style="display:none;font-size:0.78rem;font-weight:700;text-align:center;padding:0.6rem;border:2px solid var(--border);border-radius:10px;"></div>
+      </div>
+
+      <details style="background:var(--bg-soft);border:2px solid var(--border);border-radius:12px;padding:0.7rem 0.85rem;">
+        <summary style="font-weight:800;cursor:pointer;font-size:0.85rem;">¿Cómo funciona la licencia?</summary>
+        <p class="mono" style="font-size:0.78rem;color:var(--text-muted);margin-top:0.5rem;line-height:1.5;">
+          Al confirmar el pago guardamos <code style="background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:1px 6px;">user_pro_unlocked=true</code> y <code style="background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:1px 6px;">license_key</code> en tu <code style="background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:1px 6px;">localStorage</code>. Eso oculta todos los <code style="background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:1px 6px;">AdBanner</code> y habilita la PWA sin restricciones. Es por dispositivo/navegador; puedes respaldar tu clave.
+        </p>
+      </details>
+    </div>
+  </div>
+</div>
+
+<!-- Botón flotante discreto para abrir modal (opcional) -->
+<button id="pro-fab" class="mono" aria-label="Invítame un cafecito" title="Invítame un cafecito"
+  style="position:fixed;bottom:18px;right:16px;z-index:45;display:inline-flex;align-items:center;gap:0.45rem;padding:0.55rem 0.9rem;background:var(--primary);border:2px solid var(--border);border-radius:999px;box-shadow:4px 4px 0 var(--border);font-weight:800;font-size:0.82rem;cursor:pointer;">
+  ☕ Un cafecito
+</button>
+
+<style>
+  .pro-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+  }
+  .pro-modal[aria-hidden="false"] { display: flex; }
+  .pro-modal__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    backdrop-filter: blur(2px);
+  }
+  .pro-modal__card {
+    position: relative;
+    width: 100%;
+    max-width: 560px;
+    max-height: 92vh;
+    overflow: auto;
+    background: var(--surface);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+  }
+  @media (max-width: 640px) {
+    .pro-modal { padding: 0.75rem; align-items: flex-end; }
+    .pro-modal__card { max-height: 88vh; border-radius: 16px 16px 12px 12px; }
+  }
+</style>
+
+<script is:inline define:vars={{ paypalClientId }}>
+  (function(){
+    const modal = document.getElementById('pro-modal');
+    const fab = document.getElementById('pro-fab');
+    const confirmBtn = document.getElementById('pro-confirm-paid');
+    const simBtn = document.getElementById('pro-simulate');
+    const statusEl = document.getElementById('pro-status');
+    if(!modal) return;
+
+    function openProModal(){
+      modal.setAttribute('aria-hidden','false');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeProModal(){
+      modal.setAttribute('aria-hidden','true');
+      document.body.style.overflow = '';
+    }
+    // expone global
+    window.openProModal = openProModal;
+    window.closeProModal = closeProModal;
+
+    // Abrir/cerrar
+    fab?.addEventListener('click', openProModal);
+    modal.querySelectorAll('[data-close]').forEach(el=>el.addEventListener('click', closeProModal));
+    document.addEventListener('keydown', (e)=>{ if(e.key==='Escape' && modal.getAttribute('aria-hidden')==='false') closeProModal(); });
+
+    // Si ya es Pro, cambia FAB
+    function refreshFab(){
+      try{
+        const isPro = localStorage.getItem('user_pro_unlocked')==='true' || !!localStorage.getItem('license_key');
+        if(isPro && fab){
+          fab.textContent = '✓ Pro activo';
+          fab.style.background = '#7DE2D1';
+          fab.title = 'Licencia Pro activa';
+        }
+      } catch(e){}
+    }
+    refreshFab();
+
+    function setProStatus(msg, ok){
+      if(!statusEl) return;
+      statusEl.style.display = 'block';
+      statusEl.textContent = msg;
+      statusEl.style.background = ok ? '#dcfce7' : '#fee2e2';
+      statusEl.style.color = '#111';
+    }
+
+    function activatePro(source){
+      try{
+        const key = btoa('fc_pro_' + Date.now() + '_' + Math.random().toString(36).slice(2,8));
+        localStorage.setItem('user_pro_unlocked','true');
+        localStorage.setItem('license_key', key);
+        localStorage.setItem('license_source', source || 'paypal');
+        localStorage.setItem('license_date', new Date().toISOString());
+      } catch(e){ console.warn(e); }
+      setProStatus('✓ ¡Pro activado! Recarga para ocultar anuncios y usar offline ilimitado.', true);
+      window.dispatchEvent(new Event('pro-unlocked'));
+      refreshFab();
+      // oculta banners inmediatamente
+      document.querySelectorAll('.ad-banner').forEach(el=>{ el.style.display='none'; });
+      setTimeout(()=>{ closeProModal(); location.reload(); }, 900);
+    }
+
+    confirmBtn?.addEventListener('click', ()=> activatePro('paypal-confirm'));
+    simBtn?.addEventListener('click', ()=> activatePro('simulate-dev'));
+
+    // PayPal Smart Buttons — carga SDK solo si clientId válido y no es 'sb' placeholder? Igual carga para demo
+    try {
+      if(paypalClientId){
+        const s = document.createElement('script');
+        s.src = 'https://www.paypal.com/sdk/js?client-id=' + encodeURIComponent(paypalClientId) + '&currency=USD&intent=capture';
+        s.async = true;
+        s.onload = function(){
+          try{
+            if(window.paypal){
+              window.paypal.Buttons({
+                style:{ layout:'vertical', color:'blue', shape:'rect', label:'pay', height:48 },
+                createOrder: function(data, actions){
+                  return actions.order.create({ purchase_units:[{ amount:{ value:'10.00' }, description:'Licencia Pro FacturaContable.gt - $10 USD de por vida' }] });
+                },
+                onApprove: function(data, actions){
+                  return actions.order.capture().then(function(details){
+                    activatePro('paypal-smart:'+ (details.id||''));
+                  });
+                },
+                onError: function(err){ console.warn('PayPal error',err); setProStatus('PayPal error. Usa el enlace directo o "Ya pagué".', false); }
+              }).render('#paypal-button-container');
+            }
+          } catch(e){ console.warn(e); }
+        };
+        s.onerror = function(){ console.warn('PayPal SDK no cargó'); };
+        document.head.appendChild(s);
+      }
+    } catch(e){ console.warn(e); }
+
+    // Auto-abre si ?pro=1
+    if(new URLSearchParams(location.search).get('pro')==='1') openProModal();
+  })();
+</script>

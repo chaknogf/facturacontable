@@ -1,0 +1,30 @@
+---
+import Layout from "../layouts/Layout.astro";
+import AdBanner from "../components/AdBanner.astro";
+const title = "Política de Privacidad — FacturaContable.gt";
+const description = "Política de privacidad de FacturaContable.gt: 100% client-side, sin recolección de datos financieros. Cumplimiento AdSense y protección de datos en Guatemala.";
+---
+
+<Layout title={title} description={description}>
+  <div class="container" style="padding-top:1rem;">
+    <AdBanner slot="priv001" format="horizontal" location="Privacidad — Hero" label="PUBLICIDAD" />
+    <article class="brutal-card" style="margin-top:1rem;padding:1.5rem;display:grid;gap:1rem;">
+      <h1 style="font-size:1.6rem;font-weight:800;">Política de Privacidad</h1>
+      <p class="mono" style="font-size:0.8rem;color:var(--text-muted);">Actualizado: septiembre 2026 · FacturaContable.gt</p>
+      <div style="display:grid;gap:0.9rem;line-height:1.65;color:var(--text-muted);font-size:0.95rem;">
+        <p>En <strong style="color:var(--text);">FacturaContable.gt</strong> tu privacidad es el núcleo del producto. Todas las herramientas (XML SAT → PDF, Conciliador CSV → Excel) funcionan <strong style="color:var(--text);">100% en tu navegador</strong> mediante <code class="mono" style="background:var(--bg-soft);border:1px solid var(--border);border-radius:6px;padding:1px 6px;">DOMParser, pdfmake, xlsx y papaparse</code>. Ningún XML, CSV, XLSX, NIT, monto o imagen se envía a nuestros servidores. No hay bases de datos de documentos ni almacenamiento en la nube.</p>
+        <h2 style="font-size:1.15rem;font-weight:800;color:var(--text);">Datos que sí recolectamos</h2>
+        <ul style="padding-left:1.2rem;display:grid;gap:0.35rem;">
+          <li><strong>Cookies de Google AdSense:</strong> para mostrar anuncios personalizados y medir rendimiento. Puedes desactivarlas en tu navegador o en <a href="https://adssettings.google.com" target="_blank" rel="noopener">adssettings.google.com</a>.</li>
+          <li><strong>Analytics anónimo:</strong> visitas y eventos sin contenido de archivos (qué herramienta se abrió, no qué datos procesaste).</li>
+          <li><strong>Preferencias locales:</strong> tema (light/dark) y paleta de marca guardada en <code class="mono" style="background:var(--bg-soft);border:1px solid var(--border);border-radius:6px;padding:1px 6px;">localStorage</code> de tu navegador.</li>
+        </ul>
+        <h2 style="font-size:1.15rem;font-weight:800;color:var(--text);">Tus derechos</h2>
+        <p>Puedes borrar <code>localStorage</code> y cookies en cualquier momento. Al no almacenar tus archivos, no hay datos que solicitar o eliminar en servidores. Si contactas soporte, el correo se usa solo para responder.</p>
+        <h2 style="font-size:1.15rem;font-weight:800;color:var(--text);">Contacto</h2>
+        <p>Escríbenos a <a href="/contacto" style="text-decoration:underline;font-weight:700;">Contacto</a> para dudas sobre privacidad. Esta política puede actualizarse; revisa esta página periódicamente.</p>
+      </div>
+      <AdBanner slot="priv002" format="horizontal" location="Privacidad — Cierre" label="PUBLICIDAD" />
+    </article>
+  </div>
+</Layout>

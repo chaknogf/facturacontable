@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Sitemap canónico (.gt es el principal)
+Sitemap: https://facturacontable.gt/sitemap-index.xml
+Sitemap: https://facturacontable.gt/sitemap-0.xml
+
+# Dominios espejo — redirigen 301 a .gt (ver _redirects)
+# facturacontable.net y facturacontable.com no deben indexarse aparte

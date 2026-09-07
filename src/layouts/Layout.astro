@@ -1,5 +1,7 @@
 ---
 import "../styles/global.css";
+import AdBanner from "../components/AdBanner.astro";
+import ProLicenseModal from "../components/ProLicenseModal.astro";
 
 interface Props {
   title: string;
@@ -20,7 +22,8 @@ const {
 } = Astro.props;
 
 const siteUrl = Astro.site?.toString() ?? "https://facturacontable.gt";
-const canonicalUrl = canonical ?? new URL(Astro.url.pathname, siteUrl).toString();
+const canonicalUrl =
+  canonical ?? new URL(Astro.url.pathname, siteUrl).toString();
 // TODO: Reemplazar con tu ID real de AdSense cuando sea aprobado: ca-pub-XXXXXXXXXXXXXXXX
 const ADSENSE_CLIENT = "ca-pub-XXXXXXXXXXXXXXXX";
 ---
@@ -29,7 +32,10 @@ const ADSENSE_CLIENT = "ca-pub-XXXXXXXXXXXXXXXX";
 <html lang="es-GT">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     <meta name="description" content={description} />
@@ -48,15 +54,22 @@ const ADSENSE_CLIENT = "ca-pub-XXXXXXXXXXXXXXXX";
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
 
-    <!-- Favicon -->
+    <!-- Favicon & PWA icons -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/icon-192.png" />
+    <link rel="apple-touch-icon" sizes="512x512" href="/icon-512.png" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="ContableGT" />
 
     <!-- Theme anti-FOUC: debe ir ANTES del CSS para evitar flash -->
     <script is:inline>
       (function () {
         try {
           const stored = localStorage.getItem("theme");
-          const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+          const prefersDark = window.matchMedia(
+            "(prefers-color-scheme: dark)",
+          ).matches;
           const theme = stored || (prefersDark ? "dark" : "light");
           document.documentElement.setAttribute("data-theme", theme);
         } catch (e) {
@@ -65,16 +78,22 @@ const ADSENSE_CLIENT = "ca-pub-XXXXXXXXXXXXXXXX";
       })();
     </script>
 
-    <!-- Google AdSense global tag -->
-    <!-- En producción reemplaza ADSENSE_CLIENT. En dev no carga el script real -->
+    <!-- Preconnect para AdSense sin bloquear render (Lighthouse 100) -->
+    <link
+      rel="preconnect"
+      href="https://pagead2.googlesyndication.com"
+      crossorigin
+    />
+    <link rel="dns-prefetch" href="https://googleads.g.doubleclick.net" />
+    <!-- Google AdSense global tag — async, no bloquea FCP/LCP -->
     <script
       is:inline
       async
       src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT}`}
       crossorigin="anonymous"></script>
-    <script is:inline>
+    <script is:inline define:vars={{ ADSENSE_CLIENT }}>
       // Solo empuja adsbygoogle en producción. En dev el componente muestra placeholder.
-      window.__ADSENSE_CLIENT__ = "{ADSENSE_CLIENT}";
+      window.__ADSENSE_CLIENT__ = ADSENSE_CLIENT;
     </script>
 
     <!-- JSON-LD Organization + WebSite -->
@@ -86,7 +105,8 @@ const ADSENSE_CLIENT = "ca-pub-XXXXXXXXXXXXXXXX";
         name: "FacturaContable",
         url: siteUrl,
         inLanguage: "es-GT",
-        description: "Micro-herramientas gratuitas para contadores y pymes en Guatemala. 100% en el navegador.",
+        description:
+          "Micro-herramientas gratuitas para contadores y pymes en Guatemala. 100% en el navegador.",
       })}
     />
   </head>
@@ -94,13 +114,16 @@ const ADSENSE_CLIENT = "ca-pub-XXXXXXXXXXXXXXXX";
     <header
       style="position:sticky;top:0;z-index:40;background:var(--surface);border-bottom:2px solid var(--border);"
     >
-      <div class="container" style="display:flex;align-items:center;justify-content:space-between;gap:1rem;padding-top:0.75rem;padding-bottom:0.75rem;">
+      <div
+        class="container"
+        style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:0.75rem 1rem;padding-top:0.75rem;padding-bottom:0.75rem;"
+      >
         <a
           href="/"
-          style="display:flex;align-items:center;gap:0.6rem;text-decoration:none;font-weight:800;font-size:1.25rem;letter-spacing:-0.02em;"
+          style="display:flex;align-items:center;gap:0.6rem;text-decoration:none;font-weight:800;font-size:1.25rem;letter-spacing:-0.02em;flex-shrink:0;"
         >
           <span
-            style="display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;background:var(--primary);border:2px solid var(--border);border-radius:10px;box-shadow:2px 2px 0 var(--border);font-size:1.1rem;"
+            style="display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;background:var(--primary);border:2px solid var(--border);border-radius:10px;box-shadow:2px 2px 0 var(--border);font-size:1.1rem;flex-shrink:0;"
             >🧾</span
           >
           <span>Factura<span style="color:var(--accent);">Contable</span></span>
@@ -110,13 +133,40 @@ const ADSENSE_CLIENT = "ca-pub-XXXXXXXXXXXXXXXX";
           >
         </a>
 
-        <nav style="display:flex;align-items:center;gap:0.5rem;">
-          <a href="/xml-sat-a-pdf" class="mono" style="display:none;font-size:0.85rem;font-weight:700;text-decoration:none;border:2px solid var(--border);border-radius:999px;padding:6px 14px;background:var(--surface);box-shadow:2px 2px 0 var(--border);"
+        <nav style="display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:0.5rem;flex:1 1 auto;min-width:0;">
+          <!-- Indicador de conexión Neo-Brutalista -->
+          <span
+            id="connection-badge"
+            class="mono"
+            role="status"
+            aria-live="polite"
+            aria-label="Estado de conexión"
+            style="display:inline-flex;align-items:center;gap:0.3rem;font-size:0.72rem;font-weight:800;letter-spacing:0.04em;padding:5px 10px;border:2px solid var(--border);border-radius:999px;box-shadow:2px 2px 0 var(--border);background:#dcfce7;color:#111;white-space:nowrap;"
+            title="Estado de conexión"
+          >
+            <span id="connection-dot" aria-hidden="true">🟢</span><span
+              id="connection-text">Online</span
+            >
+          </span>
+          <a
+            href="/xml-sat-a-pdf"
+            class="mono"
+            style="display:none;font-size:0.85rem;font-weight:700;text-decoration:none;border:2px solid var(--border);border-radius:999px;padding:6px 14px;background:var(--surface);box-shadow:2px 2px 0 var(--border);"
             >XML → PDF</a
           >
           <style>
             @media (min-width: 640px) {
-              header nav a.mono { display: inline-flex !important; }
+              header nav a.mono {
+                display: inline-flex !important;
+              }
+            }
+            @media (max-width: 380px) {
+              #connection-text {
+                display: none;
+              }
+              #connection-badge {
+                padding: 5px 7px;
+              }
             }
           </style>
           <slot name="header-actions" />
@@ -133,6 +183,16 @@ const ADSENSE_CLIENT = "ca-pub-XXXXXXXXXXXXXXXX";
       </div>
     </header>
 
+    <!-- Banner Global sutil bajo header — alta visibilidad, no bloquea contenido -->
+    <div class="container" aria-label="Publicidad global header">
+      <AdBanner
+        slot="0000000001"
+        format="horizontal"
+        location="Header — Global (debajo del menú)"
+        label="PUBLICIDAD"
+      />
+    </div>
+
     <main>
       <slot />
     </main>
@@ -142,25 +202,71 @@ const ADSENSE_CLIENT = "ca-pub-XXXXXXXXXXXXXXXX";
     >
       <div class="container">
         <div style="display:grid;gap:1.5rem;">
-          <div style="display:flex;flex-wrap:wrap;gap:1.5rem;justify-content:space-between;align-items:flex-start;">
+          <div
+            style="display:flex;flex-wrap:wrap;gap:1.5rem;justify-content:space-between;align-items:flex-start;"
+          >
             <div>
-              <p style="font-weight:800;font-size:1.05rem;">FacturaContable.gt</p>
-              <p style="color:var(--text-muted);font-size:0.9rem;max-width:42ch;margin-top:0.35rem;">
-                Herramientas gratuitas para contadores, auditores y pymes en Guatemala. Todo se procesa en tu
-                navegador — tus datos nunca salen de tu dispositivo.
+              <p style="font-weight:800;font-size:1.05rem;">
+                FacturaContable.gt
+              </p>
+              <p
+                style="color:var(--text-muted);font-size:0.9rem;max-width:42ch;margin-top:0.35rem;"
+              >
+                Herramientas gratuitas para contadores, auditores y pymes en
+                Guatemala. Todo se procesa en tu navegador — tus datos nunca
+                salen de tu dispositivo.
               </p>
             </div>
-            <div style="display:flex;flex-direction:column;gap:0.4rem;font-size:0.9rem;">
-              <a href="/xml-sat-a-pdf" style="font-weight:600;">XML SAT → PDF</a>
-              <a href="/#herramientas" style="font-weight:600;">Todas las herramientas</a>
-              <span style="color:var(--text-muted);">Más herramientas próximamente</span>
+            <div
+              style="display:flex;flex-direction:column;gap:0.4rem;font-size:0.9rem;"
+            >
+              <a href="/xml-sat-a-pdf" style="font-weight:600;">XML SAT → PDF</a
+              >
+              <a href="/conciliador-excel-csv" style="font-weight:600;"
+                >Conciliador CSV → Excel</a
+              >
+              <a href="/#herramientas" style="font-weight:600;"
+                >Todas las herramientas</a
+              >
+              <span style="color:var(--text-muted);"
+                >Más herramientas próximamente</span
+              >
             </div>
           </div>
           <div
             style="display:flex;flex-wrap:wrap;gap:0.75rem;justify-content:space-between;align-items:center;border-top:2px dashed var(--border);padding-top:1rem;font-size:0.85rem;color:var(--text-muted);"
           >
-            <span>© {new Date().getFullYear()} FacturaContable.gt — Hecho con ♥ en Guatemala 🇬🇹</span>
-            <span class="mono" style="background:var(--surface);border:1.5px solid var(--border);border-radius:999px;padding:3px 10px;box-shadow:2px 2px 0 var(--border);">100% Client-Side · Privado</span>
+            <div
+              style="display:flex;flex-wrap:wrap;gap:0.9rem;align-items:center;"
+            >
+              <span
+                >© {new Date().getFullYear()} FacturaContable.gt — Hecho con ♥ en
+                Guatemala 🇬🇹</span
+              >
+              <span style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+                <a
+                  href="/privacidad"
+                  style="text-decoration:underline;font-weight:600;"
+                  >Política de Privacidad</a
+                >
+                <span>·</span>
+                <a
+                  href="/terminos"
+                  style="text-decoration:underline;font-weight:600;"
+                  >Términos de Uso</a
+                >
+                <span>·</span>
+                <a
+                  href="/contacto"
+                  style="text-decoration:underline;font-weight:600;">Contacto</a
+                >
+              </span>
+            </div>
+            <span
+              class="mono"
+              style="background:var(--surface);border:1.5px solid var(--border);border-radius:999px;padding:3px 10px;box-shadow:2px 2px 0 var(--border);"
+              >100% Client-Side · Privado</span
+            >
           </div>
         </div>
       </div>
@@ -174,21 +280,87 @@ const ADSENSE_CLIENT = "ca-pub-XXXXXXXXXXXXXXXX";
 
         function applyIcon(theme) {
           icon.textContent = theme === "dark" ? "☀️" : "🌙";
-          btn.setAttribute("aria-label", theme === "dark" ? "Cambiar a modo claro" : "Cambiar a modo oscuro");
+          btn.setAttribute(
+            "aria-label",
+            theme === "dark" ? "Cambiar a modo claro" : "Cambiar a modo oscuro",
+          );
         }
 
-        applyIcon(document.documentElement.getAttribute("data-theme") || "light");
+        applyIcon(
+          document.documentElement.getAttribute("data-theme") || "light",
+        );
 
         btn.addEventListener("click", function () {
-          const current = document.documentElement.getAttribute("data-theme") || "light";
+          const current =
+            document.documentElement.getAttribute("data-theme") || "light";
           const next = current === "dark" ? "light" : "dark";
           document.documentElement.setAttribute("data-theme", next);
-          try { localStorage.setItem("theme", next); } catch (e) {}
+          try {
+            localStorage.setItem("theme", next);
+          } catch (e) {}
           applyIcon(next);
         });
 
         // Evitar animación en click táctil
-        btn.addEventListener("touchstart", function(){}, {passive:true});
+        btn.addEventListener("touchstart", function () {}, { passive: true });
+      })();
+    </script>
+
+    <!-- Indicador Online / Offline — Neo-Brutalista -->
+    <script is:inline>
+      (function () {
+        const badge = document.getElementById("connection-badge");
+        const dot = document.getElementById("connection-dot");
+        const text = document.getElementById("connection-text");
+        if (!badge || !dot || !text) return;
+        function render() {
+          const online = navigator.onLine;
+          if (online) {
+            dot.textContent = "🟢";
+            text.textContent = "Online";
+            badge.style.background = "#dcfce7";
+            badge.style.color = "#111";
+            badge.setAttribute("aria-label", "Online");
+          } else {
+            dot.textContent = "🟡";
+            text.textContent = "Modo Offline";
+            badge.style.background = "#fef9c3";
+            badge.style.color = "#111";
+            badge.setAttribute("aria-label", "Modo Offline");
+          }
+        }
+        render();
+        window.addEventListener("online", render);
+        window.addEventListener("offline", render);
+        document.addEventListener("astro:page-load", render);
+      })();
+    </script>
+
+    <ProLicenseModal />
+
+    <!-- Solo test: ?adsim=1 inyecta placeholder visual sin tocar AdSense real -->
+    <script is:inline>
+      (function () {
+        try {
+          const p = new URLSearchParams(location.search);
+          if (p.get("adsim") === "1" || p.get("ads") === "1") {
+            console.log("[adsim] modo test activo");
+            document.querySelectorAll(".ad-banner").forEach((b) => {
+              const ph = b.querySelector(".ad-placeholder");
+              if (!ph) {
+                const d = document.createElement("div");
+                d.className = "ad-placeholder";
+                d.style.cssText =
+                  "min-height:90px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px;padding:12px;background:var(--bg-soft);border:2px dashed var(--border);border-radius:16px;box-shadow:4px 4px 0 var(--border);text-align:center;font:700 12px JetBrains Mono;";
+                d.innerHTML =
+                  '<span style="background:#000;color:#fff;padding:1px 6px;border-radius:4px;font-size:10px;">Anuncio (Simulación ?adsim=1)</span><span>📢 ESPACIO RESERVADO PARA ADSENSE</span><span style="font-size:11px;font-weight:400;opacity:.7">solo visual — recarga sin ?adsim para quitar</span>';
+                b.prepend(d);
+              } else {
+                ph.style.display = "flex";
+              }
+            });
+          }
+        } catch (e) {}
       })();
     </script>
   </body>

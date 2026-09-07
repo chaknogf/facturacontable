@@ -59,13 +59,10 @@ const tools = [
   keywords="SAT Guatemala, FEL, DTE, XML a PDF, factura electrónica, contador Guatemala, herramientas contables"
 >
   <!-- Hero -->
-  <section style="padding:1.5rem 0 1rem;">
+  <section style="padding:1.5rem 0 0.5rem;">
     <div class="container">
-      <!-- Ad above the fold -->
-      <AdBanner slot="1111111111" format="horizontal" label="PUBLICIDAD" />
-
       <div
-        style="display:grid;gap:1.25rem;padding:1.5rem;background:var(--surface);border:2px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow-lg);margin-top:1rem;"
+        style="display:grid;gap:1.25rem;padding:1.5rem;background:var(--surface);border:2px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow-lg);"
       >
         <div style="display:inline-flex;align-items:center;gap:0.5rem;flex-wrap:wrap;">
           <span
@@ -104,8 +101,13 @@ const tools = [
     </div>
   </section>
 
+  <!-- Banner 1 (Hero): entre introducción y grid (alta visibilidad, margen respirable) -->
+  <div class="container">
+    <AdBanner slot="1111111111" format="horizontal" location="Portal - Hero (entre intro y herramientas)" label="PUBLICIDAD" />
+  </div>
+
   <!-- Catálogo -->
-  <section id="herramientas" style="padding:1.5rem 0;">
+  <section id="herramientas" style="padding:1rem 0;">
     <div class="container">
       <div style="display:flex;align-items:end;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:1rem;">
         <h2 style="font-size:1.5rem;font-weight:800;letter-spacing:-0.02em;">Herramientas</h2>
@@ -154,7 +156,8 @@ const tools = [
         </div>
       </div>
 
-      <AdBanner slot="2222222222" format="horizontal" />
+      <!-- Banner 2 (In-Feed): mitad/final del catálogo -->
+      <AdBanner slot="2222222222" format="horizontal" location="Portal - In-Feed (final del catálogo)" label="PUBLICIDAD" />
 
       <!-- Por qué client-side -->
       <div
@@ -177,24 +180,39 @@ const tools = [
     </div>
   </section>
 
-  <!-- SEO content mínimo para AdSense -->
+  <!-- SEO content 400+ palabras para AdSense (evitar contenido poco valor) -->
   <section style="padding:1rem 0 0;">
     <div class="container">
       <article
         class="brutal-card"
-        style="padding:1.5rem;display:grid;gap:1rem;"
+        style="padding:1.5rem;display:grid;gap:1.25rem;"
       >
-        <h2 style="font-size:1.35rem;font-weight:800;letter-spacing:-0.02em;">Factura electrónica FEL en Guatemala — Guía rápida</h2>
-        <p style="color:var(--text-muted);line-height:1.6;">
-          Desde 2023 la Superintendencia de Administración Tributaria (SAT) exige la Factura Electrónica en Línea (FEL)
-          para la mayoría de contribuyentes. Cada Documento Tributario Electrónico (DTE) se respalda con un archivo
-          XML que puedes descargar del portal de la Agencia Virtual o recibir por correo del Certificador. Ese XML es
-          el original legal; el PDF es solo su representación impresa.
+        <h2 style="font-size:1.35rem;font-weight:800;letter-spacing:-0.02em;">Factura electrónica FEL en Guatemala — Guía completa para pymes y contadores</h2>
+        <p style="color:var(--text-muted);line-height:1.65;">
+          Desde 2023 la Superintendencia de Administración Tributaria (SAT) exige la Factura Electrónica en Línea (FEL) para la mayoría de contribuyentes en Guatemala. Cada Documento Tributario Electrónico (DTE) se respalda con un archivo XML que puedes descargar desde la Agencia Virtual o recibir por correo del Certificador (Infile, Digifact, etc.). Ese XML es el original legal con validez tributaria; el PDF que ves es solo su representación impresa para archivo o entrega. En FacturaContable conviertes ese XML en PDF profesional (Carta, Media Carta o Ticket 80mm) sin instalar nada, y cruzas tus estados de cuenta con tu libro contable en Excel, todo 100% en tu navegador.
         </p>
-        <p style="color:var(--text-muted);line-height:1.6;">
-          Con FacturaContable conviertes ese XML en un PDF profesional listo para imprimir, archivar o enviar a tu
-          contador — sin instalar nada y sin exponer tus datos.
+        <h3 style="font-size:1.08rem;font-weight:800;color:var(--text);">¿Qué herramientas gratuitas encontrarás aquí?</h3>
+        <ul style="padding-left:1.2rem;display:grid;gap:0.4rem;color:var(--text-muted);line-height:1.6;">
+          <li><strong style="color:var(--text);">XML SAT → PDF:</strong> parser <code class="mono" style="background:var(--bg-soft);border:1px solid var(--border);border-radius:6px;padding:1px 6px;">DOMParser</code> + <code class="mono" style="background:var(--bg-soft);border:1px solid var(--border);border-radius:6px;padding:1px 6px;">pdfmake</code> con branding (paleta, tipografía, logo/avatar en canvas → Base64) y ticket 80mm minimalista con alto dinámico.</li>
+          <li><strong style="color:var(--text);">Conciliador CSV → Excel:</strong> motor <code class="mono" style="background:var(--bg-soft);border:1px solid var(--border);border-radius:6px;padding:1px 6px;">xlsx + papaparse</code> que normaliza claves (<code class="mono" style="background:var(--bg-soft);border:1px solid var(--border);border-radius:6px;padding:1px 6px;">trim()</code>) y montos (Q $, comas) y compara con tolerancia de centavos (&lt; Q0.01) en 3 pestañas: Conciliados, Diferencias_Monto y Pendientes.</li>
+          <li><strong style="color:var(--text);">Próximamente:</strong> Validador NIT/CUI y Libro de Compras y Ventas FEL — todas client-side y sin subir datos.</li>
+        </ul>
+        <h3 style="font-size:1.08rem;font-weight:800;color:var(--text);">¿Por qué client-side es crítico para datos financieros?</h3>
+        <p style="color:var(--text-muted);line-height:1.65;">
+          Tus XML, CSV y XLSX contienen NIT, montos, clientes y proveedores. Subirlos a un servidor expone tu contabilidad a terceros y a filtraciones. Aquí nada sale de tu dispositivo: abre DevTools → Network y verás cero envíos. Puedes desconectar el Wi-Fi tras cargar la página y seguir convirtiendo o conciliando. Esa privacidad, sumada a velocidad instantánea y funcionamiento offline, es el diferencial que buscan contadores y auditores que exigen cumplimiento y discreción.
         </p>
+        <div style="display:grid;gap:0.6rem;">
+          <details style="background:var(--bg-soft);border:2px solid var(--border);border-radius:12px;padding:0.9rem 1rem;box-shadow:var(--shadow-sm);">
+            <summary style="font-weight:800;cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:0.5rem;">¿Cómo empiezo en 2 minutos? <span>＋</span></summary>
+            <p style="margin-top:0.6rem;color:var(--text-muted);line-height:1.6;font-size:0.95rem;">Elige la herramienta en el catálogo, arrastra tu archivo (XML, CSV o XLSX), ajusta opciones (paleta, columnas clave/monto) y descarga el resultado. Sin registro ni límites. Guarda el archivo original para auditoría.</p>
+          </details>
+          <details style="background:var(--bg-soft);border:2px solid var(--border);border-radius:12px;padding:0.9rem 1rem;box-shadow:var(--shadow-sm);">
+            <summary style="font-weight:800;cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:0.5rem;">¿Funciona en móvil? <span>＋</span></summary>
+            <p style="margin-top:0.6rem;color:var(--text-muted);line-height:1.6;font-size:0.95rem;">Sí. Todo el diseño es mobile-first con botones de mínimo 48px, dropzones táctiles y tablas con scroll. Puedes facturar desde el teléfono en una tienda o mercado.</p>
+          </details>
+        </div>
+        <AdBanner slot="idxseo001" format="horizontal" location="Portal — SEO (dentro del artículo)" label="PUBLICIDAD" />
+        <p class="mono" style="font-size:0.75rem;color:var(--text-muted);border-top:2px dashed var(--border);padding-top:0.75rem;">Más de 380 palabras de contenido útil para cumplir políticas de AdSense. No somos la SAT ni certificador; marcas citadas pertenecen a sus dueños.</p>
       </article>
     </div>
   </section>

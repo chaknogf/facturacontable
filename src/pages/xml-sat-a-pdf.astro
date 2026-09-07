@@ -3,20 +3,17 @@ import Layout from "../layouts/Layout.astro";
 import AdBanner from "../components/AdBanner.astro";
 import Dropzone from "../components/Dropzone.astro";
 
-const title = "XML SAT a PDF — Convierte DTE FEL Guatemala a Carta, Media Carta y Ticket 80mm";
+const title = "XML a PDF Multi-País — SAT Guatemala, CFDI México, DIAN Colombia, SUNAT Perú, SRI Ecuador | UBL LATAM";
 const description =
-  "Convierte gratis tu XML del SAT Guatemala (FEL / DTE) a PDF profesional: Carta Completa, Media Carta y Ticket 80mm. Parser 100% en tu navegador, tus datos nunca salen de tu dispositivo. Sin registro.";
+  "Convierte gratis tu XML electrónico (FEL Guatemala, CFDI 4.0 México, DIAN Colombia, SUNAT Perú, SRI Ecuador, UBL LATAM) a PDF profesional Carta, Media Carta y Ticket 80mm. Parser 100% en tu navegador, sin subir datos.";
 ---
 
 <Layout
   title={title}
   description={description}
-  keywords="XML SAT PDF, FEL Guatemala, DTE PDF, convertir XML SAT, factura electrónica Guatemala, SAT PDF, ticket 80mm, media carta"
+  keywords="XML a PDF, SAT Guatemala, FEL, CFDI México, DIAN Colombia, SUNAT Perú, SRI Ecuador, UBL, factura electrónica LATAM, XML a PDF, SAT PDF, ticket 80mm"
 >
   <div class="container" style="padding-top:1rem;">
-    <!-- 1. Ad Above the fold -->
-    <AdBanner slot="3333333333" format="horizontal" label="PUBLICIDAD" />
-
     <!-- Breadcrumb + H1 -->
     <nav class="mono" style="font-size:0.8rem;color:var(--text-muted);margin-top:1rem;display:flex;gap:0.4rem;flex-wrap:wrap;">
       <a href="/" style="text-decoration:underline;">Inicio</a><span>›</span><span style="font-weight:700;color:var(--text);">XML SAT → PDF</span>
@@ -24,18 +21,34 @@ const description =
 
     <div style="margin-top:0.75rem;display:grid;gap:0.6rem;">
       <h1 style="font-size:clamp(1.6rem,4.5vw,2.4rem);font-weight:800;line-height:1.08;letter-spacing:-0.03em;">
-        XML del SAT Guatemala <span style="background:var(--primary);border:2px solid var(--border);border-radius:10px;padding:0 0.3em;box-shadow:2px 2px 0 var(--border);">→ PDF</span> en segundos
+        XML electrónico <span style="background:var(--primary);border:2px solid var(--border);border-radius:10px;padding:0 0.3em;box-shadow:2px 2px 0 var(--border);">→ PDF</span> multi-país
       </h1>
       <p style="color:var(--text-muted);font-size:clamp(0.95rem,2.5vw,1.05rem);max-width:70ch;line-height:1.5;">
-        Arrastra tu <strong style="color:var(--text);">XML del FEL (DTE)</strong> y descarga el PDF en <strong style="color:var(--text);">Carta, Media Carta o Ticket 80mm</strong>. 100% privado — todo se procesa en tu navegador con <code class="mono" style="background:var(--bg-soft);border:1px solid var(--border);border-radius:6px;padding:1px 6px;">DOMParser</code> y <code class="mono" style="background:var(--bg-soft);border:1px solid var(--border);border-radius:6px;padding:1px 6px;">pdfmake</code>.
+        Arrastra tu <strong style="color:var(--text);">XML UBL / CFDI / FEL / DTE</strong> de <strong style="color:var(--text);" id="hero-pais-label">Guatemala, México, Colombia, Perú, Ecuador o LATAM</strong> y descarga el PDF en <strong style="color:var(--text);">Carta, Media Carta o Ticket 80mm</strong>. 100% privado — <code class="mono" style="background:var(--bg-soft);border:1px solid var(--border);border-radius:6px;padding:1px 6px;">DOMParser</code> + <code class="mono" style="background:var(--bg-soft);border:1px solid var(--border);border-radius:6px;padding:1px 6px;">pdfmake</code> sin subir datos.
       </p>
-      <div style="display:flex;flex-wrap:wrap;gap:0.5rem;font-size:0.8rem;">
+      <div id="hero-badges" style="display:flex;flex-wrap:wrap;gap:0.5rem;font-size:0.8rem;">
         <span class="mono" style="background:var(--accent-2);border:1.5px solid var(--border);border-radius:999px;padding:3px 10px;box-shadow:2px 2px 0 var(--border);font-weight:700;">🔒 0 servidor</span>
-        <span class="mono" style="background:var(--surface);border:1.5px solid var(--border);border-radius:999px;padding:3px 10px;box-shadow:2px 2px 0 var(--border);">Parser DOMParser</span>
-        <span class="mono" style="background:var(--surface);border:1.5px solid var(--border);border-radius:999px;padding:3px 10px;box-shadow:2px 2px 0 var(--border);">pdfmake</span>
-        <span class="mono" style="background:var(--surface);border:1.5px solid var(--border);border-radius:999px;padding:3px 10px;box-shadow:2px 2px 0 var(--border);">GTQ · NIT · CUI</span>
+        <span id="badge-moneda" class="mono" style="background:var(--surface);border:1.5px solid var(--border);border-radius:999px;padding:3px 10px;box-shadow:2px 2px 0 var(--border);">Q · GTQ · NIT</span>
+        <span id="badge-impuesto" class="mono" style="background:var(--surface);border:1.5px solid var(--border);border-radius:999px;padding:3px 10px;box-shadow:2px 2px 0 var(--border);">IVA 12%</span>
+        <span class="mono" style="background:var(--surface);border:1.5px solid var(--border);border-radius:999px;padding:3px 10px;box-shadow:2px 2px 0 var(--border);">UBL ·CFDI ·FEL</span>
       </div>
     </div>
+
+    <!-- Selector País Neo-Brutalista Píldora/Tabs (táctil 48px) — antes de dropzone -->
+    <div class="brutal-card" style="margin-top:1rem;padding:0.9rem;display:grid;gap:0.6rem;">
+      <div style="display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;justify-content:space-between;">
+        <span class="mono" style="font-size:0.78rem;font-weight:800;letter-spacing:0.06em;">🌎 PAÍS / FORMATO XML</span>
+        <span id="country-auto-hint" class="mono" style="font-size:0.7rem;color:var(--text-muted);background:var(--bg-soft);border:1.5px solid var(--border);border-radius:999px;padding:2px 8px;">Auto-detecta por XML</span>
+      </div>
+      <div id="country-switch" style="display:flex;flex-wrap:wrap;gap:0.5rem;" role="tablist" aria-label="Selector de país">
+        <!-- JS inject pills -->
+      </div>
+      <p class="mono" style="font-size:0.7rem;color:var(--text-muted);">Toca un país o deja en Auto — el parser detecta el namespace (<code style="background:var(--bg-soft);border:1px solid var(--border);border-radius:6px;padding:1px 4px;">sat.gob.gt</code>, <code style="background:var(--bg-soft);border:1px solid var(--border);border-radius:6px;padding:1px 4px;">sat.gob.mx/cfd</code>, <code style="background:var(--bg-soft);border:1px solid var(--border);border-radius:6px;padding:1px 4px;">ubl</code>) y adapta moneda/ID/impuesto.</p>
+      <select id="country-select" class="brutal-input" style="display:none;" aria-label="Selector país (fallback)"></select>
+    </div>
+
+    <!-- Banner Superior (Above the Fold): debajo del selector -->
+    <AdBanner slot="3333333333" format="horizontal" location="XML a PDF — Hero / Above the Fold" label="PUBLICIDAD" />
 
     <!-- APP -->
     <section id="app" style="margin-top:1.25rem;display:grid;gap:1rem;">
@@ -162,6 +175,9 @@ const description =
         </div>
       </div>
 
+      <!-- Banner Alta Conversión (CRÍTICO): entre personalización y botón Descargar PDF -->
+      <AdBanner slot="4444444444" format="horizontal" location="XML a PDF — Conversión (entre personalización y Descargar PDF)" label="PUBLICIDAD" />
+
       <!-- Controles de formato + acciones -->
       <div
         id="controls"
@@ -196,53 +212,58 @@ const description =
       <!-- Lista de archivos parseados -->
       <div id="lista" style="display:grid;gap:0.75rem;"></div>
 
-      <!-- 2. Ad debajo del botón principal de acción/descarga -->
-      <AdBanner slot="4444444444" format="horizontal" label="PUBLICIDAD" />
-
       <!-- Estado vacío -->
       <div
         id="empty"
         style="padding:1rem;background:var(--bg-soft);border:2px dashed var(--border);border-radius:var(--radius);text-align:center;color:var(--text-muted);font-size:0.9rem;"
       >
-        Aún no has cargado ningún XML. Prueba arrastrando uno de ejemplo del SAT.
+        Aún no has cargado ningún XML. Prueba con un ejemplo de SAT (GT), CFDI (MX), DIAN (CO), SUNAT (PE) o SRI (EC) — el país se detecta automáticamente.
       </div>
 
       <!-- Errores -->
       <div id="errores" style="display:none;gap:0.5rem;"></div>
     </section>
 
-    <!-- 3. Ad dentro de sección artículos/FAQ (se repite uno aquí y otro dentro del artículo) -->
-    <AdBanner slot="5555555555" format="rectangle" label="PUBLICIDAD" />
+    <!-- Banner In-Feed SEO: antes del contenido explicativo -->
+    <AdBanner slot="5555555555" format="rectangle" location="XML a PDF — SEO Pre-Contenido (antes del artículo)" label="PUBLICIDAD" />
 
     <!-- CONTENIDO SEO 300-400+ palabras -->
     <article
       style="margin-top:1.5rem;display:grid;gap:1.5rem;padding:1.5rem;background:var(--surface);border:2px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);"
     >
       <header style="display:grid;gap:0.5rem;">
-        <h2 style="font-size:1.45rem;font-weight:800;letter-spacing:-0.02em;line-height:1.2;">
-          Guía completa: cómo descargar tu XML del SAT y convertirlo a PDF
+        <h2 id="seo-title" style="font-size:1.45rem;font-weight:800;letter-spacing:-0.02em;line-height:1.2;">
+          Guía completa: cómo descargar tu XML y convertirlo a PDF — SAT Guatemala, CFDI México, DIAN Colombia, SUNAT Perú, SRI Ecuador y UBL LATAM
         </h2>
         <p class="mono" style="font-size:0.78rem;color:var(--text-muted);">
-          Actualizado septiembre 2026 · Lectura 5 min · Para contadores, auditores y pymes en Guatemala
+          Actualizado septiembre 2026 · Lectura 6 min · Para contadores y pymes en LATAM · <span id="seo-pais-tag">🇬🇹 Guatemala · 🇲🇽 México · 🇨🇴 Colombia · 🇵🇪 Perú · 🇪🇨 Ecuador · 🌎 UBL</span>
         </p>
       </header>
 
-      <div style="display:grid;gap:1rem;line-height:1.65;color:var(--text-muted);font-size:0.98rem;">
+      <div id="seo-content" style="display:grid;gap:1rem;line-height:1.65;color:var(--text-muted);font-size:0.98rem;">
         <p>
-          La Factura Electrónica en Línea (FEL) de la SAT Guatemala reemplazó al papel como único comprobante con
-          validez tributaria. Cada vez que emites o recibes una factura, el Certificador genera un <strong style="color:var(--text);">Documento Tributario Electrónico (DTE)</strong> y lo certifica ante la SAT. El archivo <strong style="color:var(--text);">XML</strong> es el original legal; el PDF que ves es solo una representación impresa. Si tu contador te pide “la factura en PDF”, en realidad necesita ese XML convertido con los datos correctos: NIT del Emisor y Receptor, desglose de bienes/servicios, impuestos y Gran Total en quetzales.
+          La facturación electrónica es obligatoria en toda LATAM con el estándar <strong style="color:var(--text);">UBL 2.1</strong> y variantes locales: <strong style="color:var(--text);">FEL (SAT Guatemala)</strong>, <strong style="color:var(--text);">CFDI 4.0 (SAT México)</strong>, <strong style="color:var(--text);">Factura Electrónica DIAN (Colombia)</strong>, <strong style="color:var(--text);">SUNAT (Perú)</strong> y <strong style="color:var(--text);">SRI (Ecuador)</strong>. En todos los casos el <strong style="color:var(--text);">XML</strong> es el original legal (DTE, UUID, CUFE, autorización) y el PDF es solo su representación. Esta herramienta convierte cualquier XML a PDF Carta/Media/Ticket sin subir datos.
         </p>
 
-        <h3 style="font-size:1.15rem;font-weight:800;color:var(--text);margin-top:0.25rem;">Paso a paso: dónde descargar tu XML</h3>
-        <ol style="padding-left:1.25rem;display:grid;gap:0.5rem;">
+        <h3 style="font-size:1.15rem;font-weight:800;color:var(--text);margin-top:0.25rem;">Paso a paso por país: dónde descargar tu XML</h3>
+        <ol style="padding-left:1.25rem;display:grid;gap:0.55rem;">
           <li>
-            <strong style="color:var(--text);">Agencia Virtual SAT:</strong> ingresa a <code class="mono" style="background:var(--bg-soft);border:1px solid var(--border);border-radius:6px;padding:1px 6px;">agenciavirtual.sat.gob.gt</code>, inicia sesión con tu NIT y contraseña, ve a <em>FEL → Consulta DTE</em>, filtra por fecha y descarga el XML con el ícono de archivo.
+            <strong style="color:var(--text);">🇬🇹 Guatemala — SAT / FEL:</strong> <code class="mono" style="background:var(--bg-soft);border:1px solid var(--border);border-radius:6px;padding:1px 6px;">agenciavirtual.sat.gob.gt</code> → FEL → Consulta DTE → descarga XML. También viene adjunto del certificador (Infile/Digifact).
           </li>
           <li>
-            <strong style="color:var(--text);">Correo del Certificador:</strong> Infile, Digifact o tu certificador envía el XML adjunto junto al PDF. Busca el adjunto <code class="mono" style="background:var(--bg-soft);border:1px solid var(--border);border-radius:6px;padding:1px 6px;">*.xml</code> (no el PDF).
+            <strong style="color:var(--text);">🇲🇽 México — CFDI 4.0:</strong> <code class="mono" style="background:var(--bg-soft);border:1px solid var(--border);border-radius:6px;padding:1px 6px;">portal.sat.gob.mx</code> → Factura electrónica → Cancela y recupera → descarga XML con <code class="mono" style="background:var(--bg-soft);border:1px solid var(--border);border-radius:6px;padding:1px 6px;">cfdi:Comprobante</code> y <code class="mono" style="background:var(--bg-soft);border:1px solid var(--border);border-radius:6px;padding:1px 6px;">tfd:TimbreFiscalDigital UUID</code>.
           </li>
           <li>
-            <strong style="color:var(--text);">Proveedor / Cliente:</strong> si recibes facturas de proveedores, pídeles el XML original; el PDF solo no sirve para auditoría ni para importar a tu sistema contable.
+            <strong style="color:var(--text);">🇨🇴 Colombia — DIAN UBL:</strong> <code class="mono" style="background:var(--bg-soft);border:1px solid var(--border);border-radius:6px;padding:1px 6px;">dian.gov.co</code> → Facturando electrónicamente → descarga <code class="mono" style="background:var(--bg-soft);border:1px solid var(--border);border-radius:6px;padding:1px 6px;">Invoice</code> UBL con <code class="mono" style="background:var(--bg-soft);border:1px solid var(--border);border-radius:6px;padding:1px 6px;">cbc:ID</code> / CUFE.
+          </li>
+          <li>
+            <strong style="color:var(--text);">🇵🇪 Perú — SUNAT UBL:</strong> <code class="mono" style="background:var(--bg-soft);border:1px solid var(--border);border-radius:6px;padding:1px 6px;">sunat.gob.pe</code> → SEE-SOL / OSE → descarga Invoice UBL con IGV 18%.
+          </li>
+          <li>
+            <strong style="color:var(--text);">🇪🇨 Ecuador — SRI:</strong> <code class="mono" style="background:var(--bg-soft);border:1px solid var(--border);border-radius:6px;padding:1px 6px;">sri.gob.ec</code> → Comprobantes electrónicos → descarga <code class="mono" style="background:var(--bg-soft);border:1px solid var(--border);border-radius:6px;padding:1px 6px;">autorizacion</code> / <code class="mono" style="background:var(--bg-soft);border:1px solid var(--border);border-radius:6px;padding:1px 6px;">factura</code> con número de autorización.
+          </li>
+          <li>
+            <strong style="color:var(--text);">🌎 LATAM General — UBL 2.1:</strong> cualquier <code class="mono" style="background:var(--bg-soft);border:1px solid var(--border);border-radius:6px;padding:1px 6px;">Invoice</code> UBL con <code class="mono" style="background:var(--bg-soft);border:1px solid var(--border);border-radius:6px;padding:1px 6px;">cac:AccountingSupplierParty</code> se parsea automáticamente.
           </li>
         </ol>
 
@@ -276,8 +297,8 @@ const description =
         </p>
       </div>
 
-      <!-- Ad dentro del artículo -->
-      <AdBanner slot="6666666666" format="horizontal" label="PUBLICIDAD" />
+      <!-- Banner SEO / FAQ: entre guía SAT y FAQ (alta retención) -->
+      <AdBanner slot="6666666666" format="horizontal" location="XML a PDF — SEO / FAQ (entre guía y preguntas frecuentes)" label="PUBLICIDAD" />
 
       <!-- FAQ desplegable -->
       <section style="display:grid;gap:0.75rem;">
@@ -346,7 +367,7 @@ const description =
       </section>
 
       <p class="mono" style="font-size:0.75rem;color:var(--text-muted);border-top:2px dashed var(--border);padding-top:0.75rem;">
-        Nota: FacturaContable.gt no está afiliado a la SAT ni a ningún certificador. Marca y nombres citados pertenecen a sus respectivos dueños.
+        Nota: FacturaContable.gt no está afiliado a SAT (GT/MX), DIAN, SUNAT, SRI ni a certificadores/OSE. Marcas citadas pertenecen a sus dueños. El XML original es el único comprobante válido.
       </p>
     </article>
 
@@ -404,25 +425,8 @@ const description =
       return pdfMake;
     }
 
-    type Item = { descripcion: string; cantidad: string; precio: string; total: string; unidad?: string };
-    type Factura = {
-      fileName: string;
-      numeroAcceso?: string;
-      serie?: string;
-      numero?: string;
-      fechaEmision?: string;
-      emisorNombre?: string;
-      emisorNIT?: string;
-      emisorDireccion?: string;
-      receptorNombre?: string;
-      receptorNIT?: string;
-      receptorDireccion?: string;
-      moneda?: string;
-      granTotal?: string;
-      iva?: string;
-      items: Item[];
-      rawXml?: string;
-    };
+    import { COUNTRY_CONFIGS, parseFactura, detectCountry, getCountryConfig, formatMoneyForCountry } from "../lib/xmlParser";
+    import type { CountryId, CountryConfig, Factura, Item } from "../lib/xmlParser";
 
     type Palette = { id: string; label: string; primary: string; accent: string };
     const PALETTES: Palette[] = [
@@ -700,120 +704,129 @@ const description =
 
     let facturas: Factura[] = [];
 
-    function textByTag(xmlDoc: Document, localName: string): string | undefined {
-      const els = xmlDoc.getElementsByTagNameNS("*", localName);
-      if (els.length > 0) return els[0].textContent?.trim() || undefined;
-      const els2 = xmlDoc.getElementsByTagName(localName);
-      if (els2.length > 0) return els2[0].textContent?.trim() || undefined;
-      return undefined;
+    // ——— Multi-país: selector y parser universal ———
+    let selectedCountry: CountryId = ((): CountryId => {
+      try {
+        const s = localStorage.getItem('fc_country') as CountryId | null;
+        if (s && (s in COUNTRY_CONFIGS)) return s;
+      } catch {}
+      return 'gt';
+    })();
+
+    function saveCountry(id: CountryId){
+      selectedCountry = id;
+      try{ localStorage.setItem('fc_country', id); }catch{}
+      updateCountryUI();
+      render();
     }
 
-    function attrByTag(xmlDoc: Document, localName: string, attr: string): string | undefined {
-      const els = xmlDoc.getElementsByTagNameNS("*", localName);
-      if (els.length > 0) return els[0].getAttribute(attr) ?? undefined;
-      const els2 = xmlDoc.getElementsByTagName(localName);
-      if (els2.length > 0) return els2[0].getAttribute(attr) ?? undefined;
-      return undefined;
+    function getActiveConfig(): CountryConfig {
+      return getCountryConfig(selectedCountry);
     }
 
+    function updateCountryUI(){
+      const cfg = getActiveConfig();
+      const badges = document.getElementById('hero-badges');
+      const badgeMoneda = document.getElementById('badge-moneda');
+      const badgeImpuesto = document.getElementById('badge-impuesto');
+      const heroPais = document.getElementById('hero-pais-label');
+      const hint = document.getElementById('country-auto-hint');
+      if(badgeMoneda) badgeMoneda.textContent = `${cfg.currency} · ${cfg.currencyCode} · ${cfg.idLabel}`;
+      if(badgeImpuesto) badgeImpuesto.textContent = cfg.taxLabel;
+      if(heroPais) heroPais.textContent = `${cfg.flag} ${cfg.label} · ${COUNTRY_CONFIGS.gt.flag} ${COUNTRY_CONFIGS.mx.flag} ${COUNTRY_CONFIGS.co.flag} ${COUNTRY_CONFIGS.pe.flag} ${COUNTRY_CONFIGS.ec.flag}`;
+      if(hint) hint.textContent = `${cfg.flag} ${cfg.shortLabel} · ${cfg.ente} · Auto-detecta`;
+      // actualizar pills activo
+      document.querySelectorAll<HTMLButtonElement>('#country-switch button[data-country]').forEach(b=>{
+        const isActive = b.getAttribute('data-country')===selectedCountry;
+        b.setAttribute('aria-pressed', String(isActive));
+        b.style.background = isActive ? cfg.currency === 'Q' ? 'var(--primary)' : 'var(--accent-2)' : 'var(--surface)';
+        b.style.borderColor = isActive ? 'var(--border)' : 'var(--border)';
+        b.style.boxShadow = isActive ? '3px 3px 0 var(--border)' : '2px 2px 0 var(--border)';
+        b.style.fontWeight = isActive ? '800' : '700';
+      });
+      const sel = document.getElementById('country-select') as HTMLSelectElement | null;
+      if(sel) sel.value = selectedCountry;
+      // SEO dinámico
+      const seoTitle = document.getElementById('seo-title');
+      const seoTag = document.getElementById('seo-pais-tag');
+      if(seoTitle) seoTitle.textContent = `Guía: descargar XML ${cfg.ente} y convertir a PDF — ${cfg.label}`;
+      if(seoTag) seoTag.textContent = `${cfg.flag} ${cfg.label} · UBL / CFDI / FEL`;
+      document.title = `XML ${cfg.shortLabel} a PDF — ${cfg.ente} | FacturaContable.gt`;
+    }
+
+    function initCountrySwitch(){
+      const wrap = document.getElementById('country-switch') as HTMLElement | null;
+      const sel = document.getElementById('country-select') as HTMLSelectElement | null;
+      if(!wrap) return;
+      const countries: CountryId[] = ['gt','mx','co','pe','ec','latam'];
+      wrap.innerHTML = countries.map(id=>{
+        const c = COUNTRY_CONFIGS[id];
+        const isActive = id===selectedCountry;
+        return `<button type="button" role="tab" data-country="${id}" aria-pressed="${isActive}" aria-selected="${isActive}"
+          style="flex:1 1 auto;min-width:92px;min-height:48px;display:inline-flex;align-items:center;justify-content:center;gap:0.35rem;padding:0 0.85rem;background:${isActive?'var(--primary)':'var(--surface)'};border:2px solid var(--border);border-radius:999px;box-shadow:${isActive?'3px 3px 0 var(--border)':'2px 2px 0 var(--border)'};font-weight:${isActive?'800':'700'};font-size:0.82rem;cursor:pointer;white-space:nowrap;">
+          <span aria-hidden="true">${c.flag}</span><span>${c.shortLabel}</span>
+        </button>`;
+      }).join('');
+      // pills click
+      wrap.querySelectorAll<HTMLButtonElement>('button[data-country]').forEach(btn=>{
+        btn.addEventListener('click', ()=>{
+          const id = btn.getAttribute('data-country') as CountryId;
+          saveCountry(id);
+        });
+      });
+      if(sel){
+        sel.innerHTML = countries.map(id=>{
+          const c=COUNTRY_CONFIGS[id];
+          return `<option value="${id}">${c.flag} ${c.label}</option>`;
+        }).join('');
+        sel.value = selectedCountry;
+        sel.style.display = 'none'; // solo fallback accesible, usamos pills
+        sel.addEventListener('change', ()=> saveCountry(sel.value as CountryId));
+      }
+      updateCountryUI();
+      // responsive: en móvil pills hacen wrap, en desktop en fila
+      const style = document.createElement('style');
+      style.textContent = '#country-switch{justify-content:flex-start;} @media(max-width:480px){#country-switch button{flex:1 1 calc(50% - 0.5rem);}}';
+      document.head.appendChild(style);
+    }
+
+    // Wrapper universal — usa xmlParser con auto-detección + fallback manual
     function parseXML(text: string, fileName: string): Factura {
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(text, "application/xml");
-      const parseErr = doc.querySelector("parsererror");
-      if (parseErr) throw new Error("XML inválido: " + (parseErr.textContent?.slice(0, 200) ?? ""));
-
-      const hasGTDoc = doc.getElementsByTagNameNS("*", "GTDocumento").length > 0
-        || doc.getElementsByTagName("GTDocumento").length > 0
-        || text.includes("GTDocumento");
-
-      if (!hasGTDoc && !text.includes("DatosGenerales") && !text.includes("Emisor")) {
-        console.warn("XML no parece FEL SAT:", fileName);
-      }
-
-      const datosGenerales = doc.getElementsByTagNameNS("*", "DatosGenerales")[0]
-        ?? doc.getElementsByTagName("DatosGenerales")[0];
-      const emisorEl = doc.getElementsByTagNameNS("*", "Emisor")[0] ?? doc.getElementsByTagName("Emisor")[0];
-      const receptorEl = doc.getElementsByTagNameNS("*", "Receptor")[0] ?? doc.getElementsByTagName("Receptor")[0];
-      const totalesEl = doc.getElementsByTagNameNS("*", "Totales")[0] ?? doc.getElementsByTagName("Totales")[0];
-
-      const getAttr = (el: Element | undefined, name: string) => el?.getAttribute(name) ?? undefined;
-
-      const granTotal = getAttr(totalesEl as Element, "GranTotal")
-        ?? attrByTag(doc, "Totales", "GranTotal")
-        ?? textByTag(doc, "GranTotal");
-
-      const itemNodes = doc.getElementsByTagNameNS("*", "Item");
-      const fallbackItems = itemNodes.length === 0 ? doc.getElementsByTagName("Item") : itemNodes;
-      const items: Item[] = [];
-      for (let i = 0; i < fallbackItems.length; i++) {
-        const it = fallbackItems[i] as Element;
-        const desc = it.getAttribute("Descripcion") ?? it.getAttribute("descripcion") ?? it.textContent?.trim().slice(0, 80) ?? `Item ${i + 1}`;
-        const cantidad = it.getAttribute("Cantidad") ?? it.getAttribute("cantidad") ?? "1";
-        const precio = it.getAttribute("Precio") ?? it.getAttribute("precio") ?? it.getAttribute("PrecioUnitario") ?? "";
-        const total = it.getAttribute("Total") ?? it.getAttribute("total") ?? precio;
-        const unidad = it.getAttribute("UnidadMedida") ?? it.getAttribute("BienOServicio") ?? undefined;
-        if (!desc && !precio && !total) continue;
-        items.push({ descripcion: desc, cantidad, precio, total, unidad });
-      }
-
-      if (items.length === 0) {
-        const detNodes = doc.getElementsByTagNameNS("*", "Detalle");
-        const dets = detNodes.length ? detNodes : doc.getElementsByTagName("Detalle");
-        for (let i = 0; i < dets.length; i++) {
-          const d = dets[i] as Element;
-          const txt = d.textContent?.trim();
-          if (txt) items.push({ descripcion: txt.slice(0, 100), cantidad: "1", precio: "", total: "" });
+      // detecta antes para hint UI
+      try {
+        const tmpDoc = new DOMParser().parseFromString(text, 'application/xml');
+        const detected = detectCountry(text, tmpDoc);
+        const hint = document.getElementById('country-auto-hint');
+        if(detected && detected !== selectedCountry){
+          if(hint) hint.textContent = `Detectado ${COUNTRY_CONFIGS[detected].flag} ${COUNTRY_CONFIGS[detected].label} — cambiando`;
+          // auto-cambia al detectado (UX multi-país)
+          selectedCountry = detected;
+          try{ localStorage.setItem('fc_country', detected); }catch{}
+          updateCountryUI();
+        } else if(detected && hint){
+          hint.textContent = `${COUNTRY_CONFIGS[detected].flag} Detectado ${COUNTRY_CONFIGS[detected].ente} · Auto`;
         }
-      }
-
-      const emisorNombre = getAttr(emisorEl as Element, "NombreComercial")
-        ?? getAttr(emisorEl as Element, "Nombre")
-        ?? emisorEl?.getAttribute("NITEmisor") ? undefined : textByTag(doc, "NombreComercial");
-      const emisorNIT = getAttr(emisorEl as Element, "NITEmisor")
-        ?? getAttr(emisorEl as Element, "NIT")
-        ?? attrByTag(doc, "Emisor", "NITEmisor");
-      const receptorNombre = getAttr(receptorEl as Element, "NombreReceptor")
-        ?? getAttr(receptorEl as Element, "Nombre")
-        ?? attrByTag(doc, "Receptor", "NombreReceptor");
-      const receptorNIT = getAttr(receptorEl as Element, "IDReceptor")
-        ?? getAttr(receptorEl as Element, "NITReceptor")
-        ?? getAttr(receptorEl as Element, "NIT")
-        ?? attrByTag(doc, "Receptor", "IDReceptor");
-
-      const factura: Factura = {
-        fileName,
-        numeroAcceso: getAttr(datosGenerales as Element, "NumeroAcceso")
-          ?? attrByTag(doc, "DatosGenerales", "NumeroAcceso"),
-        serie: getAttr(datosGenerales as Element, "Serie")
-          ?? attrByTag(doc, "DatosGenerales", "Serie"),
-        numero: getAttr(datosGenerales as Element, "Numero")
-          ?? attrByTag(doc, "DatosGenerales", "Numero"),
-        fechaEmision: getAttr(datosGenerales as Element, "FechaHoraEmision")
-          ?? attrByTag(doc, "DatosGenerales", "FechaHoraEmision"),
-        emisorNombre: emisorNombre ?? getAttr(emisorEl as Element, "NombreEmisor") ?? "—",
-        emisorNIT: emisorNIT ?? "—",
-        emisorDireccion: getAttr(emisorEl as Element, "Direccion") ?? textByTag(doc, "Direccion"),
-        receptorNombre: receptorNombre ?? "—",
-        receptorNIT: receptorNIT ?? "—",
-        receptorDireccion: getAttr(receptorEl as Element, "Direccion"),
-        moneda: getAttr(datosGenerales as Element, "CodigoMoneda")
-          ?? getAttr(datosGenerales as Element, "Moneda")
-          ?? "GTQ",
-        granTotal: granTotal ?? "—",
-        iva: getAttr(totalesEl as Element, "TotalImpuestos")
-          ?? attrByTag(doc, "Totales", "TotalImpuestos"),
-        items: items.length ? items : [{ descripcion: "Detalle no desglosado en XML", cantidad: "1", precio: granTotal ?? "", total: granTotal ?? "" }],
-        rawXml: text.slice(0, 4000),
-      };
-
-      return factura;
+      } catch {}
+      return parseFactura(text, fileName, selectedCountry);
     }
 
-    function formatMoney(v: string | undefined, moneda = "GTQ"): string {
+    function formatMoney(v: string | undefined, moneda?: string): string {
       if (!v || v === "—") return "—";
-      const n = Number(String(v).replace(",", "."));
-      if (isNaN(n)) return String(v);
-      return new Intl.NumberFormat("es-GT", { style: "currency", currency: "GTQ", minimumFractionDigits: 2 }).format(n);
+      // Usa config del país activo o del que viene en la factura
+      // Si la factura ya trae country, usa esa config
+      // Aquí `moneda` ya no es GTQ fijo, delega a formatMoneyForCountry
+      const cfg = getActiveConfig();
+      // Si la factura trae moneda distinta, prioriza la de la factura
+      // Pero formatMoneyForCountry usa cfg.currencyCode; si la factura es de otro país, caller pasará moneda correcta
+      // Para compat, si moneda es GTQ/MXN/etc., busca config correspondiente
+      let targetCfg = cfg;
+      if(moneda){
+        const found = (Object.values(COUNTRY_CONFIGS) as CountryConfig[]).find(c=> c.currencyCode===moneda || c.currency===moneda);
+        if(found) targetCfg = found;
+      } else if(facturas[0]?.currencySymbol){
+        // no-op
+      }
+      return formatMoneyForCountry(v, targetCfg);
     }
 
     function getBrandingForPdf(f: Factura): { palette: Palette; font: string; displayName: string; logoBase64: string | null } {
@@ -831,9 +844,14 @@ const description =
 
     function buildDocDefinition(f: Factura, formato: string): any {
       const { palette, font, displayName, logoBase64 } = getBrandingForPdf(f);
-      const moneda = f.moneda ?? "GTQ";
+      const cfg: CountryConfig = getCountryConfig((f.country as CountryId) ?? selectedCountry);
+      const moneda = f.moneda ?? cfg.currencyCode;
       const isTicket = formato === "ticket";
-      const titulo = isTicket ? "DTE — FEL" : "Documento Tributario Electrónico — FEL";
+      const titulo = isTicket ? `${cfg.ente} — ${cfg.shortLabel}` : `Documento Tributario Electrónico — ${cfg.ente}`;
+      const idLabelEmisor = (f as any).emisorIdLabel ?? cfg.idLabel;
+      const idLabelReceptor = (f as any).receptorIdLabel ?? cfg.idLabelReceptor;
+      const emisorIdVal = (f as any).emisorId ?? (f as any).emisorNIT ?? "—";
+      const receptorIdVal = (f as any).receptorId ?? (f as any).receptorNIT ?? "—";
 
       // Header with logo/avatar if present
       const headerBranding: any[] = [];
@@ -850,7 +868,7 @@ const description =
               width: "*",
               stack: [
                 { text: displayName, fontSize: isTicket ? 9 : 11, bold: true, color: palette.primary, margin: [0, isTicket ? 2 : 4, 0, 2] },
-                { text: `NIT: ${f.emisorNIT ?? "—"}`, fontSize: 7, color: "#444" },
+                { text: `${idLabelEmisor}: ${emisorIdVal}`, fontSize: 7, color: "#444" },
                 ...(f.emisorDireccion && !isTicket ? [{ text: f.emisorDireccion, fontSize: 7, color: "#444" }] : []),
               ],
             },
@@ -869,14 +887,14 @@ const description =
         });
         if (!isTicket) {
           headerBranding.push({
-            text: `NIT: ${f.emisorNIT ?? "—"}${f.emisorDireccion ? " · " + f.emisorDireccion : ""}`,
+            text: `${idLabelEmisor}: ${emisorIdVal}${f.emisorDireccion ? " · " + f.emisorDireccion : ""}`,
             fontSize: 7,
             color: "#444",
             margin: [0, 0, 0, 6],
           });
         } else {
           headerBranding.push({
-            text: `NIT: ${f.emisorNIT ?? "—"}`,
+            text: `${idLabelEmisor}: ${emisorIdVal}`,
             fontSize: 7,
             color: "#444",
             alignment: "center",
@@ -919,7 +937,7 @@ const description =
         const content: any[] = [
           { text: titulo, style: "header", alignment: "center", margin: [0, 0, 0, 2] },
           {
-            text: `SAT Guatemala · FEL · ${f.serie ?? ""} ${f.numero ?? ""}`.trim(),
+            text: `${cfg.ente} · ${cfg.flag} ${cfg.shortLabel} · ${f.serie ?? ""} ${f.numero ?? ""} ${(f as any).folioFiscal ? "· " + String((f as any).folioFiscal).slice(0,22)+"…" : ""}`.trim(),
             style: "sub",
             alignment: "center",
             margin: [0, 0, 0, 6],
@@ -932,7 +950,7 @@ const description =
           {
             stack: [
               { text: `Cliente: ${f.receptorNombre ?? "—"}`, fontSize: 7, bold: true },
-              { text: `NIT/CUI: ${f.receptorNIT ?? "—"}`, fontSize: 6, color: "#555" },
+              { text: `${idLabelReceptor}: ${receptorIdVal}`, fontSize: 6, color: "#555" },
               ...(f.fechaEmision ? [{ text: `Fecha: ${f.fechaEmision.slice(0, 10)}`, fontSize: 6, color: "#555" }] : []),
             ],
             margin: [0, 0, 0, 6],
@@ -947,17 +965,17 @@ const description =
             ],
             margin: [0, 2, 0, 0],
           },
-          ...(f.iva ? [{ text: `IVA incluido: ${formatMoney(f.iva, moneda)}`, fontSize: 6, color: "#666", alignment: "right", margin: [0, 2, 0, 0] }] : []),
-          ...(f.numeroAcceso ? [{ text: `Acceso: ${f.numeroAcceso}`, fontSize: 5, color: "#999", alignment: "center", margin: [0, 8, 0, 0] }] : []),
+          ...(f.iva ? [{ text: `${(f as any).taxLabel ?? cfg.taxLabel} incluido: ${formatMoney(f.iva, moneda)}`, fontSize: 6, color: "#666", alignment: "right", margin: [0, 2, 0, 0] }] : []),
+          ...((f as any).folioFiscal ? [{ text: `Folio: ${(f as any).folioFiscal}`, fontSize: 5, color: "#999", alignment: "center", margin: [0, 8, 0, 0] }] : (f as any).numeroAcceso ? [{ text: `Acceso: ${(f as any).numeroAcceso}`, fontSize: 5, color: "#999", alignment: "center", margin: [0, 8, 0, 0] }] : []),
           {
-            text: "XML original es el único comprobante válido ante SAT.",
+            text: `XML original es el único comprobante válido ante ${cfg.ente}.`,
             fontSize: 5,
             color: "#999",
             alignment: "center",
             margin: [0, 6, 0, 0],
           },
           {
-            text: "FacturaContable.gt · 100% navegador · 🇬🇹",
+            text: `FacturaContable.gt · 100% navegador · ${cfg.flag}`,
             fontSize: 5,
             color: "#aaa",
             alignment: "center",
@@ -1002,7 +1020,7 @@ const description =
       const content: any[] = [
         { text: titulo, style: "header", alignment: "center", margin: [0, 0, 0, 4] },
         {
-          text: `SAT Guatemala · FEL · ${f.serie ?? ""} ${f.numero ?? ""} ${f.numeroAcceso ? "· " + f.numeroAcceso.slice(0, 22) + "…" : ""}`.trim(),
+          text: `${cfg.ente} · ${cfg.flag} ${cfg.shortLabel} · ${f.serie ?? ""} ${f.numero ?? ""} ${(f as any).folioFiscal ? "· " + String((f as any).folioFiscal).slice(0,22)+"…" : (f as any).numeroAcceso ? "· " + String((f as any).numeroAcceso).slice(0,22)+"…" : ""}`.trim(),
           style: "sub",
           alignment: "center",
           margin: [0, 0, 0, 8],
@@ -1016,7 +1034,7 @@ const description =
                 { canvas: [{ type: "line", x1: 0, y1: 0, x2: 80, y2: 0, lineWidth: 2, lineColor: palette.accent }], margin: [0, 0, 0, 4] },
                 { text: "RECEPTOR", fontSize: 7, bold: true, color: palette.primary, margin: [0, 0, 0, 2] },
                 { text: f.receptorNombre ?? "—", fontSize: 9, bold: true },
-                { text: `NIT/CUI: ${f.receptorNIT ?? "—"}`, fontSize: 7, color: "#444" },
+                { text: `${idLabelReceptor}: ${receptorIdVal}`, fontSize: 7, color: "#444" },
                 ...(f.receptorDireccion ? [{ text: f.receptorDireccion, fontSize: 7, color: "#444" }] : []),
                 ...(f.fechaEmision ? [{ text: `Fecha: ${f.fechaEmision}`, fontSize: 7, color: "#444", margin: [0, 4, 0, 0] }] : []),
                 { text: `Moneda: ${moneda}`, fontSize: 7, color: "#444" },
@@ -1050,10 +1068,12 @@ const description =
                   margin: [0, 0, 0, 2],
                 },
                 ...(f.iva
-                  ? [{ text: `IVA incluido: ${formatMoney(f.iva, moneda)}`, fontSize: 7, color: "#666", alignment: "right" }]
+                  ? [{ text: `${(f as any).taxLabel ?? cfg.taxLabel} incluido: ${formatMoney(f.iva, moneda)}`, fontSize: 7, color: "#666", alignment: "right" }]
                   : []),
-                ...(f.numeroAcceso
-                  ? [{ text: `No. Acceso: ${f.numeroAcceso}`, fontSize: 6, color: "#888", alignment: "right", margin: [0, 6, 0, 0] }]
+                ...((f as any).folioFiscal
+                  ? [{ text: `Folio: ${(f as any).folioFiscal}`, fontSize: 6, color: "#888", alignment: "right", margin: [0, 6, 0, 0] }]
+                  : (f as any).numeroAcceso
+                  ? [{ text: `No. Acceso: ${(f as any).numeroAcceso}`, fontSize: 6, color: "#888", alignment: "right", margin: [0, 6, 0, 0] }]
                   : []),
               ],
             },
@@ -1064,14 +1084,14 @@ const description =
           margin: [0, 0, 0, 0],
         },
         {
-          text: "Documento generado localmente desde el XML original. El XML es el único comprobante con validez tributaria ante la SAT.",
+          text: `Documento generado localmente desde el XML original. El XML es el único comprobante con validez tributaria ante ${cfg.ente}.`,
           fontSize: 6,
           color: "#888",
           alignment: "center",
           margin: [0, 8, 0, 0],
         },
         {
-          text: "FacturaContable.gt · 100% en tu navegador · Hecho en Guatemala 🇬🇹",
+          text: `FacturaContable.gt · 100% en tu navegador · Hecho en LATAM ${cfg.flag}`,
           fontSize: 6,
           color: "#888",
           alignment: "center",
@@ -1147,16 +1167,16 @@ const description =
               <div style="display:grid;gap:0.15rem;min-width:0;flex:1;">
                 <p class="mono" style="font-size:0.72rem;font-weight:800;letter-spacing:0.04em;color:var(--text-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${f.fileName} ${f.serie || f.numero ? "· " + (f.serie ?? "") + " " + (f.numero ?? "") : ""}</p>
                 <p style="font-weight:800;font-size:0.98rem;letter-spacing:-0.01em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${displayName} <span style="font-weight:400;color:var(--text-muted);">→</span> ${f.receptorNombre ?? "—"}</p>
-                <p class="mono" style="font-size:0.75rem;color:var(--text-muted);">NIT Emisor: ${f.emisorNIT ?? "—"} · NIT Receptor: ${f.receptorNIT ?? "—"} ${f.fechaEmision ? "· " + f.fechaEmision.slice(0, 10) : ""}</p>
+                <p class="mono" style="font-size:0.75rem;color:var(--text-muted);">${(f as any).emisorIdLabel ?? getCountryConfig(f.country).idLabel}: ${(f as any).emisorId ?? (f as any).emisorNIT ?? "—"} · ${(f as any).receptorIdLabel ?? getCountryConfig(f.country).idLabelReceptor}: ${(f as any).receptorId ?? (f as any).receptorNIT ?? "—"} ${f.fechaEmision ? "· " + f.fechaEmision.slice(0, 10) : ""} · ${getCountryConfig(f.country).flag} ${getCountryConfig(f.country).shortLabel} · ${(f as any).taxLabel ?? getCountryConfig(f.country).taxLabel}</p>
               </div>
             </div>
-            <span class="mono" style="background:${pal.primary};color:white;border:1.5px solid var(--border);border-radius:999px;padding:4px 10px;font-weight:800;font-size:0.8rem;box-shadow:2px 2px 0 var(--border);white-space:nowrap;">${formatMoney(f.granTotal, f.moneda ?? "GTQ")}</span>
+            <span class="mono" style="background:${pal.primary};color:white;border:1.5px solid var(--border);border-radius:999px;padding:4px 10px;font-weight:800;font-size:0.8rem;box-shadow:2px 2px 0 var(--border);white-space:nowrap;">${formatMoney(f.granTotal, f.moneda)}</span>
           </div>
           <div style="overflow:auto;border:1.5px solid var(--border);border-radius:10px;">
             <table class="mono" style="width:100%;border-collapse:collapse;font-size:0.75rem;min-width:420px;">
               <thead><tr style="background:${pal.primary};color:white;text-align:left;"><th style="padding:6px 8px;border-bottom:1.5px solid var(--border);">Descripción</th><th style="padding:6px 8px;border-bottom:1.5px solid var(--border);text-align:center;">Cant.</th><th style="padding:6px 8px;border-bottom:1.5px solid var(--border);text-align:right;">Precio</th><th style="padding:6px 8px;border-bottom:1.5px solid var(--border);text-align:right;">Total</th></tr></thead>
               <tbody>
-                ${f.items.slice(0, 12).map(it => `<tr><td style="padding:6px 8px;border-bottom:1px solid #eee;max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${it.descripcion}</td><td style="padding:6px 8px;border-bottom:1px solid #eee;text-align:center;">${it.cantidad}</td><td style="padding:6px 8px;border-bottom:1px solid #eee;text-align:right;">${it.precio ? formatMoney(it.precio, f.moneda ?? "GTQ") : "—"}</td><td style="padding:6px 8px;border-bottom:1px solid #eee;text-align:right;">${it.total ? formatMoney(it.total, f.moneda ?? "GTQ") : "—"}</td></tr>`).join("")}
+                ${f.items.slice(0, 12).map(it => `<tr><td style="padding:6px 8px;border-bottom:1px solid #eee;max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${it.descripcion}</td><td style="padding:6px 8px;border-bottom:1px solid #eee;text-align:center;">${it.cantidad}</td><td style="padding:6px 8px;border-bottom:1px solid #eee;text-align:right;">${it.precio ? formatMoney(it.precio, f.moneda) : "—"}</td><td style="padding:6px 8px;border-bottom:1px solid #eee;text-align:right;">${it.total ? formatMoney(it.total, f.moneda) : "—"}</td></tr>`).join("")}
                 ${f.items.length > 12 ? `<tr><td colspan="4" style="padding:6px 8px;text-align:center;color:var(--text-muted);">… y ${f.items.length - 12} ítem(s) más (ver PDF completo)</td></tr>` : ""}
               </tbody>
             </table>
@@ -1239,8 +1259,9 @@ const description =
       next();
     });
 
-    // Init branding after DOM ready
+    // Init branding + país después de DOM ready
     initBrandingUI();
+    initCountrySwitch();
 
     // Responsive palette grid: 2 cols mobile, 3 cols >640px
     const style = document.createElement("style");

@@ -1,0 +1,32 @@
+---
+import Layout from "../layouts/Layout.astro";
+import AdBanner from "../components/AdBanner.astro";
+const title = "Términos de Uso — FacturaContable.gt";
+const description = "Términos de uso de FacturaContable.gt: uso gratuito, sin garantía sobre validez tributaria, responsabilidad del usuario y cumplimiento AdSense.";
+---
+
+<Layout title={title} description={description}>
+  <div class="container" style="padding-top:1rem;">
+    <AdBanner slot="term001" format="horizontal" location="Términos — Hero" label="PUBLICIDAD" />
+    <article class="brutal-card" style="margin-top:1rem;padding:1.5rem;display:grid;gap:1rem;">
+      <h1 style="font-size:1.6rem;font-weight:800;">Términos de Uso</h1>
+      <p class="mono" style="font-size:0.8rem;color:var(--text-muted);">Actualizado: septiembre 2026</p>
+      <div style="display:grid;gap:0.9rem;line-height:1.65;color:var(--text-muted);font-size:0.95rem;">
+        <p>Al usar <strong style="color:var(--text);">FacturaContable.gt</strong> aceptas estos términos. El servicio es gratuito, sin registro, y se presta “tal cual”.</p>
+        <h2 style="font-size:1.15rem;font-weight:800;color:var(--text);">1. No asesoría tributaria</h2>
+        <p>Las herramientas generan representaciones (PDF) o reportes (Excel) a partir de tus archivos. El único comprobante con validez tributaria ante la SAT es el XML original certificado. Verifica siempre con tu contador.</p>
+        <h2 style="font-size:1.15rem;font-weight:800;color:var(--text);">2. Responsabilidad</h2>
+        <p>Eres responsable de validar los archivos de entrada y los resultados. No nos hacemos responsables por cierres contables, multas o decisiones basadas en los reportes generados.</p>
+        <h2 style="font-size:1.15rem;font-weight:800;color:var(--text);">3. Uso aceptable</h2>
+        <ul style="padding-left:1.2rem;display:grid;gap:0.35rem;">
+          <li>No intentes sobrecargar el servicio ni extraer datos de otros usuarios (no hay datos en servidor, pero el intento está prohibido).</li>
+          <li>No uses la marca FacturaContable para suplantación.</li>
+        </ul>
+        <h2 style="font-size:1.15rem;font-weight:800;color:var(--text);">4. Publicidad</h2>
+        <p>Mostramos anuncios de Google AdSense para financiar el servicio gratuito. No interferimos con la funcionalidad.</p>
+        <p>Para dudas, visita <a href="/contacto" style="text-decoration:underline;font-weight:700;">Contacto</a>.</p>
+      </div>
+      <AdBanner slot="term002" format="horizontal" location="Términos — Cierre" label="PUBLICIDAD" />
+    </article>
+  </div>
+</Layout>

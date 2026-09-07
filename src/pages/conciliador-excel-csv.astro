@@ -33,9 +33,6 @@ const description =
       </div>
     </div>
 
-    <!-- Banner Superior: debajo del título -->
-    <AdBanner slot="7777777777" format="horizontal" label="PUBLICIDAD" />
-
     <!-- APP -->
     <section id="app" style="margin-top:1.25rem;display:grid;gap:1rem;">
 
@@ -91,6 +88,9 @@ const description =
           <div id="errores" style="display:none;gap:0.5rem;"></div>
         </div>
       </div>
+
+      <!-- Banner Superior: debajo de las zonas de Dropzone (alta visibilidad post-carga) -->
+      <AdBanner slot="7777777777" format="horizontal" location="Conciliador — Superior (debajo de Dropzone / carga)" label="PUBLICIDAD" />
 
       <!-- PASO 2: Mapeo -->
       <div id="mapeo" class="brutal-card" style="display:none;padding:1rem;gap:1rem;background:var(--surface);">
@@ -168,8 +168,8 @@ const description =
         </div>
       </div>
 
-      <!-- Banner Conversión CRÍTICO: entre resumen y botón descarga -->
-      <AdBanner slot="8888888888" format="horizontal" label="PUBLICIDAD" />
+      <!-- Banner Conversión (Punto Focal CRÍTICO): entre resumen estadístico y Descargar Excel -->
+      <AdBanner slot="8888888888" format="horizontal" location="Conciliador — Conversión (entre resumen y Descargar Excel)" label="PUBLICIDAD" />
 
       <!-- PASO 4: Descarga -->
       <div id="descarga" style="display:none;gap:0.75rem;">
@@ -187,8 +187,7 @@ const description =
       <div id="detalle" style="display:none;gap:0.9rem;"></div>
     </section>
 
-    <!-- Banner Inferior: en sección SEO -->
-    <AdBanner slot="9999999999" format="rectangle" label="PUBLICIDAD" />
+    <!-- (Banner Inferior movido al cierre de SEO para cumplir spec) -->
 
     <!-- SEO + FAQ -->
     <article
@@ -239,8 +238,8 @@ const description =
         </ul>
       </div>
 
-      <!-- Banner dentro del artículo -->
-      <AdBanner slot="1010101010" format="horizontal" label="PUBLICIDAD" />
+      <!-- Banner dentro del artículo (retención media) -->
+      <AdBanner slot="1010101010" format="horizontal" location="Conciliador — SEO (dentro del artículo)" label="PUBLICIDAD" />
 
       <section style="display:grid;gap:0.75rem;">
         <h3 style="font-size:1.2rem;font-weight:800;">Preguntas frecuentes</h3>
@@ -267,6 +266,9 @@ const description =
           </details>
         </div>
       </section>
+
+      <!-- Banner de Cierre: al final de la sección SEO (alta retención post-lectura) -->
+      <AdBanner slot="9999999999" format="horizontal" location="Conciliador — Cierre (final de SEO)" label="PUBLICIDAD" />
 
       <p class="mono" style="font-size:0.75rem;color:var(--text-muted);border-top:2px dashed var(--border);padding-top:0.75rem;">
         Nota: FacturaContable.gt no está afiliado a bancos ni a la SAT. Marcas citadas pertenecen a sus dueños.

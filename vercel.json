@@ -1,0 +1,8 @@
+{
+  "redirects": [
+    { "source": "https://facturacontable.net/:path*", "destination": "https://facturacontable.gt/:path*", "statusCode": 301 },
+    { "source": "https://www.facturacontable.net/:path*", "destination": "https://facturacontable.gt/:path*", "statusCode": 301 },
+    { "source": "https://facturacontable.com/:path*", "destination": "https://facturacontable.gt/:path*", "statusCode": 301 },
+    { "source": "https://www.facturacontable.com/:path*", "destination": "https://facturacontable.gt/:path*", "statusCode": 301 }
+  ]
+}
