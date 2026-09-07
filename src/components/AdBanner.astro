@@ -1,0 +1,172 @@
+---
+/**
+ * AdBanner — Reserva flexible para Google AdSense
+ * - En dev (import.meta.env.DEV) muestra skeleton Neo-Brutalista "Espacio para Anuncio"
+ * - En prod renderiza <ins class="adsbygoogle"> y hace (adsbygoogle = window.adsbygoogle || []).push({})
+ * - Props: slot (identificador), format (auto|horizontal|vertical|rectangle), style opcional
+ */
+interface Props {
+  slot?: string;
+  format?: "auto" | "horizontal" | "vertical" | "rectangle";
+  label?: string;
+  class?: string;
+  style?: string;
+  /**
+   * Si true, incluso en prod muestra el placeholder además del anuncio (útil para QA)
+   */
+  debug?: boolean;
+}
+
+const {
+  slot = "0000000000",
+  format = "auto",
+  label = "PUBLICIDAD",
+  class: className = "",
+  style = "",
+  debug = false,
+} = Astro.props;
+
+const isDev = import.meta.env.DEV;
+
+// Mapea format a data-ad-format y tamaño de placeholder
+const placeholderHeights: Record<string, string> = {
+  auto: "120px",
+  horizontal: "90px",
+  rectangle: "250px",
+  vertical: "300px",
+};
+
+const placeholderHeight = placeholderHeights[format] ?? "120px";
+const adId = `ad-${slot}-${format}-${Math.random().toString(36).slice(2, 7)}`;
+---
+
+<div
+  class={`ad-banner ${className}`}
+  data-ad-slot={slot}
+  data-ad-format={format}
+  style={style}
+>
+  {
+    isDev || debug ? (
+      <div
+        class="ad-placeholder"
+        style={`min-height:${placeholderHeight};`}
+        role="complementary"
+        aria-label="Espacio publicitario"
+      >
+        <div class="ad-placeholder__badge">{label}</div>
+        <div class="ad-placeholder__body">
+          <span class="ad-placeholder__icon" aria-hidden="true">📢</span>
+          <p class="ad-placeholder__title">Espacio para Anuncio / AdSense</p>
+          <p class="ad-placeholder__hint mono">
+            slot: {slot} · format: {format} · En producción se mostrará el anuncio real
+          </p>
+        </div>
+        <span class="ad-placeholder__adsense mono">adsbygoogle</span>
+      </div>
+    ) : null
+  }
+
+  {/* En prod se renderiza el bloque real — oculto en dev para no disparar requests */}
+  <ins
+    id={adId}
+    class="adsbygoogle"
+    style="display:block"
+    data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+    data-ad-slot={slot}
+    data-ad-format={format}
+    data-full-width-responsive="true"
+    aria-hidden={isDev ? "true" : undefined}
+  ></ins>
+</div>
+
+{!isDev && (
+  <script is:inline define:vars={{ adId }}>
+    (function () {
+      try {
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
+      } catch (e) {
+        console.warn("[AdBanner] adsbygoogle push falló:", e);
+      }
+    })();
+  </script>
+)}
+
+<style>
+  .ad-banner {
+    width: 100%;
+    margin: 1rem 0;
+  }
+
+  .ad-placeholder {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1.25rem 1rem;
+    background: repeating-linear-gradient(
+      45deg,
+      var(--bg-soft),
+      var(--bg-soft) 10px,
+      var(--surface) 10px,
+      var(--surface) 20px
+    );
+    border: 2px dashed var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    text-align: center;
+    overflow: hidden;
+  }
+
+  [data-theme="dark"] .ad-placeholder {
+    background: repeating-linear-gradient(45deg, #1a1a1a, #1a1a1a 10px, #232323 10px, #232323 20px);
+  }
+
+  .ad-placeholder__badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    background: var(--primary);
+    color: #111;
+    border: 1.5px solid var(--border);
+    border-radius: 999px;
+    padding: 2px 8px;
+    box-shadow: 1.5px 1.5px 0 var(--border);
+  }
+
+  .ad-placeholder__icon { font-size: 1.5rem; }
+
+  .ad-placeholder__title {
+    font-weight: 800;
+    font-size: 0.95rem;
+    letter-spacing: -0.01em;
+  }
+
+  .ad-placeholder__hint {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    max-width: 32ch;
+  }
+
+  .ad-placeholder__adsense {
+    position: absolute;
+    bottom: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.6rem;
+    color: var(--text-muted);
+    opacity: 0.7;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  /* En prod el ins ocupa el espacio; sin contenido colapsa a 0, así que damos altura mínima */
+  .adsbygoogle {
+    min-height: 90px;
+  }
+</style>

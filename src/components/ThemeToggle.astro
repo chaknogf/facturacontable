@@ -1,0 +1,33 @@
+---
+// Componente standalone opcional — el toggle principal vive en Layout.astro
+// Úsalo si necesitas un toggle en otra vista sin duplicar lógica.
+---
+<button
+  id="theme-toggle-standalone"
+  aria-label="Cambiar tema"
+  class="brutal-btn brutal-btn--ghost"
+  style="width:48px;height:48px;padding:0;border-radius:12px;"
+>
+  <span id="theme-icon-standalone" aria-hidden="true">🌙</span>
+</button>
+
+<script is:inline>
+  (function () {
+    const btn = document.getElementById("theme-toggle-standalone");
+    const icon = document.getElementById("theme-icon-standalone");
+    if (!btn || !icon) return;
+    function iconFor(t) { return t === "dark" ? "☀️" : "🌙"; }
+    const cur = document.documentElement.getAttribute("data-theme") || "light";
+    icon.textContent = iconFor(cur);
+    btn.addEventListener("click", function () {
+      const c = document.documentElement.getAttribute("data-theme") || "light";
+      const n = c === "dark" ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", n);
+      try { localStorage.setItem("theme", n); } catch(e) {}
+      icon.textContent = iconFor(n);
+      // Sincroniza con el toggle del header si existe
+      const hi = document.getElementById("theme-icon");
+      if (hi) hi.textContent = iconFor(n);
+    });
+  })();
+</script>

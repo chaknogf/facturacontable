@@ -1,0 +1,195 @@
+---
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+  description: string;
+  canonical?: string;
+  ogImage?: string;
+  noindex?: boolean;
+  keywords?: string;
+}
+
+const {
+  title,
+  description,
+  canonical,
+  ogImage = "/og-default.png",
+  noindex = false,
+  keywords,
+} = Astro.props;
+
+const siteUrl = Astro.site?.toString() ?? "https://facturacontable.gt";
+const canonicalUrl = canonical ?? new URL(Astro.url.pathname, siteUrl).toString();
+// TODO: Reemplazar con tu ID real de AdSense cuando sea aprobado: ca-pub-XXXXXXXXXXXXXXXX
+const ADSENSE_CLIENT = "ca-pub-XXXXXXXXXXXXXXXX";
+---
+
+<!doctype html>
+<html lang="es-GT">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {keywords && <meta name="keywords" content={keywords} />}
+    <link rel="canonical" href={canonicalUrl} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    <!-- OpenGraph / Twitter -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={new URL(ogImage, siteUrl).toString()} />
+    <meta property="og:locale" content="es_GT" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Theme anti-FOUC: debe ir ANTES del CSS para evitar flash -->
+    <script is:inline>
+      (function () {
+        try {
+          const stored = localStorage.getItem("theme");
+          const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+          const theme = stored || (prefersDark ? "dark" : "light");
+          document.documentElement.setAttribute("data-theme", theme);
+        } catch (e) {
+          document.documentElement.setAttribute("data-theme", "light");
+        }
+      })();
+    </script>
+
+    <!-- Google AdSense global tag -->
+    <!-- En producción reemplaza ADSENSE_CLIENT. En dev no carga el script real -->
+    <script
+      is:inline
+      async
+      src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT}`}
+      crossorigin="anonymous"></script>
+    <script is:inline>
+      // Solo empuja adsbygoogle en producción. En dev el componente muestra placeholder.
+      window.__ADSENSE_CLIENT__ = "{ADSENSE_CLIENT}";
+    </script>
+
+    <!-- JSON-LD Organization + WebSite -->
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        name: "FacturaContable",
+        url: siteUrl,
+        inLanguage: "es-GT",
+        description: "Micro-herramientas gratuitas para contadores y pymes en Guatemala. 100% en el navegador.",
+      })}
+    />
+  </head>
+  <body>
+    <header
+      style="position:sticky;top:0;z-index:40;background:var(--surface);border-bottom:2px solid var(--border);"
+    >
+      <div class="container" style="display:flex;align-items:center;justify-content:space-between;gap:1rem;padding-top:0.75rem;padding-bottom:0.75rem;">
+        <a
+          href="/"
+          style="display:flex;align-items:center;gap:0.6rem;text-decoration:none;font-weight:800;font-size:1.25rem;letter-spacing:-0.02em;"
+        >
+          <span
+            style="display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;background:var(--primary);border:2px solid var(--border);border-radius:10px;box-shadow:2px 2px 0 var(--border);font-size:1.1rem;"
+            >🧾</span
+          >
+          <span>Factura<span style="color:var(--accent);">Contable</span></span>
+          <span
+            style="font-size:0.65rem;font-weight:700;background:var(--accent-2);border:1.5px solid var(--border);border-radius:999px;padding:2px 8px;margin-left:2px;"
+            >BETA</span
+          >
+        </a>
+
+        <nav style="display:flex;align-items:center;gap:0.5rem;">
+          <a href="/xml-sat-a-pdf" class="mono" style="display:none;font-size:0.85rem;font-weight:700;text-decoration:none;border:2px solid var(--border);border-radius:999px;padding:6px 14px;background:var(--surface);box-shadow:2px 2px 0 var(--border);"
+            >XML → PDF</a
+          >
+          <style>
+            @media (min-width: 640px) {
+              header nav a.mono { display: inline-flex !important; }
+            }
+          </style>
+          <slot name="header-actions" />
+          <!-- ThemeToggle island: client:load sin framework -->
+          <button
+            id="theme-toggle"
+            aria-label="Cambiar tema claro/oscuro"
+            title="Cambiar tema"
+            style="width:48px;height:48px;display:inline-flex;align-items:center;justify-content:center;background:var(--surface);border:2px solid var(--border);border-radius:12px;box-shadow:3px 3px 0 var(--border);cursor:pointer;font-size:1.2rem;transition:transform 0.08s;"
+          >
+            <span id="theme-icon">🌙</span>
+          </button>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer
+      style="margin-top:3rem;border-top:2px solid var(--border);background:var(--bg-soft);padding:2rem 0 2.5rem;"
+    >
+      <div class="container">
+        <div style="display:grid;gap:1.5rem;">
+          <div style="display:flex;flex-wrap:wrap;gap:1.5rem;justify-content:space-between;align-items:flex-start;">
+            <div>
+              <p style="font-weight:800;font-size:1.05rem;">FacturaContable.gt</p>
+              <p style="color:var(--text-muted);font-size:0.9rem;max-width:42ch;margin-top:0.35rem;">
+                Herramientas gratuitas para contadores, auditores y pymes en Guatemala. Todo se procesa en tu
+                navegador — tus datos nunca salen de tu dispositivo.
+              </p>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:0.4rem;font-size:0.9rem;">
+              <a href="/xml-sat-a-pdf" style="font-weight:600;">XML SAT → PDF</a>
+              <a href="/#herramientas" style="font-weight:600;">Todas las herramientas</a>
+              <span style="color:var(--text-muted);">Más herramientas próximamente</span>
+            </div>
+          </div>
+          <div
+            style="display:flex;flex-wrap:wrap;gap:0.75rem;justify-content:space-between;align-items:center;border-top:2px dashed var(--border);padding-top:1rem;font-size:0.85rem;color:var(--text-muted);"
+          >
+            <span>© {new Date().getFullYear()} FacturaContable.gt — Hecho con ♥ en Guatemala 🇬🇹</span>
+            <span class="mono" style="background:var(--surface);border:1.5px solid var(--border);border-radius:999px;padding:3px 10px;box-shadow:2px 2px 0 var(--border);">100% Client-Side · Privado</span>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script is:inline>
+      (function () {
+        const btn = document.getElementById("theme-toggle");
+        const icon = document.getElementById("theme-icon");
+        if (!btn || !icon) return;
+
+        function applyIcon(theme) {
+          icon.textContent = theme === "dark" ? "☀️" : "🌙";
+          btn.setAttribute("aria-label", theme === "dark" ? "Cambiar a modo claro" : "Cambiar a modo oscuro");
+        }
+
+        applyIcon(document.documentElement.getAttribute("data-theme") || "light");
+
+        btn.addEventListener("click", function () {
+          const current = document.documentElement.getAttribute("data-theme") || "light";
+          const next = current === "dark" ? "light" : "dark";
+          document.documentElement.setAttribute("data-theme", next);
+          try { localStorage.setItem("theme", next); } catch (e) {}
+          applyIcon(next);
+        });
+
+        // Evitar animación en click táctil
+        btn.addEventListener("touchstart", function(){}, {passive:true});
+      })();
+    </script>
+  </body>
+</html>

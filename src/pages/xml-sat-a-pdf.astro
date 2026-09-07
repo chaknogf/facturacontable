@@ -1,0 +1,1250 @@
+---
+import Layout from "../layouts/Layout.astro";
+import AdBanner from "../components/AdBanner.astro";
+import Dropzone from "../components/Dropzone.astro";
+
+const title = "XML SAT a PDF — Convierte DTE FEL Guatemala a Carta, Media Carta y Ticket 80mm";
+const description =
+  "Convierte gratis tu XML del SAT Guatemala (FEL / DTE) a PDF profesional: Carta Completa, Media Carta y Ticket 80mm. Parser 100% en tu navegador, tus datos nunca salen de tu dispositivo. Sin registro.";
+---
+
+<Layout
+  title={title}
+  description={description}
+  keywords="XML SAT PDF, FEL Guatemala, DTE PDF, convertir XML SAT, factura electrónica Guatemala, SAT PDF, ticket 80mm, media carta"
+>
+  <div class="container" style="padding-top:1rem;">
+    <!-- 1. Ad Above the fold -->
+    <AdBanner slot="3333333333" format="horizontal" label="PUBLICIDAD" />
+
+    <!-- Breadcrumb + H1 -->
+    <nav class="mono" style="font-size:0.8rem;color:var(--text-muted);margin-top:1rem;display:flex;gap:0.4rem;flex-wrap:wrap;">
+      <a href="/" style="text-decoration:underline;">Inicio</a><span>›</span><span style="font-weight:700;color:var(--text);">XML SAT → PDF</span>
+    </nav>
+
+    <div style="margin-top:0.75rem;display:grid;gap:0.6rem;">
+      <h1 style="font-size:clamp(1.6rem,4.5vw,2.4rem);font-weight:800;line-height:1.08;letter-spacing:-0.03em;">
+        XML del SAT Guatemala <span style="background:var(--primary);border:2px solid var(--border);border-radius:10px;padding:0 0.3em;box-shadow:2px 2px 0 var(--border);">→ PDF</span> en segundos
+      </h1>
+      <p style="color:var(--text-muted);font-size:clamp(0.95rem,2.5vw,1.05rem);max-width:70ch;line-height:1.5;">
+        Arrastra tu <strong style="color:var(--text);">XML del FEL (DTE)</strong> y descarga el PDF en <strong style="color:var(--text);">Carta, Media Carta o Ticket 80mm</strong>. 100% privado — todo se procesa en tu navegador con <code class="mono" style="background:var(--bg-soft);border:1px solid var(--border);border-radius:6px;padding:1px 6px;">DOMParser</code> y <code class="mono" style="background:var(--bg-soft);border:1px solid var(--border);border-radius:6px;padding:1px 6px;">pdfmake</code>.
+      </p>
+      <div style="display:flex;flex-wrap:wrap;gap:0.5rem;font-size:0.8rem;">
+        <span class="mono" style="background:var(--accent-2);border:1.5px solid var(--border);border-radius:999px;padding:3px 10px;box-shadow:2px 2px 0 var(--border);font-weight:700;">🔒 0 servidor</span>
+        <span class="mono" style="background:var(--surface);border:1.5px solid var(--border);border-radius:999px;padding:3px 10px;box-shadow:2px 2px 0 var(--border);">Parser DOMParser</span>
+        <span class="mono" style="background:var(--surface);border:1.5px solid var(--border);border-radius:999px;padding:3px 10px;box-shadow:2px 2px 0 var(--border);">pdfmake</span>
+        <span class="mono" style="background:var(--surface);border:1.5px solid var(--border);border-radius:999px;padding:3px 10px;box-shadow:2px 2px 0 var(--border);">GTQ · NIT · CUI</span>
+      </div>
+    </div>
+
+    <!-- APP -->
+    <section id="app" style="margin-top:1.25rem;display:grid;gap:1rem;">
+      <Dropzone id="xml-dropzone" accept=".xml" multiple={true} label="Arrastra tus XML del SAT aquí" hint="o toca para seleccionar · puedes cargar varios a la vez" />
+
+      <!-- ====== BRANDING PANEL (Client-Side Branding) ====== -->
+      <div
+        id="branding-panel"
+        class="brutal-card"
+        style="padding:1rem;display:grid;gap:1rem;background:var(--surface);"
+      >
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:0.75rem;flex-wrap:wrap;">
+          <div style="display:flex;align-items:center;gap:0.6rem;">
+            <span style="display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;background:var(--primary);border:2px solid var(--border);border-radius:10px;box-shadow:2px 2px 0 var(--border);font-size:1.1rem;">🎨</span>
+            <div>
+              <h2 style="font-size:1.05rem;font-weight:800;letter-spacing:-0.01em;line-height:1;">Personaliza tu marca</h2>
+              <p class="mono" style="font-size:0.72rem;color:var(--text-muted);">Se aplica a todos los PDFs · 100% en tu navegador</p>
+            </div>
+          </div>
+          <span class="mono" style="font-size:0.68rem;font-weight:800;letter-spacing:0.06em;background:var(--accent-2);border:1.5px solid var(--border);border-radius:999px;padding:4px 10px;box-shadow:2px 2px 0 var(--border);">CLIENT-SIDE</span>
+        </div>
+
+        <!-- Paletas -->
+        <div style="display:grid;gap:0.5rem;">
+          <label class="mono" style="font-size:0.78rem;font-weight:800;letter-spacing:0.06em;">PALETA DE COLORES</label>
+          <div id="palette-grid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:0.5rem;">
+            <!-- JS inject buttons -->
+          </div>
+          <p class="mono" style="font-size:0.7rem;color:var(--text-muted);">Toca una paleta — vista previa instantánea.</p>
+        </div>
+
+        <!-- Tipografía + Nombre -->
+        <div style="display:grid;gap:0.75rem;">
+          <div style="display:grid;gap:0.4rem;">
+            <label for="branding-font" class="mono" style="font-size:0.78rem;font-weight:800;letter-spacing:0.06em;">TIPOGRAFÍA DEL PDF</label>
+            <select id="branding-font" class="brutal-input" style="font-weight:700;cursor:pointer;">
+              <option value="Roboto">Roboto — Limpia (predeterminada)</option>
+              <option value="Helvetica">Helvetica — Moderna</option>
+              <option value="Courier">Courier — Recibo térmico retro</option>
+              <option value="Times">Times — Clásica y formal</option>
+              <option value="OpenSans">Open Sans — Humanista</option>
+            </select>
+          </div>
+
+          <div style="display:grid;gap:0.4rem;">
+            <label for="branding-name" class="mono" style="font-size:0.78rem;font-weight:800;letter-spacing:0.06em;">NOMBRE DEL NEGOCIO (opcional)</label>
+            <input
+              id="branding-name"
+              type="text"
+              class="brutal-input"
+              placeholder="Ej. Mi Tiendita Express"
+              maxlength="60"
+              autocomplete="organization"
+              inputmode="text"
+            />
+            <span class="mono" style="font-size:0.7rem;color:var(--text-muted);">Si lo llenas, reemplaza el nombre comercial del XML en el PDF.</span>
+          </div>
+        </div>
+
+        <!-- Icono Emisor -->
+        <div style="display:grid;gap:0.5rem;">
+          <span class="mono" style="font-size:0.78rem;font-weight:800;letter-spacing:0.06em;">IDENTIDAD VISUAL / ICONO</span>
+          <div id="icon-options" style="display:grid;grid-template-columns:1fr;gap:0.5rem;">
+            <label class="brutal-card" style="display:flex;align-items:center;gap:0.75rem;padding:0.75rem;cursor:pointer;box-shadow:var(--shadow-sm);">
+              <input type="radio" name="branding-icon" value="none" checked style="width:18px;height:18px;accent-color:var(--border);" />
+              <span style="font-size:1.1rem;">🚫</span>
+              <div style="display:grid;">
+                <span style="font-weight:800;font-size:0.92rem;">Sin icono</span>
+                <span class="mono" style="font-size:0.72rem;color:var(--text-muted);">Diseño purista, sin logo</span>
+              </div>
+            </label>
+
+            <label class="brutal-card" style="display:flex;align-items:center;gap:0.75rem;padding:0.75rem;cursor:pointer;box-shadow:var(--shadow-sm);">
+              <input type="radio" name="branding-icon" value="avatar" style="width:18px;height:18px;accent-color:var(--border);" />
+              <span style="font-size:1.1rem;">🔤</span>
+              <div style="display:grid;">
+                <span style="font-weight:800;font-size:0.92rem;">Avatar con iniciales</span>
+                <span class="mono" style="font-size:0.72rem;color:var(--text-muted);">Generado en &lt;canvas&gt; con tu paleta</span>
+              </div>
+            </label>
+
+            <label class="brutal-card" style="display:flex;align-items:center;gap:0.75rem;padding:0.75rem;cursor:pointer;box-shadow:var(--shadow-sm);">
+              <input type="radio" name="branding-icon" value="upload" style="width:18px;height:18px;accent-color:var(--border);" />
+              <span style="font-size:1.1rem;">🖼️</span>
+              <div style="display:grid;">
+                <span style="font-weight:800;font-size:0.92rem;">Subir imagen</span>
+                <span class="mono" style="font-size:0.72rem;color:var(--text-muted);">PNG/JPG → Base64 en el navegador</span>
+              </div>
+            </label>
+          </div>
+
+          <!-- Sub-controles icono -->
+          <div id="avatar-preview-wrap" style="display:none;align-items:center;gap:0.75rem;padding:0.75rem;background:var(--bg-soft);border:2px solid var(--border);border-radius:var(--radius-sm);box-shadow:var(--shadow-sm);">
+            <canvas id="avatar-canvas" width="200" height="200" style="width:56px;height:56px;border:2px solid var(--border);border-radius:12px;box-shadow:2px 2px 0 var(--border);flex-shrink:0;"></canvas>
+            <div style="display:grid;gap:0.15rem;">
+              <span class="mono" style="font-size:0.72rem;font-weight:800;">Vista previa avatar</span>
+              <span id="avatar-initials-label" class="mono" style="font-size:0.75rem;color:var(--text-muted);">—</span>
+            </div>
+          </div>
+
+          <div id="upload-wrap" style="display:none;gap:0.5rem;">
+            <label for="branding-logo-input" class="brutal-btn brutal-btn--ghost" style="width:100%;cursor:pointer;">
+              📁 Seleccionar PNG/JPG (máx 800KB)
+            </label>
+            <input id="branding-logo-input" type="file" accept="image/png,image/jpeg,image/webp" hidden />
+            <div id="upload-preview-wrap" style="display:none;align-items:center;gap:0.75rem;padding:0.75rem;background:var(--bg-soft);border:2px solid var(--border);border-radius:var(--radius-sm);box-shadow:var(--shadow-sm);">
+              <img id="upload-preview" alt="Preview logo" style="width:56px;height:56px;object-fit:contain;background:white;border:2px solid var(--border);border-radius:12px;box-shadow:2px 2px 0 var(--border);" />
+              <div style="display:grid;gap:0.15rem;flex:1;min-width:0;">
+                <span class="mono" style="font-size:0.72rem;font-weight:800;">Logo cargado</span>
+                <span id="upload-name" class="mono" style="font-size:0.72rem;color:var(--text-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"></span>
+                <button id="btn-remove-logo" type="button" class="mono" style="justify-self:start;background:var(--surface);border:1.5px solid var(--border);border-radius:999px;padding:3px 10px;font-size:0.72rem;font-weight:700;cursor:pointer;box-shadow:1.5px 1.5px 0 var(--border);">Quitar</button>
+              </div>
+            </div>
+            <p class="mono" style="font-size:0.7rem;color:var(--text-muted);">Se convierte a Base64 localmente — nunca sale de tu dispositivo.</p>
+          </div>
+        </div>
+
+        <!-- Preview branding strip -->
+        <div id="branding-preview" class="mono" style="display:flex;align-items:center;gap:0.75rem;padding:0.75rem;border:2px dashed var(--border);border-radius:var(--radius-sm);background:var(--bg-soft);font-size:0.8rem;">
+          <span style="font-weight:800;">Vista previa:</span>
+          <span id="branding-preview-dot" style="width:14px;height:14px;border-radius:999px;border:2px solid var(--border);display:inline-block;flex-shrink:0;"></span>
+          <span id="branding-preview-text" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;">—</span>
+          <span id="branding-preview-font" style="font-size:0.7rem;opacity:0.8;"></span>
+        </div>
+      </div>
+
+      <!-- Controles de formato + acciones -->
+      <div
+        id="controls"
+        style="display:none;gap:0.75rem;padding:1rem;background:var(--surface);border:2px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);"
+      >
+        <div style="display:flex;flex-wrap:wrap;gap:0.75rem;align-items:end;justify-content:space-between;">
+          <div style="display:grid;gap:0.4rem;flex:1;min-width:220px;">
+            <label for="formato" class="mono" style="font-size:0.8rem;font-weight:800;letter-spacing:0.06em;">FORMATO DE SALIDA</label>
+            <select
+              id="formato"
+              class="brutal-input"
+              style="max-width:320px;font-weight:700;cursor:pointer;"
+            >
+              <option value="carta">📄 Carta Completa (Letter)</option>
+              <option value="media">📃 Media Carta (A5 apaisado)</option>
+              <option value="ticket">🧾 Ticket 80mm (térmico) — minimalista</option>
+            </select>
+            <span class="mono" style="font-size:0.72rem;color:var(--text-muted);">Se aplica a todos los archivos + tu marca.</span>
+          </div>
+
+          <div style="display:flex;flex-wrap:wrap;gap:0.5rem;align-items:center;">
+            <button id="btn-descargar-todos" class="brutal-btn brutal-btn--primary" style="flex:1;min-width:200px;">
+              ⬇️ Descargar todos
+            </button>
+            <button id="btn-limpiar" class="brutal-btn brutal-btn--ghost">Limpiar</button>
+          </div>
+        </div>
+
+        <p id="resumen" class="mono" style="font-size:0.82rem;color:var(--text-muted);"></p>
+      </div>
+
+      <!-- Lista de archivos parseados -->
+      <div id="lista" style="display:grid;gap:0.75rem;"></div>
+
+      <!-- 2. Ad debajo del botón principal de acción/descarga -->
+      <AdBanner slot="4444444444" format="horizontal" label="PUBLICIDAD" />
+
+      <!-- Estado vacío -->
+      <div
+        id="empty"
+        style="padding:1rem;background:var(--bg-soft);border:2px dashed var(--border);border-radius:var(--radius);text-align:center;color:var(--text-muted);font-size:0.9rem;"
+      >
+        Aún no has cargado ningún XML. Prueba arrastrando uno de ejemplo del SAT.
+      </div>
+
+      <!-- Errores -->
+      <div id="errores" style="display:none;gap:0.5rem;"></div>
+    </section>
+
+    <!-- 3. Ad dentro de sección artículos/FAQ (se repite uno aquí y otro dentro del artículo) -->
+    <AdBanner slot="5555555555" format="rectangle" label="PUBLICIDAD" />
+
+    <!-- CONTENIDO SEO 300-400+ palabras -->
+    <article
+      style="margin-top:1.5rem;display:grid;gap:1.5rem;padding:1.5rem;background:var(--surface);border:2px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);"
+    >
+      <header style="display:grid;gap:0.5rem;">
+        <h2 style="font-size:1.45rem;font-weight:800;letter-spacing:-0.02em;line-height:1.2;">
+          Guía completa: cómo descargar tu XML del SAT y convertirlo a PDF
+        </h2>
+        <p class="mono" style="font-size:0.78rem;color:var(--text-muted);">
+          Actualizado septiembre 2026 · Lectura 5 min · Para contadores, auditores y pymes en Guatemala
+        </p>
+      </header>
+
+      <div style="display:grid;gap:1rem;line-height:1.65;color:var(--text-muted);font-size:0.98rem;">
+        <p>
+          La Factura Electrónica en Línea (FEL) de la SAT Guatemala reemplazó al papel como único comprobante con
+          validez tributaria. Cada vez que emites o recibes una factura, el Certificador genera un <strong style="color:var(--text);">Documento Tributario Electrónico (DTE)</strong> y lo certifica ante la SAT. El archivo <strong style="color:var(--text);">XML</strong> es el original legal; el PDF que ves es solo una representación impresa. Si tu contador te pide “la factura en PDF”, en realidad necesita ese XML convertido con los datos correctos: NIT del Emisor y Receptor, desglose de bienes/servicios, impuestos y Gran Total en quetzales.
+        </p>
+
+        <h3 style="font-size:1.15rem;font-weight:800;color:var(--text);margin-top:0.25rem;">Paso a paso: dónde descargar tu XML</h3>
+        <ol style="padding-left:1.25rem;display:grid;gap:0.5rem;">
+          <li>
+            <strong style="color:var(--text);">Agencia Virtual SAT:</strong> ingresa a <code class="mono" style="background:var(--bg-soft);border:1px solid var(--border);border-radius:6px;padding:1px 6px;">agenciavirtual.sat.gob.gt</code>, inicia sesión con tu NIT y contraseña, ve a <em>FEL → Consulta DTE</em>, filtra por fecha y descarga el XML con el ícono de archivo.
+          </li>
+          <li>
+            <strong style="color:var(--text);">Correo del Certificador:</strong> Infile, Digifact o tu certificador envía el XML adjunto junto al PDF. Busca el adjunto <code class="mono" style="background:var(--bg-soft);border:1px solid var(--border);border-radius:6px;padding:1px 6px;">*.xml</code> (no el PDF).
+          </li>
+          <li>
+            <strong style="color:var(--text);">Proveedor / Cliente:</strong> si recibes facturas de proveedores, pídeles el XML original; el PDF solo no sirve para auditoría ni para importar a tu sistema contable.
+          </li>
+        </ol>
+
+        <h3 style="font-size:1.15rem;font-weight:800;color:var(--text);">Casos de uso reales</h3>
+        <ul style="padding-left:1.25rem;display:grid;gap:0.4rem;">
+          <li><strong style="color:var(--text);">Contadores:</strong> convierten lotes de XML a PDF Carta para archivo físico y a Ticket 80mm para grapas de entrega.</li>
+          <li><strong style="color:var(--text);">Pymes con POS térmico:</strong> imprimen el ticket 80mm directo en impresora térmica sin desperdiciar papel carta.</li>
+          <li><strong style="color:var(--text);">Auditoría:</strong> generan Media Carta para anexar a expedientes sin ocupar una hoja completa por factura.</li>
+          <li><strong style="color:var(--text);">Envío a clientes:</strong> reimprimen un PDF limpio cuando el del certificador trae marca de agua o formato ilegible.</li>
+        </ul>
+
+        <div style="background:var(--primary);border:2px solid var(--border);border-radius:var(--radius-sm);box-shadow:var(--shadow-sm);padding:1rem;display:grid;gap:0.4rem;">
+          <p style="font-weight:800;color:var(--text);">🔒 Privacidad garantizada</p>
+          <p style="color:var(--text-muted);font-size:0.92rem;">
+            Esta herramienta <strong style="color:var(--text);">no sube tus XML a ningún servidor</strong>. El parseo se hace con <code class="mono" style="background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:1px 6px;">DOMParser</code> y la generación del PDF con <code class="mono" style="background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:1px 6px;">pdfmake</code> directamente en tu navegador. Puedes verificarlo abriendo las DevTools → Network: cero requests al cargar o convertir. Tus NIT, montos y datos de clientes nunca salen de tu dispositivo.
+          </p>
+        </div>
+
+        <h3 style="font-size:1.15rem;font-weight:800;color:var(--text);">Qué formatos elegir</h3>
+        <ul style="padding-left:1.25rem;display:grid;gap:0.35rem;">
+          <li><strong style="color:var(--text);">Carta Completa:</strong> ideal para archivo contable, entrega a SAT o impresión en oficina.</li>
+          <li><strong style="color:var(--text);">Media Carta:</strong> ahorra papel; cabe perfecto en folders tamaño carta doblado a la mitad.</li>
+          <li><strong style="color:var(--text);">Ticket 80mm:</strong> para impresoras térmicas de punto de venta (POS). Ancho fijo 80mm, largo dinámico. Ahora con diseño minimalista tipo lista.</li>
+        </ul>
+
+        <p>
+          ¿Tienes un XML que no convierte? La mayoría de errores vienen de XML incompletos (descarga interrumpida) o de
+          DTE de contingencia con estructura distinta. Vuelve a descargar el XML desde la Agencia Virtual y prueba de
+          nuevo. Si persiste, el visor de esta página te mostrará el detalle del error para que lo compartas con tu
+          certificador.
+        </p>
+      </div>
+
+      <!-- Ad dentro del artículo -->
+      <AdBanner slot="6666666666" format="horizontal" label="PUBLICIDAD" />
+
+      <!-- FAQ desplegable -->
+      <section style="display:grid;gap:0.75rem;">
+        <h3 style="font-size:1.2rem;font-weight:800;letter-spacing:-0.01em;">Preguntas frecuentes</h3>
+        <div style="display:grid;gap:0.6rem;">
+          <details
+            style="background:var(--bg-soft);border:2px solid var(--border);border-radius:var(--radius-sm);padding:0.9rem 1rem;box-shadow:var(--shadow-sm);"
+          >
+            <summary style="font-weight:800;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:0.5rem;">
+              ¿El PDF generado tiene validez tributaria? <span aria-hidden="true">＋</span>
+            </summary>
+            <p style="margin-top:0.6rem;color:var(--text-muted);line-height:1.6;font-size:0.95rem;">
+              No. El único documento con validez es el XML certificado por la SAT. El PDF es una representación
+              impresa para archivo, impresión o envío. Para cualquier trámite oficial debes presentar el XML original o
+              el DTE consultado en la Agencia Virtual.
+            </p>
+          </details>
+
+          <details
+            style="background:var(--bg-soft);border:2px solid var(--border);border-radius:var(--radius-sm);padding:0.9rem 1rem;box-shadow:var(--shadow-sm);"
+          >
+            <summary style="font-weight:800;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:0.5rem;">
+              ¿Mis datos se suben a algún servidor? <span aria-hidden="true">＋</span>
+            </summary>
+            <p style="margin-top:0.6rem;color:var(--text-muted);line-height:1.6;font-size:0.95rem;">
+              No. Todo ocurre en tu navegador. Puedes comprobarlo desconectando el Wi-Fi después de cargar la página:
+              la conversión seguirá funcionando. No hay base de datos, no hay logs y no se envía nada a terceros.
+            </p>
+          </details>
+
+          <details
+            style="background:var(--bg-soft);border:2px solid var(--border);border-radius:var(--radius-sm);padding:0.9rem 1rem;box-shadow:var(--shadow-sm);"
+          >
+            <summary style="font-weight:800;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:0.5rem;">
+              ¿Qué hago si mi XML no carga o sale “XML inválido”? <span aria-hidden="true">＋</span>
+            </summary>
+            <p style="margin-top:0.6rem;color:var(--text-muted);line-height:1.6;font-size:0.95rem;">
+              Vuelve a descargar el XML desde Agencia Virtual → FEL → Consulta DTE. Asegúrate de que el archivo pese
+              más de 1 KB y que al abrirlo con un editor de texto empiece con <code class="mono" style="background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:1px 6px;">&lt;?xml</code>. Si el error persiste, copia el mensaje que muestra la herramienta y compártelo con tu certificador.
+            </p>
+          </details>
+
+          <details
+            style="background:var(--bg-soft);border:2px solid var(--border);border-radius:var(--radius-sm);padding:0.9rem 1rem;box-shadow:var(--shadow-sm);"
+          >
+            <summary style="font-weight:800;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:0.5rem;">
+              ¿Puedo convertir varios XML a la vez? <span aria-hidden="true">＋</span>
+            </summary>
+            <p style="margin-top:0.6rem;color:var(--text-muted);line-height:1.6;font-size:0.95rem;">
+              Sí. Arrastra todos los XML juntos o selecciónalos en el diálogo. Cada uno se convierte en un PDF
+              independiente con el formato que elijas (Carta, Media Carta o Ticket). Usa “Descargar todos” para bajarlos uno por uno sin salir de la página.
+            </p>
+          </details>
+
+          <details
+            style="background:var(--bg-soft);border:2px solid var(--border);border-radius:var(--radius-sm);padding:0.9rem 1rem;box-shadow:var(--shadow-sm);"
+          >
+            <summary style="font-weight:800;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:0.5rem;">
+              ¿Funciona con facturas de cualquier certificador (Infile, Digifact, etc.)? <span aria-hidden="true">＋</span>
+            </summary>
+            <p style="margin-top:0.6rem;color:var(--text-muted);line-height:1.6;font-size:0.95rem;">
+              Sí. El parser lee el estándar FEL de la SAT (nodos <code class="mono" style="background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:1px 6px;">dte:GTDocumento</code>, <code class="mono" style="background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:1px 6px;">dte:DatosGenerales</code>, <code class="mono" style="background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:1px 6px;">dte:Emisor</code>, etc.), compatible con todos los certificadores autorizados.
+            </p>
+          </details>
+        </div>
+      </section>
+
+      <p class="mono" style="font-size:0.75rem;color:var(--text-muted);border-top:2px dashed var(--border);padding-top:0.75rem;">
+        Nota: FacturaContable.gt no está afiliado a la SAT ni a ningún certificador. Marca y nombres citados pertenecen a sus respectivos dueños.
+      </p>
+    </article>
+
+    <!-- JSON-LD FAQ + HowTo + SoftwareApplication -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: [
+        { "@type": "Question", name: "¿El PDF generado tiene validez tributaria?", acceptedAnswer: { "@type": "Answer", text: "No. El único documento con validez es el XML certificado por la SAT. El PDF es solo una representación impresa." } },
+        { "@type": "Question", name: "¿Mis datos se suben a algún servidor?", acceptedAnswer: { "@type": "Answer", text: "No. Todo ocurre en tu navegador con DOMParser y pdfmake. No hay uploads ni logs." } },
+        { "@type": "Question", name: "¿Qué hago si mi XML no carga?", acceptedAnswer: { "@type": "Answer", text: "Vuelve a descargar el XML desde Agencia Virtual SAT → FEL → Consulta DTE y verifica que empiece con <?xml." } },
+        { "@type": "Question", name: "¿Puedo convertir varios XML a la vez?", acceptedAnswer: { "@type": "Answer", text: "Sí. Arrastra varios XML y descarga cada PDF con el formato elegido." } },
+      ]
+    })} />
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      name: "XML SAT a PDF — FacturaContable.gt",
+      applicationCategory: "BusinessApplication",
+      operatingSystem: "Any",
+      offers: { "@type": "Offer", price: "0", priceCurrency: "GTQ" },
+      description: description,
+      inLanguage: "es-GT",
+      isAccessibleForFree: true,
+    })} />
+  </div>
+
+  <!-- Client-side logic -->
+  <script>
+    // Lazy-load pdfmake para no inflar el bundle inicial (1.8MB) — se carga solo al descargar
+    let _pdfMake: any = null;
+    async function getPdfMake(): Promise<any> {
+      if (_pdfMake) return _pdfMake;
+      const pdfMakeModule: any = await import("pdfmake/build/pdfmake");
+      const pdfFonts: any = await import("pdfmake/build/vfs_fonts");
+      const pdfMake = pdfMakeModule.default ?? pdfMakeModule.pdfMake ?? pdfMakeModule;
+      if (pdfFonts?.pdfMake?.vfs) pdfMake.vfs = pdfFonts.pdfMake.vfs;
+      else if (pdfFonts?.vfs) pdfMake.vfs = pdfFonts.vfs;
+      else if (pdfFonts?.default?.pdfMake?.vfs) pdfMake.vfs = pdfFonts.default.pdfMake.vfs;
+      // Registra aliases de fuentes para pdfmake (todas apuntan a Roboto del vfs)
+      const alias = {
+        normal: "Roboto-Regular.ttf",
+        bold: "Roboto-Medium.ttf",
+        italics: "Roboto-Italic.ttf",
+        bolditalics: "Roboto-MediumItalic.ttf",
+      };
+      pdfMake.fonts = {
+        Roboto: alias,
+        Helvetica: alias,
+        Courier: alias,
+        Times: alias,
+        OpenSans: alias,
+      };
+      _pdfMake = pdfMake;
+      return pdfMake;
+    }
+
+    type Item = { descripcion: string; cantidad: string; precio: string; total: string; unidad?: string };
+    type Factura = {
+      fileName: string;
+      numeroAcceso?: string;
+      serie?: string;
+      numero?: string;
+      fechaEmision?: string;
+      emisorNombre?: string;
+      emisorNIT?: string;
+      emisorDireccion?: string;
+      receptorNombre?: string;
+      receptorNIT?: string;
+      receptorDireccion?: string;
+      moneda?: string;
+      granTotal?: string;
+      iva?: string;
+      items: Item[];
+      rawXml?: string;
+    };
+
+    type Palette = { id: string; label: string; primary: string; accent: string };
+    const PALETTES: Palette[] = [
+      { id: "azul", label: "Corporativo Azul", primary: "#1e3a8a", accent: "#3b82f6" },
+      { id: "mono", label: "Monocromático", primary: "#18181b", accent: "#52525b" },
+      { id: "esmeralda", label: "Verde Esmeralda", primary: "#065f46", accent: "#10b981" },
+      { id: "tinto", label: "Tinto Elegante", primary: "#881337", accent: "#f43f5e" },
+      { id: "purpura", label: "Púrpura Moderno", primary: "#581c87", accent: "#a855f7" },
+    ];
+
+    type Branding = {
+      paletteId: string;
+      font: string;
+      businessName: string;
+      iconMode: "none" | "avatar" | "upload";
+      logoBase64: string | null;
+      logoName?: string;
+    };
+
+    let branding: Branding = {
+      paletteId: "azul",
+      font: "Roboto",
+      businessName: "",
+      iconMode: "none",
+      logoBase64: null,
+    };
+
+    // Load from localStorage if available
+    try {
+      const saved = localStorage.getItem("fc_branding");
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        branding = { ...branding, ...parsed, logoBase64: null }; // no persist image for privacy/size
+      }
+    } catch {}
+
+    function saveBranding() {
+      try {
+        const toSave = { ...branding, logoBase64: null, logoName: undefined };
+        localStorage.setItem("fc_branding", JSON.stringify(toSave));
+      } catch {}
+    }
+
+    function getPalette(): Palette {
+      return PALETTES.find((p) => p.id === branding.paletteId) ?? PALETTES[0];
+    }
+
+    function getInitials(name: string): string {
+      const clean = name.trim().replace(/\s+/g, " ");
+      if (!clean) return "FC";
+      const parts = clean.split(" ").filter(Boolean);
+      if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+      return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+    }
+
+    function generateAvatarBase64(name: string, primary: string): string {
+      const canvas = document.getElementById("avatar-canvas") as HTMLCanvasElement | null;
+      if (!canvas) return "";
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return "";
+      const size = 200;
+      canvas.width = size;
+      canvas.height = size;
+      // rounded rect background
+      ctx.clearRect(0, 0, size, size);
+      // background
+      ctx.fillStyle = primary;
+      const r = 32;
+      ctx.beginPath();
+      // @ts-ignore roundRect
+      if (ctx.roundRect) ctx.roundRect(0, 0, size, size, r);
+      else {
+        ctx.moveTo(r, 0);
+        ctx.lineTo(size - r, 0);
+        ctx.quadraticCurveTo(size, 0, size, r);
+        ctx.lineTo(size, size - r);
+        ctx.quadraticCurveTo(size, size, size - r, size);
+        ctx.lineTo(r, size);
+        ctx.quadraticCurveTo(0, size, 0, size - r);
+        ctx.lineTo(0, r);
+        ctx.quadraticCurveTo(0, 0, r, 0);
+      }
+      ctx.fill();
+      // initials
+      const initials = getInitials(name || branding.businessName || "Mi Negocio");
+      ctx.fillStyle = "#ffffff";
+      ctx.font = "bold 80px 'Space Grotesk', sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(initials, size / 2, size / 2 + 4);
+      return canvas.toDataURL("image/png");
+    }
+
+    function updateBrandingPreview() {
+      const pal = getPalette();
+      const dot = document.getElementById("branding-preview-dot") as HTMLElement | null;
+      const text = document.getElementById("branding-preview-text") as HTMLElement | null;
+      const fontEl = document.getElementById("branding-preview-font") as HTMLElement | null;
+      if (dot) dot.style.background = pal.primary;
+      if (text) {
+        const name = branding.businessName?.trim() || "(usa nombre del XML)";
+        const icon = branding.iconMode === "none" ? "🚫" : branding.iconMode === "avatar" ? "🔤" : "🖼️";
+        text.textContent = `${icon} ${name} · ${pal.label}`;
+      }
+      if (fontEl) fontEl.textContent = branding.font;
+    }
+
+    function refreshAvatarPreview() {
+      const wrap = document.getElementById("avatar-preview-wrap") as HTMLElement | null;
+      const label = document.getElementById("avatar-initials-label") as HTMLElement | null;
+      if (branding.iconMode !== "avatar") {
+        if (wrap) wrap.style.display = "none";
+        return;
+      }
+      if (wrap) wrap.style.display = "flex";
+      const pal = getPalette();
+      const nameForAvatar = branding.businessName?.trim() || (facturas[0]?.emisorNombre ?? "Mi Negocio");
+      const initials = getInitials(nameForAvatar);
+      if (label) label.textContent = `${initials} · ${nameForAvatar.slice(0, 28)} · ${pal.primary}`;
+      const b64 = generateAvatarBase64(nameForAvatar, pal.primary);
+      // keep for PDF: regenerate at download time to ensure latest name
+      branding.logoBase64 = b64;
+    }
+
+    // --- Branding UI wiring ---
+    function initBrandingUI() {
+      const grid = document.getElementById("palette-grid") as HTMLElement | null;
+      const fontSel = document.getElementById("branding-font") as HTMLSelectElement | null;
+      const nameInput = document.getElementById("branding-name") as HTMLInputElement | null;
+      const iconRadios = document.querySelectorAll<HTMLInputElement>('input[name="branding-icon"]');
+      const uploadWrap = document.getElementById("upload-wrap") as HTMLElement | null;
+      const uploadInput = document.getElementById("branding-logo-input") as HTMLInputElement | null;
+      const uploadPreviewWrap = document.getElementById("upload-preview-wrap") as HTMLElement | null;
+      const uploadPreview = document.getElementById("upload-preview") as HTMLImageElement | null;
+      const uploadName = document.getElementById("upload-name") as HTMLElement | null;
+      const btnRemoveLogo = document.getElementById("btn-remove-logo") as HTMLButtonElement | null;
+
+      if (grid) {
+        grid.innerHTML = PALETTES.map(
+          (p) => `
+          <button
+            type="button"
+            data-palette="${p.id}"
+            aria-pressed="${branding.paletteId === p.id ? "true" : "false"}"
+            style="display:flex;align-items:center;gap:0.6rem;padding:0.6rem 0.75rem;min-height:48px;background:var(--surface);border:2px solid ${branding.paletteId === p.id ? p.primary : "var(--border)"};border-radius:12px;box-shadow:${branding.paletteId === p.id ? `3px 3px 0 ${p.primary}` : "3px 3px 0 var(--border)"};cursor:pointer;text-align:left;transition:transform 0.08s;"
+          >
+            <span style="display:flex;gap:4px;align-items:center;">
+              <span style="width:18px;height:18px;border-radius:999px;background:${p.primary};border:2px solid var(--border);display:inline-block;"></span>
+              <span style="width:18px;height:18px;border-radius:999px;background:${p.accent};border:2px solid var(--border);display:inline-block;"></span>
+            </span>
+            <span style="font-weight:800;font-size:0.82rem;line-height:1;">${p.label}</span>
+            ${branding.paletteId === p.id ? `<span style="margin-left:auto;font-size:0.9rem;">✓</span>` : ""}
+          </button>
+        `
+        ).join("");
+
+        grid.querySelectorAll<HTMLButtonElement>("button[data-palette]").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            branding.paletteId = btn.getAttribute("data-palette") as string;
+            saveBranding();
+            initBrandingUI(); // re-render to update pressed state
+            refreshAvatarPreview();
+            updateBrandingPreview();
+            render();
+          });
+        });
+      }
+
+      if (fontSel) {
+        fontSel.value = branding.font;
+        fontSel.onchange = () => {
+          branding.font = fontSel.value;
+          saveBranding();
+          updateBrandingPreview();
+        };
+      }
+
+      if (nameInput) {
+        nameInput.value = branding.businessName;
+        nameInput.oninput = () => {
+          branding.businessName = nameInput.value;
+          saveBranding();
+          updateBrandingPreview();
+          refreshAvatarPreview();
+          render();
+        };
+      }
+
+      iconRadios.forEach((r) => {
+        r.checked = r.value === branding.iconMode;
+        r.addEventListener("change", () => {
+          if (!r.checked) return;
+          branding.iconMode = r.value as Branding["iconMode"];
+          if (branding.iconMode !== "upload") {
+            // clear upload if switching away? keep but hide
+          }
+          if (branding.iconMode === "avatar") {
+            branding.logoBase64 = null; // will be regenerated
+          } else if (branding.iconMode === "none") {
+            branding.logoBase64 = null;
+          }
+          saveBranding();
+          syncIconVisibility();
+          refreshAvatarPreview();
+          updateBrandingPreview();
+        });
+      });
+
+      function syncIconVisibility() {
+        const avatarWrap = document.getElementById("avatar-preview-wrap") as HTMLElement | null;
+        if (uploadWrap) uploadWrap.style.display = branding.iconMode === "upload" ? "grid" : "none";
+        if (avatarWrap) avatarWrap.style.display = branding.iconMode === "avatar" ? "flex" : "none";
+        if (branding.iconMode === "avatar") refreshAvatarPreview();
+        if (branding.iconMode === "upload" && branding.logoBase64 && uploadPreview && uploadPreviewWrap && uploadName) {
+          uploadPreview.src = branding.logoBase64;
+          uploadPreviewWrap.style.display = "flex";
+          uploadName.textContent = branding.logoName ?? "logo";
+        }
+      }
+      syncIconVisibility();
+
+      uploadInput?.addEventListener("change", () => {
+        const file = uploadInput.files?.[0];
+        if (!file) return;
+        if (file.size > 800 * 1024) {
+          pushError("Imagen demasiado grande. Máximo 800KB. Comprime el PNG/JPG e intenta de nuevo.");
+          uploadInput.value = "";
+          return;
+        }
+        if (!file.type.startsWith("image/")) {
+          pushError("Archivo no es una imagen PNG/JPG.");
+          return;
+        }
+        const reader = new FileReader();
+        reader.onload = () => {
+          const b64 = reader.result as string;
+          branding.logoBase64 = b64;
+          branding.logoName = file.name;
+          saveBranding();
+          if (uploadPreview) uploadPreview.src = b64;
+          if (uploadPreviewWrap) uploadPreviewWrap.style.display = "flex";
+          if (uploadName) uploadName.textContent = file.name;
+          updateBrandingPreview();
+        };
+        reader.onerror = () => pushError("No se pudo leer la imagen.");
+        reader.readAsDataURL(file);
+        // reset so same file can be re-selected
+        uploadInput.value = "";
+      });
+
+      btnRemoveLogo?.addEventListener("click", () => {
+        branding.logoBase64 = null;
+        branding.logoName = undefined;
+        if (uploadPreviewWrap) uploadPreviewWrap.style.display = "none";
+        if (uploadPreview) uploadPreview.removeAttribute("src");
+        if (uploadName) uploadName.textContent = "";
+        updateBrandingPreview();
+      });
+
+      updateBrandingPreview();
+      refreshAvatarPreview();
+    }
+
+    const $ = (s: string) => document.querySelector(s) as HTMLElement | null;
+    const lista = $("#lista") as HTMLElement;
+    const erroresEl = $("#errores") as HTMLElement;
+    const emptyEl = $("#empty") as HTMLElement;
+    const controlsEl = $("#controls") as HTMLElement;
+    const resumenEl = $("#resumen") as HTMLElement;
+    const formatoSel = $("#formato") as HTMLSelectElement;
+    const btnTodos = $("#btn-descargar-todos") as HTMLButtonElement;
+    const btnLimpiar = $("#btn-limpiar") as HTMLButtonElement;
+    const dropInput = document.getElementById("xml-dropzone-input") as HTMLInputElement | null;
+    const dropZone = document.getElementById("xml-dropzone") as HTMLElement | null;
+
+    let facturas: Factura[] = [];
+
+    function textByTag(xmlDoc: Document, localName: string): string | undefined {
+      const els = xmlDoc.getElementsByTagNameNS("*", localName);
+      if (els.length > 0) return els[0].textContent?.trim() || undefined;
+      const els2 = xmlDoc.getElementsByTagName(localName);
+      if (els2.length > 0) return els2[0].textContent?.trim() || undefined;
+      return undefined;
+    }
+
+    function attrByTag(xmlDoc: Document, localName: string, attr: string): string | undefined {
+      const els = xmlDoc.getElementsByTagNameNS("*", localName);
+      if (els.length > 0) return els[0].getAttribute(attr) ?? undefined;
+      const els2 = xmlDoc.getElementsByTagName(localName);
+      if (els2.length > 0) return els2[0].getAttribute(attr) ?? undefined;
+      return undefined;
+    }
+
+    function parseXML(text: string, fileName: string): Factura {
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(text, "application/xml");
+      const parseErr = doc.querySelector("parsererror");
+      if (parseErr) throw new Error("XML inválido: " + (parseErr.textContent?.slice(0, 200) ?? ""));
+
+      const hasGTDoc = doc.getElementsByTagNameNS("*", "GTDocumento").length > 0
+        || doc.getElementsByTagName("GTDocumento").length > 0
+        || text.includes("GTDocumento");
+
+      if (!hasGTDoc && !text.includes("DatosGenerales") && !text.includes("Emisor")) {
+        console.warn("XML no parece FEL SAT:", fileName);
+      }
+
+      const datosGenerales = doc.getElementsByTagNameNS("*", "DatosGenerales")[0]
+        ?? doc.getElementsByTagName("DatosGenerales")[0];
+      const emisorEl = doc.getElementsByTagNameNS("*", "Emisor")[0] ?? doc.getElementsByTagName("Emisor")[0];
+      const receptorEl = doc.getElementsByTagNameNS("*", "Receptor")[0] ?? doc.getElementsByTagName("Receptor")[0];
+      const totalesEl = doc.getElementsByTagNameNS("*", "Totales")[0] ?? doc.getElementsByTagName("Totales")[0];
+
+      const getAttr = (el: Element | undefined, name: string) => el?.getAttribute(name) ?? undefined;
+
+      const granTotal = getAttr(totalesEl as Element, "GranTotal")
+        ?? attrByTag(doc, "Totales", "GranTotal")
+        ?? textByTag(doc, "GranTotal");
+
+      const itemNodes = doc.getElementsByTagNameNS("*", "Item");
+      const fallbackItems = itemNodes.length === 0 ? doc.getElementsByTagName("Item") : itemNodes;
+      const items: Item[] = [];
+      for (let i = 0; i < fallbackItems.length; i++) {
+        const it = fallbackItems[i] as Element;
+        const desc = it.getAttribute("Descripcion") ?? it.getAttribute("descripcion") ?? it.textContent?.trim().slice(0, 80) ?? `Item ${i + 1}`;
+        const cantidad = it.getAttribute("Cantidad") ?? it.getAttribute("cantidad") ?? "1";
+        const precio = it.getAttribute("Precio") ?? it.getAttribute("precio") ?? it.getAttribute("PrecioUnitario") ?? "";
+        const total = it.getAttribute("Total") ?? it.getAttribute("total") ?? precio;
+        const unidad = it.getAttribute("UnidadMedida") ?? it.getAttribute("BienOServicio") ?? undefined;
+        if (!desc && !precio && !total) continue;
+        items.push({ descripcion: desc, cantidad, precio, total, unidad });
+      }
+
+      if (items.length === 0) {
+        const detNodes = doc.getElementsByTagNameNS("*", "Detalle");
+        const dets = detNodes.length ? detNodes : doc.getElementsByTagName("Detalle");
+        for (let i = 0; i < dets.length; i++) {
+          const d = dets[i] as Element;
+          const txt = d.textContent?.trim();
+          if (txt) items.push({ descripcion: txt.slice(0, 100), cantidad: "1", precio: "", total: "" });
+        }
+      }
+
+      const emisorNombre = getAttr(emisorEl as Element, "NombreComercial")
+        ?? getAttr(emisorEl as Element, "Nombre")
+        ?? emisorEl?.getAttribute("NITEmisor") ? undefined : textByTag(doc, "NombreComercial");
+      const emisorNIT = getAttr(emisorEl as Element, "NITEmisor")
+        ?? getAttr(emisorEl as Element, "NIT")
+        ?? attrByTag(doc, "Emisor", "NITEmisor");
+      const receptorNombre = getAttr(receptorEl as Element, "NombreReceptor")
+        ?? getAttr(receptorEl as Element, "Nombre")
+        ?? attrByTag(doc, "Receptor", "NombreReceptor");
+      const receptorNIT = getAttr(receptorEl as Element, "IDReceptor")
+        ?? getAttr(receptorEl as Element, "NITReceptor")
+        ?? getAttr(receptorEl as Element, "NIT")
+        ?? attrByTag(doc, "Receptor", "IDReceptor");
+
+      const factura: Factura = {
+        fileName,
+        numeroAcceso: getAttr(datosGenerales as Element, "NumeroAcceso")
+          ?? attrByTag(doc, "DatosGenerales", "NumeroAcceso"),
+        serie: getAttr(datosGenerales as Element, "Serie")
+          ?? attrByTag(doc, "DatosGenerales", "Serie"),
+        numero: getAttr(datosGenerales as Element, "Numero")
+          ?? attrByTag(doc, "DatosGenerales", "Numero"),
+        fechaEmision: getAttr(datosGenerales as Element, "FechaHoraEmision")
+          ?? attrByTag(doc, "DatosGenerales", "FechaHoraEmision"),
+        emisorNombre: emisorNombre ?? getAttr(emisorEl as Element, "NombreEmisor") ?? "—",
+        emisorNIT: emisorNIT ?? "—",
+        emisorDireccion: getAttr(emisorEl as Element, "Direccion") ?? textByTag(doc, "Direccion"),
+        receptorNombre: receptorNombre ?? "—",
+        receptorNIT: receptorNIT ?? "—",
+        receptorDireccion: getAttr(receptorEl as Element, "Direccion"),
+        moneda: getAttr(datosGenerales as Element, "CodigoMoneda")
+          ?? getAttr(datosGenerales as Element, "Moneda")
+          ?? "GTQ",
+        granTotal: granTotal ?? "—",
+        iva: getAttr(totalesEl as Element, "TotalImpuestos")
+          ?? attrByTag(doc, "Totales", "TotalImpuestos"),
+        items: items.length ? items : [{ descripcion: "Detalle no desglosado en XML", cantidad: "1", precio: granTotal ?? "", total: granTotal ?? "" }],
+        rawXml: text.slice(0, 4000),
+      };
+
+      return factura;
+    }
+
+    function formatMoney(v: string | undefined, moneda = "GTQ"): string {
+      if (!v || v === "—") return "—";
+      const n = Number(String(v).replace(",", "."));
+      if (isNaN(n)) return String(v);
+      return new Intl.NumberFormat("es-GT", { style: "currency", currency: "GTQ", minimumFractionDigits: 2 }).format(n);
+    }
+
+    function getBrandingForPdf(f: Factura): { palette: Palette; font: string; displayName: string; logoBase64: string | null } {
+      const palette = getPalette();
+      const displayName = branding.businessName?.trim() || f.emisorNombre || "—";
+      let logoBase64: string | null = null;
+      if (branding.iconMode === "upload") {
+        logoBase64 = branding.logoBase64;
+      } else if (branding.iconMode === "avatar") {
+        // regenerate on the fly to pick latest name/palette
+        logoBase64 = generateAvatarBase64(displayName, palette.primary);
+      }
+      return { palette, font: branding.font, displayName, logoBase64 };
+    }
+
+    function buildDocDefinition(f: Factura, formato: string): any {
+      const { palette, font, displayName, logoBase64 } = getBrandingForPdf(f);
+      const moneda = f.moneda ?? "GTQ";
+      const isTicket = formato === "ticket";
+      const titulo = isTicket ? "DTE — FEL" : "Documento Tributario Electrónico — FEL";
+
+      // Header with logo/avatar if present
+      const headerBranding: any[] = [];
+      if (logoBase64) {
+        headerBranding.push({
+          columns: [
+            {
+              image: logoBase64,
+              width: isTicket ? 36 : 48,
+              height: isTicket ? 36 : 48,
+              margin: [0, 0, 8, 6],
+            },
+            {
+              width: "*",
+              stack: [
+                { text: displayName, fontSize: isTicket ? 9 : 11, bold: true, color: palette.primary, margin: [0, isTicket ? 2 : 4, 0, 2] },
+                { text: `NIT: ${f.emisorNIT ?? "—"}`, fontSize: 7, color: "#444" },
+                ...(f.emisorDireccion && !isTicket ? [{ text: f.emisorDireccion, fontSize: 7, color: "#444" }] : []),
+              ],
+            },
+          ],
+          columnGap: 6,
+          margin: [0, 0, 0, 6],
+        });
+      } else {
+        headerBranding.push({
+          text: displayName,
+          fontSize: isTicket ? 10 : 12,
+          bold: true,
+          color: palette.primary,
+          alignment: isTicket ? "center" : "left",
+          margin: [0, 0, 0, 2],
+        });
+        if (!isTicket) {
+          headerBranding.push({
+            text: `NIT: ${f.emisorNIT ?? "—"}${f.emisorDireccion ? " · " + f.emisorDireccion : ""}`,
+            fontSize: 7,
+            color: "#444",
+            margin: [0, 0, 0, 6],
+          });
+        } else {
+          headerBranding.push({
+            text: `NIT: ${f.emisorNIT ?? "—"}`,
+            fontSize: 7,
+            color: "#444",
+            alignment: "center",
+            margin: [0, 0, 0, 6],
+          });
+        }
+      }
+
+      const commonStyles = {
+        header: { fontSize: isTicket ? 9 : 13, bold: true, color: palette.primary },
+        sub: { fontSize: isTicket ? 7 : 8, color: "#444" },
+        tableHeader: { bold: true, fontSize: isTicket ? 7 : 8, color: "white", fillColor: palette.primary },
+        total: { bold: true, fontSize: isTicket ? 8 : 10 },
+      };
+
+      // === TICKET minimalista: lista limpia ===
+      if (isTicket) {
+        const ticketItems: any[] = [];
+        f.items.forEach((it, idx) => {
+          const qty = (it.cantidad ?? "1").toString();
+          const desc = it.descripcion || `Item ${idx + 1}`;
+          const total = it.total ? formatMoney(it.total, moneda) : it.precio ? formatMoney(it.precio, moneda) : "—";
+          ticketItems.push({
+            columns: [
+              { text: `${qty}x ${desc}`, fontSize: 7, margin: [0, 2, 0, 0], width: "*" },
+              { text: total, fontSize: 7, bold: true, alignment: "right", width: 52, margin: [6, 2, 0, 0] },
+            ],
+            columnGap: 4,
+          });
+          // dashed separator
+          if (idx < f.items.length - 1) {
+            ticketItems.push({
+              canvas: [{ type: "line", x1: 0, y1: 4, x2: 210, y2: 4, lineWidth: 0.6, dash: { length: 2 }, lineColor: "#bbb" }],
+              margin: [0, 0, 0, 0],
+            });
+          }
+        });
+
+        // Total + foot for ticket
+        const content: any[] = [
+          { text: titulo, style: "header", alignment: "center", margin: [0, 0, 0, 2] },
+          {
+            text: `SAT Guatemala · FEL · ${f.serie ?? ""} ${f.numero ?? ""}`.trim(),
+            style: "sub",
+            alignment: "center",
+            margin: [0, 0, 0, 6],
+          },
+          // dashed top
+          { canvas: [{ type: "line", x1: 0, y1: 0, x2: 210, y2: 0, lineWidth: 0.7, dash: { length: 3 }, lineColor: palette.accent }], margin: [0, 0, 0, 6] },
+          ...headerBranding,
+          { canvas: [{ type: "line", x1: 0, y1: 0, x2: 210, y2: 0, lineWidth: 0.5, lineColor: "#ddd" }], margin: [0, 4, 0, 6] },
+          // Receptor + fecha compact
+          {
+            stack: [
+              { text: `Cliente: ${f.receptorNombre ?? "—"}`, fontSize: 7, bold: true },
+              { text: `NIT/CUI: ${f.receptorNIT ?? "—"}`, fontSize: 6, color: "#555" },
+              ...(f.fechaEmision ? [{ text: `Fecha: ${f.fechaEmision.slice(0, 10)}`, fontSize: 6, color: "#555" }] : []),
+            ],
+            margin: [0, 0, 0, 6],
+          },
+          { canvas: [{ type: "line", x1: 0, y1: 0, x2: 210, y2: 0, lineWidth: 0.7, dash: { length: 3 }, lineColor: palette.accent }], margin: [0, 0, 0, 6] },
+          ...ticketItems,
+          { canvas: [{ type: "line", x1: 0, y1: 6, x2: 210, y2: 6, lineWidth: 0.7, dash: { length: 3 }, lineColor: palette.accent }], margin: [0, 0, 0, 6] },
+          {
+            columns: [
+              { text: "TOTAL", fontSize: 8, bold: true, color: palette.primary },
+              { text: formatMoney(f.granTotal, moneda), fontSize: 9, bold: true, alignment: "right", color: palette.primary },
+            ],
+            margin: [0, 2, 0, 0],
+          },
+          ...(f.iva ? [{ text: `IVA incluido: ${formatMoney(f.iva, moneda)}`, fontSize: 6, color: "#666", alignment: "right", margin: [0, 2, 0, 0] }] : []),
+          ...(f.numeroAcceso ? [{ text: `Acceso: ${f.numeroAcceso}`, fontSize: 5, color: "#999", alignment: "center", margin: [0, 8, 0, 0] }] : []),
+          {
+            text: "XML original es el único comprobante válido ante SAT.",
+            fontSize: 5,
+            color: "#999",
+            alignment: "center",
+            margin: [0, 6, 0, 0],
+          },
+          {
+            text: "FacturaContable.gt · 100% navegador · 🇬🇹",
+            fontSize: 5,
+            color: "#aaa",
+            alignment: "center",
+            margin: [0, 2, 0, 0],
+          },
+        ];
+
+        // Alto dinámico: base 220 + 18 por item + logo extra, clamped 320..1200
+        const base = 220;
+        const perItem = 18;
+        const logoExtra = logoBase64 ? 30 : 0;
+        const h = Math.min(1200, Math.max(320, base + f.items.length * perItem + logoExtra + (f.numeroAcceso ? 12 : 0)));
+
+        return {
+          pageSize: { width: 226.77, height: h },
+          pageMargins: [8, 10, 8, 10],
+          content,
+          styles: commonStyles,
+          defaultStyle: { font: font, fontSize: 7, color: "#111" },
+        };
+      }
+
+      // === CARTA / MEDIA: tabla con branding ===
+      const itemsBody: any[] = [
+        [
+          { text: "#", style: "tableHeader", alignment: "center" },
+          { text: "Descripción", style: "tableHeader" },
+          { text: "Cant.", style: "tableHeader", alignment: "center" },
+          { text: "Precio", style: "tableHeader", alignment: "right" },
+          { text: "Total", style: "tableHeader", alignment: "right" },
+        ],
+        ...f.items.map((it, idx) => [
+          { text: String(idx + 1), fontSize: 8, alignment: "center" },
+          { text: it.descripcion, fontSize: 8 },
+          { text: String(it.cantidad), fontSize: 8, alignment: "center" },
+          { text: it.precio ? formatMoney(it.precio, moneda) : "—", fontSize: 8, alignment: "right" },
+          { text: it.total ? formatMoney(it.total, moneda) : "—", fontSize: 8, alignment: "right" },
+        ]),
+      ];
+
+      const isMedia = formato === "media";
+      const content: any[] = [
+        { text: titulo, style: "header", alignment: "center", margin: [0, 0, 0, 4] },
+        {
+          text: `SAT Guatemala · FEL · ${f.serie ?? ""} ${f.numero ?? ""} ${f.numeroAcceso ? "· " + f.numeroAcceso.slice(0, 22) + "…" : ""}`.trim(),
+          style: "sub",
+          alignment: "center",
+          margin: [0, 0, 0, 8],
+        },
+        ...headerBranding,
+        {
+          columns: [
+            {
+              width: "*",
+              stack: [
+                { canvas: [{ type: "line", x1: 0, y1: 0, x2: 80, y2: 0, lineWidth: 2, lineColor: palette.accent }], margin: [0, 0, 0, 4] },
+                { text: "RECEPTOR", fontSize: 7, bold: true, color: palette.primary, margin: [0, 0, 0, 2] },
+                { text: f.receptorNombre ?? "—", fontSize: 9, bold: true },
+                { text: `NIT/CUI: ${f.receptorNIT ?? "—"}`, fontSize: 7, color: "#444" },
+                ...(f.receptorDireccion ? [{ text: f.receptorDireccion, fontSize: 7, color: "#444" }] : []),
+                ...(f.fechaEmision ? [{ text: `Fecha: ${f.fechaEmision}`, fontSize: 7, color: "#444", margin: [0, 4, 0, 0] }] : []),
+                { text: `Moneda: ${moneda}`, fontSize: 7, color: "#444" },
+              ],
+            },
+          ],
+          margin: [0, 0, 0, 10],
+        },
+        {
+          table: { headerRows: 1, widths: isMedia ? [18, "*", 30, 50, 50] : [18, "*", 36, 58, 58], body: itemsBody },
+          layout: {
+            fillColor: (rowIndex: number) => (rowIndex === 0 ? palette.primary : rowIndex % 2 === 0 ? "#F5F0E8" : null),
+            hLineWidth: () => 0.5,
+            vLineWidth: () => 0.5,
+            hLineColor: () => "#111111",
+            vLineColor: () => "#111111",
+          },
+          margin: [0, 0, 0, 8],
+        },
+        {
+          columns: [
+            { width: "*", text: "" },
+            {
+              width: 180,
+              stack: [
+                {
+                  columns: [
+                    { text: "Gran Total", fontSize: 8, bold: true, color: palette.primary },
+                    { text: formatMoney(f.granTotal, moneda), fontSize: 10, bold: true, alignment: "right", color: palette.primary },
+                  ],
+                  margin: [0, 0, 0, 2],
+                },
+                ...(f.iva
+                  ? [{ text: `IVA incluido: ${formatMoney(f.iva, moneda)}`, fontSize: 7, color: "#666", alignment: "right" }]
+                  : []),
+                ...(f.numeroAcceso
+                  ? [{ text: `No. Acceso: ${f.numeroAcceso}`, fontSize: 6, color: "#888", alignment: "right", margin: [0, 6, 0, 0] }]
+                  : []),
+              ],
+            },
+          ],
+        },
+        {
+          canvas: [{ type: "line", x1: 0, y1: 8, x2: 540, y2: 8, lineWidth: 1, lineColor: palette.accent }],
+          margin: [0, 0, 0, 0],
+        },
+        {
+          text: "Documento generado localmente desde el XML original. El XML es el único comprobante con validez tributaria ante la SAT.",
+          fontSize: 6,
+          color: "#888",
+          alignment: "center",
+          margin: [0, 8, 0, 0],
+        },
+        {
+          text: "FacturaContable.gt · 100% en tu navegador · Hecho en Guatemala 🇬🇹",
+          fontSize: 6,
+          color: "#888",
+          alignment: "center",
+          margin: [0, 2, 0, 0],
+        },
+      ];
+
+      if (isMedia) {
+        return {
+          pageSize: "A5",
+          pageOrientation: "landscape",
+          pageMargins: [18, 16, 18, 16],
+          content,
+          styles: commonStyles,
+          defaultStyle: { font: font, fontSize: 8, color: "#111" },
+        };
+      }
+      return {
+        pageSize: "LETTER",
+        pageMargins: [28, 22, 28, 22],
+        content,
+        styles: commonStyles,
+        defaultStyle: { font: font, fontSize: 9, color: "#111" },
+      };
+    }
+
+    async function downloadFactura(f: Factura, formato: string) {
+      const docDef = buildDocDefinition(f, formato);
+      const base = (f.fileName || "DTE").replace(/\.xml$/i, "");
+      const suf = formato === "carta" ? "Carta" : formato === "media" ? "MediaCarta" : "Ticket80mm";
+      const outName = `${base}_${suf}.pdf`;
+      try {
+        const pdfMake = await getPdfMake();
+        pdfMake.createPdf(docDef).download(outName);
+      } catch (e) {
+        console.error(e);
+        pushError(`No se pudo generar el PDF para ${f.fileName}: ${(e as Error).message}`);
+      }
+    }
+
+    function pushError(msg: string) {
+      if (!erroresEl) return;
+      erroresEl.style.display = "grid";
+      const div = document.createElement("div");
+      div.setAttribute("style", "padding:0.75rem 1rem;background:#FFE5E5;border:2px solid #111;border-radius:12px;box-shadow:3px 3px 0 #111;font-size:0.9rem;display:flex;gap:0.5rem;align-items:flex-start;");
+      div.innerHTML = `<span aria-hidden="true">⚠️</span><span style="flex:1;">${msg}</span><button class="mono" style="background:white;border:1.5px solid #111;border-radius:999px;padding:2px 10px;cursor:pointer;font-weight:700;font-size:0.75rem;flex-shrink:0;" onclick="this.parentElement.remove()">Cerrar</button>`;
+      erroresEl.appendChild(div);
+    }
+
+    function render() {
+      if (!lista || !emptyEl || !controlsEl || !resumenEl) return;
+      lista.innerHTML = "";
+      if (facturas.length === 0) {
+        emptyEl.style.display = "block";
+        controlsEl.style.display = "none";
+        resumenEl.textContent = "";
+        return;
+      }
+      emptyEl.style.display = "none";
+      controlsEl.style.display = "grid";
+      const pal = getPalette();
+      resumenEl.innerHTML = `${facturas.length} archivo(s) listo(s) · <span style="display:inline-block;width:10px;height:10px;border-radius:999px;background:${pal.primary};border:1.5px solid var(--border);vertical-align:middle;margin:0 4px;"></span> ${pal.label} · ${branding.font} · Formato: ${formatoSel.value === "carta" ? "Carta" : formatoSel.value === "media" ? "Media Carta" : "Ticket 80mm"}`;
+
+      facturas.forEach((f, idx) => {
+        const displayName = branding.businessName?.trim() || f.emisorNombre || "—";
+        const logoForCard = branding.iconMode === "upload" ? branding.logoBase64 : branding.iconMode === "avatar" ? generateAvatarBase64(displayName, pal.primary) : null;
+        const card = document.createElement("div");
+        card.setAttribute("style", "display:grid;gap:0.65rem;padding:1rem;background:var(--surface);border:2px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow-sm);");
+        card.innerHTML = `
+          <div style="display:flex;flex-wrap:wrap;gap:0.5rem;justify-content:space-between;align-items:flex-start;">
+            <div style="display:flex;gap:0.6rem;align-items:center;min-width:0;flex:1;">
+              ${logoForCard ? `<img src="${logoForCard}" alt="logo" style="width:40px;height:40px;object-fit:contain;background:white;border:2px solid var(--border);border-radius:10px;box-shadow:2px 2px 0 var(--border);flex-shrink:0;" />` : ""}
+              <div style="display:grid;gap:0.15rem;min-width:0;flex:1;">
+                <p class="mono" style="font-size:0.72rem;font-weight:800;letter-spacing:0.04em;color:var(--text-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${f.fileName} ${f.serie || f.numero ? "· " + (f.serie ?? "") + " " + (f.numero ?? "") : ""}</p>
+                <p style="font-weight:800;font-size:0.98rem;letter-spacing:-0.01em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${displayName} <span style="font-weight:400;color:var(--text-muted);">→</span> ${f.receptorNombre ?? "—"}</p>
+                <p class="mono" style="font-size:0.75rem;color:var(--text-muted);">NIT Emisor: ${f.emisorNIT ?? "—"} · NIT Receptor: ${f.receptorNIT ?? "—"} ${f.fechaEmision ? "· " + f.fechaEmision.slice(0, 10) : ""}</p>
+              </div>
+            </div>
+            <span class="mono" style="background:${pal.primary};color:white;border:1.5px solid var(--border);border-radius:999px;padding:4px 10px;font-weight:800;font-size:0.8rem;box-shadow:2px 2px 0 var(--border);white-space:nowrap;">${formatMoney(f.granTotal, f.moneda ?? "GTQ")}</span>
+          </div>
+          <div style="overflow:auto;border:1.5px solid var(--border);border-radius:10px;">
+            <table class="mono" style="width:100%;border-collapse:collapse;font-size:0.75rem;min-width:420px;">
+              <thead><tr style="background:${pal.primary};color:white;text-align:left;"><th style="padding:6px 8px;border-bottom:1.5px solid var(--border);">Descripción</th><th style="padding:6px 8px;border-bottom:1.5px solid var(--border);text-align:center;">Cant.</th><th style="padding:6px 8px;border-bottom:1.5px solid var(--border);text-align:right;">Precio</th><th style="padding:6px 8px;border-bottom:1.5px solid var(--border);text-align:right;">Total</th></tr></thead>
+              <tbody>
+                ${f.items.slice(0, 12).map(it => `<tr><td style="padding:6px 8px;border-bottom:1px solid #eee;max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${it.descripcion}</td><td style="padding:6px 8px;border-bottom:1px solid #eee;text-align:center;">${it.cantidad}</td><td style="padding:6px 8px;border-bottom:1px solid #eee;text-align:right;">${it.precio ? formatMoney(it.precio, f.moneda ?? "GTQ") : "—"}</td><td style="padding:6px 8px;border-bottom:1px solid #eee;text-align:right;">${it.total ? formatMoney(it.total, f.moneda ?? "GTQ") : "—"}</td></tr>`).join("")}
+                ${f.items.length > 12 ? `<tr><td colspan="4" style="padding:6px 8px;text-align:center;color:var(--text-muted);">… y ${f.items.length - 12} ítem(s) más (ver PDF completo)</td></tr>` : ""}
+              </tbody>
+            </table>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:0.5rem;">
+            <button data-idx="${idx}" data-action="download" class="brutal-btn brutal-btn--primary" style="flex:1;min-width:160px;background:${pal.primary};color:white;border-color:var(--border);">⬇️ Descargar PDF</button>
+            <button data-idx="${idx}" data-action="remove" class="brutal-btn brutal-btn--ghost" style="min-width:88px;">Quitar</button>
+          </div>
+        `;
+        lista.appendChild(card);
+      });
+
+      lista.querySelectorAll<HTMLButtonElement>("button[data-action]").forEach((b) => {
+        b.addEventListener("click", () => {
+          const idx = Number(b.getAttribute("data-idx"));
+          const action = b.getAttribute("data-action");
+          if (action === "remove") {
+            facturas.splice(idx, 1);
+            render();
+          } else if (action === "download") {
+            const fmt = formatoSel.value;
+            downloadFactura(facturas[idx], fmt);
+          }
+        });
+      });
+    }
+
+    async function handleFiles(fileList: FileList | File[]) {
+      const files = Array.from(fileList).filter((f) => f.name.toLowerCase().endsWith(".xml") || f.type.includes("xml") || true);
+      if (files.length === 0) {
+        pushError("No se detectaron archivos XML. Asegúrate de seleccionar archivos .xml del SAT.");
+        return;
+      }
+      for (const file of files) {
+        if (!file.name.toLowerCase().endsWith(".xml")) {
+          console.warn("Archivo sin extensión .xml:", file.name);
+        }
+        try {
+          const text = await file.text();
+          const fac = parseXML(text, file.name);
+          const existing = facturas.findIndex((f) => f.fileName === file.name);
+          if (existing >= 0) facturas[existing] = fac;
+          else facturas.push(fac);
+        } catch (e) {
+          pushError(`<strong>${file.name}</strong>: ${(e as Error).message}`);
+        }
+      }
+      render();
+      refreshAvatarPreview();
+    }
+
+    dropInput?.addEventListener("change", () => {
+      if (dropInput.files && dropInput.files.length) handleFiles(dropInput.files);
+      dropInput.value = "";
+    });
+
+    dropZone?.addEventListener("dropzone:files", ((e: CustomEvent) => {
+      if (e.detail?.files) handleFiles(e.detail.files);
+    }) as EventListener);
+
+    formatoSel?.addEventListener("change", render);
+
+    btnLimpiar?.addEventListener("click", () => {
+      facturas = [];
+      if (erroresEl) { erroresEl.innerHTML = ""; erroresEl.style.display = "none"; }
+      render();
+    });
+
+    btnTodos?.addEventListener("click", async () => {
+      if (facturas.length === 0) return;
+      const fmt = formatoSel.value;
+      await getPdfMake();
+      let i = 0;
+      const next = () => {
+        if (i >= facturas.length) return;
+        downloadFactura(facturas[i], fmt);
+        i++;
+        setTimeout(next, 600);
+      };
+      next();
+    });
+
+    // Init branding after DOM ready
+    initBrandingUI();
+
+    // Responsive palette grid: 2 cols mobile, 3 cols >640px
+    const style = document.createElement("style");
+    style.textContent = "@media(min-width:640px){#palette-grid{grid-template-columns:repeat(3,1fr)!important;}#icon-options{grid-template-columns:repeat(3,1fr)!important;}}";
+    document.head.appendChild(style);
+  </script>
+</Layout>
