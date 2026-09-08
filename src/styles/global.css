@@ -26,8 +26,10 @@
   --text: #F5F5F5;
   --text-muted: #B0B0B0;
   --border: #F5F5F5;
-  --primary: #FFDE59;
-  --primary-hover: #FFE77A;
+  --primary: #13013d;
+  --secundary:#ced1f3;
+  --gold: rgb(253, 253, 3);
+  --primary-hover: #7ad0ff;
   --shadow: 4px 4px 0px #000;
   --shadow-lg: 6px 6px 0px #000;
 }
@@ -87,7 +89,12 @@ a { color: inherit; }
 
 .brutal-btn--primary {
   background: var(--primary);
-  color: #111;
+  color: var(--secundary);
+}
+
+.pro-fab {
+  background: var(--primary);
+  color: var(--gold);
 }
 
 .brutal-btn--primary:hover { background: var(--primary-hover); }
