@@ -1,0 +1,9 @@
+{
+  "console-ninja.toolsToEnableSupportAutomaticallyFor": {
+    "vite": false,
+    "astro": false,
+    "next": false,
+    "nuxt": false
+  },
+  "console-ninja.enabled": false
+}

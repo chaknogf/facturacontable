@@ -1122,10 +1122,10 @@ const description =
       const docDef = buildDocDefinition(f, formato);
       const base = (f.fileName || "DTE").replace(/\.xml$/i, "");
       const suf = formato === "carta" ? "Carta" : formato === "media" ? "MediaCarta" : "Ticket80mm";
-      const outName = `${base}_${suf}.pdf`;
       try {
         const pdfMake = await getPdfMake();
-        pdfMake.createPdf(docDef).download(outName);
+        const _out = `${base}_${suf}.pdf`;
+        (pdfMake.createPdf(docDef) as any).download(_out);
       } catch (e) {
         console.error(e);
         pushError(`No se pudo generar el PDF para ${f.fileName}: ${(e as Error).message}`);
