@@ -1,8 +1,35 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "astro",
+  "installCommand": "pnpm install --frozen-lockfile",
+  "buildCommand": "astro build",
+  "devCommand": "astro dev",
+  "outputDirectory": "dist",
+  "trailingSlash": true,
   "redirects": [
-    { "source": "https://facturacontable.net/:path*", "destination": "https://facturacontable.gt/:path*", "statusCode": 301 },
-    { "source": "https://www.facturacontable.net/:path*", "destination": "https://facturacontable.gt/:path*", "statusCode": 301 },
-    { "source": "https://facturacontable.com/:path*", "destination": "https://facturacontable.gt/:path*", "statusCode": 301 },
-    { "source": "https://www.facturacontable.com/:path*", "destination": "https://facturacontable.gt/:path*", "statusCode": 301 }
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "facturacontable\\.net" }],
+      "destination": "https://facturacontable.gt/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "www\\.facturacontable\\.net" }],
+      "destination": "https://facturacontable.gt/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "facturacontable\\.com" }],
+      "destination": "https://facturacontable.gt/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "www\\.facturacontable\\.com" }],
+      "destination": "https://facturacontable.gt/:path*",
+      "permanent": true
+    }
   ]
 }
